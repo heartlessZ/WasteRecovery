@@ -1,8 +1,19 @@
 import Vue from 'vue'
-import App from './App.vue'
 
 Vue.config.productionTip = false
+//请求数据
+// import VueResource from 'vue-resource';
+// Vue.use(VueResource);
+
+// import router from './router/router.js'
+//4.挂载路由
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+	el: '#app',
+	template: `
+	<h1>
+				hello
+	</h1>
+	`,
+	
+})
