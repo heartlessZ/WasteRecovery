@@ -13,47 +13,48 @@
           <div class="collapse navbar-collapse" id="main-navbar">
             <ul class="navbar-nav mr-auto w-100 justify-content-end">
               <li class="nav-item">
-                <a class="nav-link page-scroll" href="#hero-area">首页</a>
+                <router-link class="nav-link page-scroll" to="/home/overview#hero-area">首页</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link page-scroll" href="#services">简介</a>
+                <router-link class="nav-link page-scroll" to="/home/overview#services">简介</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link page-scroll" href="#features">咨询</a>
+                <router-link class="nav-link page-scroll" to="/home/overview#features">咨询</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link page-scroll" href="#portfolios">回收</a>
+                <router-link class="nav-link page-scroll" to='/home/overview#portfolios'>回收</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link page-scroll" href="#contact">联系我们</a>
+                <router-link class="nav-link page-scroll" to="/home/overview#contact">联系我们</router-link>
               </li>
-              <li v-if='isLogin' class="nav-item">
-                <a class="nav-link page-scroll" href='http://www.baidu.com'>个人中心</a>
+              <li v-if='$store.state.isLogin' class="nav-item">
+                <router-link class="nav-link page-scroll" to="/home/personal-center">个人中心</router-link>
               </li>
             </ul>
           </div>
         </div>
         <ul class="mobile-menu">
            <li>
-              <a class="page-scroll" href="#hero-area">首页</a>
+                <router-link class="page-scroll" to="/home/overview#portfolios">首页</router-link>
             </li>
             <li>
+                <router-link class="page-scroll" to="/home/overview#services">简介</router-link>
               <a class="page-scroll" href="#services">简介</a>
             </li>
             <li>
-              <a class="page-scroll" href="#features">咨询</a>
+                <router-link class="page-scroll" to="/home/overview#features">咨询</router-link>
             </li>
             <li>
-              <a class="page-scroll" href="#portfolios">回收</a>
+                <router-link class="page-scroll" to="/home/overview#portfolios">回收</router-link>
             </li>
             <li>
-              <a class="page-scroll" href="#contact">联系我们</a>
+                <router-link class="page-scroll" to="/home/overview#contact">联系我们</router-link>
             </li>
-            <li v-if='isLogin'>
-              <a class="page-scroll" href="#af">个人中心</a>
+            <li v-if='$store.state.isLogin'>
+                <router-link class="page-scroll" to="/home/personal-center">个人中心</router-link>
             </li>
         </ul>
-        <div v-if='!isLogin'>
+        <div v-if='!$store.state.isLogin'>
           <button>登录</button>&nbsp;&nbsp;|&nbsp;&nbsp;<button>注册</button>
         </div>
       </nav>
@@ -70,20 +71,8 @@
       </div>
     </header>
     <!-- Header Section End --> 
-
-    <!-- 简介 -->
-    <intro></intro>
-
-    <!-- 今日废品价格 -->
-    <recycle-news></recycle-news>
-
-    <!-- 废品回收表单 -->
-    <recycle-form></recycle-form>
-
+    
     <router-view/>
-
-    <!-- 联系我们 -->
-    <contact></contact>
 
     <!-- Footer Section Start -->
     <footer>          
@@ -145,24 +134,12 @@ import '../assets/css/responsive.css'
 
 import '../assets/js/jquery-min.js'
 
-import RecycleNews from './Home/RecycleNews'
-import RecycleForm from './Home/RecycleForm'
-import Contact from './Home/Contact'
-import Intro from './Home/Intro'
-
 export default {
   name: 'Home',
   data () {
     return {
-      isLogin: false,
       imgUrl: require('../assets/img/logo.png')
     }
-  },
-  components:{
-    RecycleNews,
-    RecycleForm,
-    Contact,
-    Intro
   }
 }
 
