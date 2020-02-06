@@ -27,7 +27,7 @@
               <li class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/overview#contact">联系我们</router-link>
               </li>
-              <li v-if='$store.state.isLogin' class="nav-item">
+              <li v-if='$store.getters.isLogin' class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/personal-center">个人中心</router-link>
               </li>
             </ul>
@@ -50,12 +50,12 @@
             <li>
                 <router-link class="page-scroll" to="/home/overview#contact">联系我们</router-link>
             </li>
-            <li v-if='$store.state.isLogin'>
+            <li v-if='$store.getters.isLogin'>
                 <router-link class="page-scroll" to="/home/personal-center">个人中心</router-link>
             </li>
         </ul>
-        <div v-if='!$store.state.isLogin'>
-          <button>登录</button>&nbsp;&nbsp;|&nbsp;&nbsp;<button>注册</button>
+        <div v-if='!$store.getters.isLogin'>
+          <button @click="loginView()">登录</button>&nbsp;&nbsp;|&nbsp;&nbsp;<button @click="registerVew()">注册</button>
         </div>
       </nav>
       <div class="container">
@@ -70,12 +70,12 @@
         </div>
       </div>
     </header>
-    <!-- Header Section End --> 
-    
+    <!-- Header Section End -->
+
     <router-view/>
 
     <!-- Footer Section Start -->
-    <footer>          
+    <footer>
       <div class="container">
         <div class="row">
           <!-- Footer Links -->
@@ -99,17 +99,17 @@
             <div class="copyright">
               <p>UIdeck All copyrights reserved &copy; 2018 - Designed & Developed. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     </footer>
-    <!-- Footer Section End --> 
+    <!-- Footer Section End -->
 
     <!-- Go To Top Link -->
     <a href="#" class="back-to-top">
       <i class="lnr lnr-arrow-up"></i>
     </a>
-    
+
     <!-- <div id="loader">
       <div class="spinner">
         <div class="double-bounce1"></div>
@@ -135,23 +135,30 @@ import '../assets/css/responsive.css'
 import '../assets/js/jquery-min.js'
 
 export default {
-  name: 'Home',
   data () {
     return {
       imgUrl: require('../assets/img/logo.png')
     }
+  },
+  methods: {
+    loginView () {
+      this.$router.push('/login')
+    },
+    registerVew () {
+      this.$router.push('/register')
+    }
   }
 }
 
-$(window).on('scroll', function() {
-        if ($(window).scrollTop() > 200) {
-            $('#nav').addClass('top-nav-collapse');
-            $('#nav').addClass('menu-bg');
-        } else {
-            $('#nav').removeClass('top-nav-collapse');
-            $('#nav').removeClass('menu-bg');
-        }
-    });
+$(window).on('scroll', function () {
+  if ($(window).scrollTop() > 200) {
+    $('#nav').addClass('top-nav-collapse')
+    $('#nav').addClass('menu-bg')
+  } else {
+    $('#nav').removeClass('top-nav-collapse')
+    $('#nav').removeClass('menu-bg')
+  }
+})
 </script>
 <style>
 #app {
