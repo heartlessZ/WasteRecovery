@@ -7,7 +7,7 @@
               <div class="contact-us">
                 <h3>联系我们</h3>
                 <div class="contact-address">
-                  <p>Centerville Road, DE 19808, US </p>
+                  <!-- <p>Centerville Road, DE 19808, US </p> -->
                   <p class="phone">Phone: <span>(+94 123 456 789)</span></p>
                   <p class="email">E-mail: <span>(contact@mate.com)</span></p>
                 </div>
