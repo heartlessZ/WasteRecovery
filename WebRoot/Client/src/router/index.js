@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import Login from'@/components/Login'
+import Register from'@/components/Register.vue'
 import PersonalCenter from '@/components/Home/PersonalCenter'
 import OverView from '@/components/Home/OverView'
 
@@ -35,6 +37,16 @@ export default new Router({
           component: OverView
         }
       ]
+    },
+    {
+      path:'/login',
+      name:'Login',
+      component:Login
+    },
+    {
+      path:'/register',
+      name:'Register',
+      component:Register
     },
     {
       path: '',
