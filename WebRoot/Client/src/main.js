@@ -9,6 +9,16 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 
+//vue-amap   --高德地图
+import VueAMap from 'vue-amap'
+Vue.use(VueAMap)
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  key: 'f1a08f9e7196285a7d521e15c447443e',
+  plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PlaceSearch', 'AMap.Geolocation'],
+  uiVersion: '1.0.11' // 版本号
+})
+
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
 

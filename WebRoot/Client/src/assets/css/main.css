@@ -393,7 +393,7 @@ button:focus {
 }
 
 #hero-area .contents h1 {
-  color: #fff;
+  color: #808080;
   font-size: 42px;
   font-weight: 700;
   margin-bottom: 25px;
@@ -401,7 +401,7 @@ button:focus {
 
 #hero-area .contents p {
   font-size: 14px;
-  color: #fff;
+  color: #808080;
   font-weight: 400;
   line-height: 30px;
   letter-spacing: 0.5px;
@@ -475,7 +475,7 @@ button:focus {
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
-  color: #fff;
+  color: #333;
   padding: 0 22px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -610,19 +610,19 @@ button:focus {
   6. Features Section Style
    ========================================================================== */
 #features {
-  background: url(../img/bg1.jpg) fixed no-repeat;
+  background: url(../img/middle.jpg) fixed no-repeat;
   background-size: cover;
-  color: #fff;
+  color: #333;
   overflow: hidden;
   position: relative;
 }
 
 #features .section-title {
-  color: #fff;
+  color: #333;
 }
 
 #features .section-subtitle {
-  color: #fff;
+  color: #333;
 }
 
 #features .icon {
