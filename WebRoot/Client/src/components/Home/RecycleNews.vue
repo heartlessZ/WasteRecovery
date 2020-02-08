@@ -71,6 +71,7 @@ export default {
 }
 .category-title {
   font-size: 1.7rem;
+  font-weight: bold
 }
 .el-row {
   margin-bottom: 20px;
@@ -89,12 +90,12 @@ export default {
 }
 .grid-content {
   padding: 2px;
-  border: solid 1px #808080;
+  border: solid 1px #91e54f;
   border-radius: 4px;
   min-height: 150px;
   min-width: 150px;
   opacity:0.8;
-  box-shadow: 0px 0px 5px 5px #e4d9e2;
+  box-shadow: 0px 0px 10px 4px #91e54f;
   cursor:pointer;
 }
 .row-bg {

@@ -84,13 +84,6 @@
           <div class="copyright footer-text">
             <p>环保卫士 &copy; 2020 - Designed & Developed by 世界和平</p>
           </div>
-          <div class="col-lg-6 col-sm-6 col-xs-12">
-            <div class="copyright">
-              <p>UIdeck All copyrights reserved &copy; 2018 - Designed & Developed. More Templates <a href="http://www.cssmoban.com/"
-                  target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板"
-                  target="_blank">网页模板</a></p>
-            </div>
-          </div>
         </div>
       </div>
     </footer>
