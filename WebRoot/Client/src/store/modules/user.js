@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: getToken(),
+    token: '1234',
     name: '',
     //头像
     avatar: '',
@@ -23,6 +23,8 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },SET_ISLOGIN: (state,isLogin) => {
+      state.isLogin = isLogin;
     }
   },
 
@@ -33,9 +35,10 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           const data = response.data
-          const tokenStr = data.tokenHead+data.token
+          /* const tokenStr = data.tokenHead+data.token
           setToken(tokenStr)
-          commit('SET_TOKEN', tokenStr)
+          commit('SET_TOKEN', tokenStr) */
+          commit('SET_ISLOGIN',true);
           resolve()
         }).catch(error => {
           reject(error)

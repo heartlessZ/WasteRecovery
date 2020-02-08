@@ -1,80 +1,250 @@
 <template>
-  <div>
-    <el-card class="login-form-layout">
-      <el-form autoComplete="on"
-               ref="loginForm"
-               label-position="left">
-        <div style="text-align: center">
-          <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
-        </div>
-        <h2 class="login-title color-main">登录</h2>
-        <el-form-item prop="username">
-          <el-input name="username"
-                    type="text"
-                    autoComplete="on"
-                    placeholder="请输入用户名">
-          <span slot="prefix">
-            <svg-icon icon-class="user" class="color-main"></svg-icon>
-          </span>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input name="password"
-                    autoComplete="on"
-                    placeholder="请输入密码">
-          <span slot="prefix">
-            <svg-icon icon-class="password" class="color-main"></svg-icon>
-          </span>
-            <span slot="suffix">
-            <svg-icon icon-class="eye" class="color-main"></svg-icon>
-          </span>
-          </el-input>
-        </el-form-item>
-        <el-form-item style="margin-bottom: 60px;text-align: center">
-          <el-button style="width: 45%" type="primary">
-            登录
-          </el-button>
-          <el-button style="width: 45%" type="primary">
-           注册
-          </el-button>
-        </el-form-item>
-      </el-form>
+  <div id="login">
+    <el-card class="login-form">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="密码登录" name="first">
+          <el-form status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+            <el-form-item prop="username">
+              <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off"
+                placeholder="请输入用户名" autofocus="true">
+                <i slot="prefix" class="el-input__icon el-icon-user"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password"
+                auto-complete="off" placeholder="请输入密码">
+                 <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+                 <i class="el-icon-view el-input__icon" :style="fontstyle" slot="suffix" @click="showPassword"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="verifycode">
+              <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
+              <el-input size="small" v-model="loginForm.verifycode" placeholder="请输入验证码"></el-input>
+            </el-form-item>
+            <el-form-item style="margin: 0rem;">
+              <div class="identifybox">
+                <div @click="refreshCode">
+                  <s-identify :identifyCode="identifyCode"></s-identify>
+                </div>
+                <el-button @click="refreshCode" type='text' class="textbtn">看不清，换一张</el-button>
+              </div>
+            </el-form-item>
+            <el-checkbox v-model="checked">记住账号</el-checkbox>
+            <el-button type="primary" size="small" round @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="手机号登录" name="second">
+          <el-form :model="phLoginForm" status-icon :rules="phLoginRules" ref="phLoginForm">
+            <el-form-item prop="phone">
+              <el-input size="small" v-model="phLoginForm.phone" auto-complete="off"
+                placeholder="请输入手机号" autofocus="true">
+                <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="verifycode">
+              <el-row :gutter="20">
+                <el-col :span="16">
+                  <el-input size="small" v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
+                </el-col>
+                <el-col :span="8">
+                  <el-button type="primary" size="small" :disabled="sendCodeBtn.disabled"  @click="sendcode">获取验证码</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
+              <el-button type="primary" size="small" round @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </div>
 </template>
 
 <script>
+import SIdentify from '@/components/identify.vue'
 export default {
   name: 'login',
   data () {
-    return {
+    // 用户名自定义验证规则
+    const validateUsername = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('用户名不能为空'))
+      } else {
+        console.log('user', value)
+        callback()
+      }
+    }
+    // 手机号自定义验证规则
+    const validatePhone = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('手机号不能为空'))
+      } else {
 
+      }
+    }
+    // 验证码自定义验证规则
+    const validateVerifycode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'))
+      } else if (value !== this.identifyCode) {
+        console.log('validateVerifycode:', value)
+        callback(new Error('验证码不正确!'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      fontstyle: {
+
+      },
+      loginForm: {
+        username: '',
+        password: '',
+        verifycode: ''
+      },
+      phLoginForm: {
+        phone: '',
+        verifycode: ''
+      },
+      activeName: 'first',
+      checked: false,
+      identifyCodes: '1234567890',
+      identifyCode: '',
+      sendCodeBtn: {
+        btntxt: '获取验证码',
+        disabled: true,
+        time: 0
+      },
+      loginRules: { // 绑定在form表单中的验证规则
+        username: [{
+          required: true,
+          trigger: 'blur',
+          validator: validateUsername
+        }],
+        password: [{
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        },
+        {
+          min: 6,
+          message: '密码长度最少为6位',
+          trigger: 'blur'
+        }
+        ],
+        verifycode: [{
+          required: true,
+          trigger: 'blur',
+          validator: validateVerifycode
+        }]
+      },
+      phLoginRules: {
+        phone: [{
+          required: true,
+          trigger: 'blur',
+          validator: validatePhone
+        }],
+        verifycode: [{
+          required: true,
+          trigger: 'blur',
+          validator: validateVerifycode
+        }]
+      },
+      passwordType: 'password'
+    }
+  },
+  components: {
+    SIdentify
+  },
+  mounted () {
+    // 验证码初始化
+    this.identifyCode = ''
+    this.makeCode(this.identifyCodes, 4)
+  },
+  props: [],
+  methods: {
+    // 通过改变input的type使密码可见
+    showPassword () {
+      this.fontstyle === '' ? (this.fontstyle = 'color: red') : (this.fontstyle = '') // 改变密码可见按钮颜色
+      this.passwordType === ''
+        ? (this.passwordType = 'password')
+        : (this.passwordType = '')
+    },
+    // 普通登录
+    handleLogin () {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.$store.dispatch('Login', this.loginForm).then(res => {
+            console.log(res)
+            this.$router.push({ path: '/home' })
+          })
+        }
+      })
+    },
+    // 通过手机号发送验证码登录
+    phoneLogin () {
+      this.$refs.phLoginForm.validate(valid => {
+        if (valid) {
+          alert('登录成功')
+        }
+      })
+    },
+    // 获取验证码函数
+    sendcode () {
+
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    handleClick (tab, event) {
+      this.resetForm('loginForm')
+      this.resetForm('phLoginForm')
+    },
+    // 生成随机数
+    randomNum (min, max) {
+      return Math.floor(Math.random() * (max - min) + min)
+    },
+    // 切换验证码
+    refreshCode () {
+      this.identifyCode = ''
+      this.makeCode(this.identifyCodes, 4)
+    },
+    // 生成四位随机验证码
+    makeCode (o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
+      }
+      console.log(this.identifyCode)
     }
   }
 }
-
 </script>
 
 <style scoped>
-  .login-form-layout {
+  #login{
+    width: 100%;
+    height: 100%;
+    background: #F4F4F4;
+  }
+  .login-form {
     position: absolute;
     left: 0;
     right: 0;
-    width: 360px;
-    margin: 140px auto;
-    border-top: 10px solid #409EFF;
+    width: 22.8125rem;
+    margin: 8.75rem auto;
+    border-top: 10px solid #61D2B4;
   }
 
-  .login-title {
-    text-align: center;
+  .identifybox {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
   }
 
-  .login-center-layout {
-    background: #409EFF;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    margin-top: 200px;
+  .login-submit {
+    width: 100%;
+  }
+
+  .iconstyle {
+    color: #61D2B4;
   }
 </style>
