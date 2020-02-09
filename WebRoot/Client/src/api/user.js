@@ -1,8 +1,6 @@
 import request from '@/utils/request'
-/**
- * url具体地址待修改
- */
 
+// 登录api
 export function login(username, password) {
   return request({
     url: '/user/login',
@@ -13,14 +11,22 @@ export function login(username, password) {
     }
   })
 }
-
+// 用户注册api
+export function register(userInfo){
+  return request({
+    url: '/user/regist',
+    method: 'post',
+    data: userInfo
+  })
+}
+// 获取用户信息api
 export function getInfo() {
   return request({
     url: '/admin/info',
     method: 'get',
   })
 }
-
+//退出登录api
 export function logout() {
   return request({
     url: '/admin/logout',

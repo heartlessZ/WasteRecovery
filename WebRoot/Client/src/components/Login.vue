@@ -1,17 +1,20 @@
 <template>
-  <div id="login">
+  <div id="login" v-loading="loading" element-loading-text="登录中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-card class="login-form">
+      <div class="login-title">用户登录</div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="密码登录" name="first">
-          <el-form status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+        <el-tab-pane label="账号密码登录" name="first">
+          <el-form status-icon :rules="loginRules" ref="loginForm" :model="loginForm" size="small">
             <el-form-item prop="username">
-              <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off"
+              <el-input  @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off"
                 placeholder="请输入用户名" autofocus="true">
                 <i slot="prefix" class="el-input__icon el-icon-user"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password"
+              <el-input  @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password"
                 auto-complete="off" placeholder="请输入密码">
                  <i slot="prefix" class="el-input__icon el-icon-lock"></i>
                  <i class="el-icon-view el-input__icon" :style="fontstyle" slot="suffix" @click="showPassword"></i>
@@ -19,7 +22,7 @@
             </el-form-item>
             <el-form-item prop="verifycode">
               <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
-              <el-input size="small" v-model="loginForm.verifycode" placeholder="请输入验证码"></el-input>
+              <el-input  v-model="loginForm.verifycode" placeholder="请输入验证码"></el-input>
             </el-form-item>
             <el-form-item style="margin: 0rem;">
               <div class="identifybox">
@@ -29,14 +32,14 @@
                 <el-button @click="refreshCode" type='text' class="textbtn">看不清，换一张</el-button>
               </div>
             </el-form-item>
-            <el-checkbox v-model="checked">记住账号</el-checkbox>
-            <el-button type="primary" size="small" round @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+           <!-- <el-checkbox v-model="checked">记住账号</el-checkbox> -->
+            <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="手机号登录" name="second">
-          <el-form :model="phLoginForm" status-icon :rules="phLoginRules" ref="phLoginForm">
+        <el-tab-pane label="短信认证登录" name="second">
+          <el-form :model="phLoginForm" status-icon :rules="phLoginRules" ref="phLoginForm" size="small">
             <el-form-item prop="phone">
-              <el-input size="small" v-model="phLoginForm.phone" auto-complete="off"
+              <el-input  v-model="phLoginForm.phone" auto-complete="off"
                 placeholder="请输入手机号" autofocus="true">
                 <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
               </el-input>
@@ -44,10 +47,10 @@
             <el-form-item prop="verifycode">
               <el-row :gutter="20">
                 <el-col :span="16">
-                  <el-input size="small" v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
+                  <el-input  v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" size="small" :disabled="sendCodeBtn.disabled"  @click="sendcode">获取验证码</el-button>
+                  <el-button type="primary" :disabled="sendCodeBtn.disabled"  @click="sendcode">获取验证码</el-button>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -55,6 +58,7 @@
           </el-form>
         </el-tab-pane>
       </el-tabs>
+      <div style="width: 100%;line-height: 40px;text-align: center;color: #CCC4CC;">还没有账号？点此&nbsp;<a style="color: #61D2B4;" @click="goRegister()">立即注册</a></div>
     </el-card>
   </div>
 </template>
@@ -71,14 +75,6 @@ export default {
       } else {
         console.log('user', value)
         callback()
-      }
-    }
-    // 手机号自定义验证规则
-    const validatePhone = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('手机号不能为空'))
-      } else {
-
       }
     }
     // 验证码自定义验证规则
@@ -105,6 +101,7 @@ export default {
         phone: '',
         verifycode: ''
       },
+      loading: false,
       activeName: 'first',
       checked: false,
       identifyCodes: '1234567890',
@@ -140,8 +137,13 @@ export default {
       phLoginRules: {
         phone: [{
           required: true,
-          trigger: 'blur',
-          validator: validatePhone
+          message: '请输入手机号',
+          trigger: 'blur'
+        },
+        {
+          pattern: /^1[3456789]\d{9}$/,
+          message: '手机号格式不对',
+          trigger: 'blur'
         }],
         verifycode: [{
           required: true,
@@ -173,8 +175,9 @@ export default {
     handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
-            console.log(res)
+            this.loading = false
             this.$router.push({ path: '/home' })
           })
         }
@@ -187,6 +190,10 @@ export default {
           alert('登录成功')
         }
       })
+    },
+    // 跳转到注册页面
+    goRegister () {
+      this.$router.push('/register')
     },
     // 获取验证码函数
     sendcode () {
@@ -224,6 +231,13 @@ export default {
     width: 100%;
     height: 100%;
     background: #F4F4F4;
+  }
+  .login-title{
+    width: 100%;
+    line-height: 35px;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
   }
   .login-form {
     position: absolute;
