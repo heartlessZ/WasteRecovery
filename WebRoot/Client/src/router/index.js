@@ -5,7 +5,7 @@ import Login from'@/components/Login'
 import Register from'@/components/Register.vue'
 import PersonalCenter from '@/components/Home/PersonalCenter'
 import OverView from '@/components/Home/OverView'
-
+import UserInfo from '@/components/PersonCenter/UserInfo.vue'
 Vue.use(Router)
 
 const scrollBehavior = function (to, from, savedPosition) {

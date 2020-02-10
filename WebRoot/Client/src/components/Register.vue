@@ -154,10 +154,10 @@ export default {
 
   .register-form {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
     width: 22.8125rem;
-    margin: 8.75rem auto;
     border-top: 10px solid #61D2B4;
   }
 

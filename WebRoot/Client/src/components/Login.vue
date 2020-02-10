@@ -241,10 +241,10 @@ export default {
   }
   .login-form {
     position: absolute;
-    left: 0;
-    right: 0;
     width: 22.8125rem;
-    margin: 8.75rem auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
     border-top: 10px solid #61D2B4;
   }
 
