@@ -139,11 +139,17 @@ export default {
     },
     registerVew() {
       this.$router.push("/register");
+    },
+    loadRootCategories() {
+      this.$store.dispatch("QueryRootCategory").then(res => {
+        console.log(this.$store.getters.rootCategories)
+      });
     }
   },
   created() {
+    this.loadRootCategories()
     this.$store.dispatch("GetInfo").then(res => {
-      this.loading = false
+      this.loading = false;
       //console.log(this.$store.getters.isLogin)
     });
   }

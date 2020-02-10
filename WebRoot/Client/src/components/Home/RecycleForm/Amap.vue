@@ -6,7 +6,7 @@
       v-model="form.address"
       :fetch-suggestions="querySearchAsync"
       :trigger-on-focus="false"
-      placeholder="详细地址"
+      placeholder="请输入详细地址，精确到门牌号"
       @select="handleSelect"
       clearable
       @focus="showMap"
@@ -85,7 +85,8 @@ export default {
         alert(e.message);
       });
       this.map.addControl(geolocationControl); //将控件添加到地图
-      this.geolocation();
+      //自动定位
+      //this.geolocation();
       this.map.addEventListener("click", function(e) {
         //给地图绑定点击事件
         that.getAddrByPoint(e.point); //点击后调用逆地址解析函数

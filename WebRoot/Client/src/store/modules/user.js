@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, releaseOrder, queryRootCategory} from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -9,7 +9,11 @@ const user = {
     avatar: '',
     isLogin: false,
     roles: [],
-    userInfo:''
+    userInfo: '',
+    userId: '',
+    regionId: '',
+    rootCategories: [],
+    childrenCategories: []
   },
 
   mutations: {
@@ -26,12 +30,23 @@ const user = {
       state.roles = roles
     }, 
     SET_ISLOGIN: (state, isLogin) => {
-      console.log("commit "+isLogin)
       state.isLogin = isLogin;
     },
     SET_USER: (state, userInfo)=> {
       state.userInfo = userInfo
-    }
+    },
+    SET_USERID: (state, userId)=> {
+      state.userId = userId
+    },
+    SET_REGIONID: (state, regionId)=> {
+      state.regionId = regionId
+    },
+    SET_ROOTCATEGORY: (state, category)=> {
+      state.rootCategories = category
+    },
+    SET_CHILDRENCATEGORY: (state, category)=> {
+      state.childrenCategories = category
+    },
   },
 
   actions: {
@@ -44,8 +59,9 @@ const user = {
           /* const tokenStr = data.tokenHead+data.token
           setToken(tokenStr)
           commit('SET_TOKEN', tokenStr) */
-          commit('SET_ISLOGIN', true);
-          resolve()
+          if(response.status)
+            commit('SET_ISLOGIN', true);
+          resolve(response)
         }).catch(error => {
           reject(error)
         })
@@ -64,9 +80,14 @@ const user = {
             }
             commit('SET_NAME', data.username)
             //commit('SET_AVATAR', data.icon)
-            commit('SET_USER', data)
+            //console.log(data[0].regionId)
+            commit('SET_USER', data[0])
+            commit('SET_USERID', data[0].id)
+            commit('SET_REGIONID', data[0].regionId)
           }else{
             commit('SET_ISLOGIN', false)
+            commit('SET_USERID', '')
+            commit('SET_REGIONID', '')
           }
           resolve(response)
         }).catch(error => {
@@ -84,6 +105,44 @@ const user = {
           removeToken()
           commit('SET_ISLOGIN', false)
           resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 发布订单
+    ReleaseOrder({ commit, state }, orderInfo) {
+      return new Promise((resolve, reject) => {
+        releaseOrder(orderInfo).then((res) => {
+          
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 查询分类
+    QueryRootCategory({ commit, state }, classificationName) {
+      return new Promise((resolve, reject) => {
+        queryRootCategory(classificationName).then((res) => {
+          if(res.status){
+            console.log(res)
+            commit('SET_ROOTCATEGORY', res.records)
+          }
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 根据父Id查询子分类
+    QueryChildrenCategory({ commit, state }, classificationId) {
+      return new Promise((resolve, reject) => {
+        queryRootCategory(classificationId).then((res) => {
+          resolve(res)
         }).catch(error => {
           reject(error)
         })

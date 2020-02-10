@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Login from'@/components/Login'
 import Register from'@/components/Register.vue'
-//import PersonalCenter from '@/components/Home/PersonalCenter'
 import OverView from '@/components/Home/OverView'
 Vue.use(Router)
 

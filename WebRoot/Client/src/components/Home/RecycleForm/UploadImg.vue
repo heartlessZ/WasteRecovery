@@ -4,7 +4,7 @@
     <el-upload
       action="http://49.235.151.230:8091/file/imgUpdate"
       list-type="picture-card"
-      :limit="5"
+      :limit="1"
       :on-change="handleChange"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
@@ -31,7 +31,7 @@ export default {
       
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      this.$emit("getimageurl", "");
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

@@ -12,6 +12,7 @@
           </el-form-item>
           <el-form-item label="废品类别">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
+              <!-- <el-option :v-for="category in categories" :label="category.classificationName" :value="category.id" selected>废纸</el-option> -->
               <el-option label="废纸" value="0" selected>废纸</el-option>
               <el-option label="金属" value="1">金属</el-option>
             </el-select>
@@ -20,19 +21,30 @@
             <amap @getposition="getPosition"></amap>
           </el-form-item>
           <el-form-item label="期望价格" prop="expectedPrice">
-            <el-input v-model.number="form.expectedPrice"></el-input>
+            <el-input v-model.number="form.expectedPrice" placeholder="请选择期望价格"></el-input>
           </el-form-item>
           <el-form-item label="重量" prop="weight">
-            <el-input v-model.number="form.weight"></el-input>
+            <el-input v-model.number="form.weight" placeholder="请输入重量"></el-input>
           </el-form-item>
           <el-form-item label="废品描述">
-            <el-input type="textarea" v-model="form.describe"></el-input>
+            <el-input
+              type="textarea"
+              v-model="form.describe"
+              placeholder="请输入废品描述"
+              :rows="3"
+              maxlength="100"
+              show-word-limit
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <div class="recycle-form-btn">
-              <button class="btn btn-common" @click="onSubmit" type="default">发布订单</button>
-              <!-- <el-button type="success" @click="onSubmit" round>发布订单</el-button> -->
-              <el-button type="default" @click="reset" round>重置</el-button>
+              <el-button
+                type="primary"
+                @click="onSubmit('form')"
+                round
+                style="justify-content: center;"
+              >发布订单</el-button>
+              <!-- <el-button type="default" @click="reset" round>重置</el-button> -->
             </div>
           </el-form-item>
         </el-form>
@@ -54,7 +66,7 @@ export default {
     return {
       form: {
         address: "",
-        classificationId: 0,
+        classificationId: undefined,
         describe: "",
         expectedPrice: "",
         latitude: "",
@@ -65,8 +77,13 @@ export default {
         weight: ""
       },
       rules: {
-        
-      }
+        address: [
+          { required: true, message: "请输入详细地址", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        ]
+      },
+      queryClassificationId: undefined,
+      categories: []
     };
   },
   methods: {
@@ -76,13 +93,64 @@ export default {
       this.form.latitude = point.lat;
     },
     getImageUrl(url) {
-      console.log(url);
+      //console.log(url);
       this.form.photos = url;
     },
     onSubmit() {
-      console.log(this.form);
+      if (!this.$store.getters.isLogin) {
+        const h = this.$createElement;
+        this.$message({
+          type: "error",
+          offset: 70,
+          center: true,
+          message: "请先登录！"
+        });
+        return;
+      }
+      if (this.form.address.trim() == "") {
+        this.$message({
+          type: "warning",
+          offset: 70,
+          center: true,
+          message: "请填写详细地址，精确到门牌号。"
+        });
+        return;
+      }
+      if (this.form.photos.trim() == "") {
+        this.$message({
+          type: "warning",
+          offset: 70,
+          center: true,
+          message: "请上传一张废品的现场图片。"
+        });
+        return;
+      }
+      //填充数据
+      this.form.regionId = this.$store.getters.regionId;
+      this.form.userId = this.$store.getters.userId;
+      // this.$refs[formName].validate((valid) => {
+      //     if (valid) {
+      //       alert('submit!');
+      //     } else {
+      //       console.log('error submit!!');
+      //       return false;
+      //     }
+      //   });
     },
-    reset() {}
+    reset() {},
+    loadCategory() {
+      this.$store
+        .dispatch("QueryRootCategory", this.queryClassificationId)
+        .then(res => {
+          if (res.status) {
+            this.categories = res.records;
+            console.log(res.records);
+          }
+        });
+    }
+  },
+  created() {
+    this.loadCategory();
   }
 };
 </script>
