@@ -8,8 +8,15 @@
             <a href="index.html" class="navbar-brand">
               <img class="img-fulid" :src="imgUrl" alt />
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
-              aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+              aria-controls="main-navbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <i class="lnr lnr-menu"></i>
             </button>
           </div>
@@ -30,7 +37,7 @@
               <li class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/overview#contact">联系我们</router-link>
               </li>
-              <li v-if='$store.getters.isLogin' class="nav-item">
+              <li v-if="$store.getters.isLogin" class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/personal-center">个人中心</router-link>
               </li>
             </ul>
@@ -42,7 +49,6 @@
           </li>
           <li>
             <router-link class="page-scroll" to="/home/overview#services">简介</router-link>
-            <a class="page-scroll" href="#services">简介</a>
           </li>
           <li>
             <router-link class="page-scroll" to="/home/overview#features">咨询</router-link>
@@ -53,16 +59,17 @@
           <li>
             <router-link class="page-scroll" to="/home/overview#contact">联系我们</router-link>
           </li>
-          <li v-if='$store.getters.isLogin'>
+          <li v-if="$store.getters.isLogin">
             <router-link class="page-scroll" to="/home/personal-center">个人中心</router-link>
           </li>
         </ul>
-        <div v-if='!$store.getters.isLogin'>
-          <button @click="loginView()">登录</button>&nbsp;&nbsp;|&nbsp;&nbsp;<button @click="registerVew()">注册</button>
+        <div v-if="!$store.getters.isLogin" style="margin-right:20px;color:#333;">
+          <el-link :underline="false" @click="loginView()" style="color:#333 !important;">登录</el-link>&nbsp;&nbsp;|&nbsp;&nbsp;
+          <el-link :underline="false" @click="registerVew()" style="color:#333 !important;">注册</el-link>
         </div>
       </nav>
       <div class="container">
-        <div class="row justify-content-md-center">
+        <div id="head-container" class="row justify-content-md-center">
           <div class="col-md-10">
             <div class="contents text-center">
               <h1 class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="0.3s">一句响亮的口号</h1>
@@ -94,64 +101,75 @@
       <i class="lnr lnr-arrow-up"></i>
     </a>
 
-    <!-- <div id="loader">
+    <div id="loader" v-if="loading">
       <div class="spinner">
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
       </div>
-    </div>-->
+    </div>
   </div>
 </template>
 
 <script>
-import '../assets/css/bootstrap.min.css'
-import '../assets/css/font-awesome.min.css'
-import '../assets/css/line-icons.css'
-import '../assets/css/owl.carousel.css'
-import '../assets/css/owl.theme.css'
-import '../assets/css/nivo-lightbox.css'
-import '../assets/css/magnific-popup.css'
-import '../assets/css/slicknav.css'
-import '../assets/css/animate.css'
-import '../assets/css/main.css'
-import '../assets/css/responsive.css'
+import "../assets/css/bootstrap.min.css";
+import "../assets/css/font-awesome.min.css";
+import "../assets/css/line-icons.css";
+import "../assets/css/owl.carousel.css";
+import "../assets/css/owl.theme.css";
+import "../assets/css/nivo-lightbox.css";
+import "../assets/css/magnific-popup.css";
+import "../assets/css/slicknav.css";
+import "../assets/css/animate.css";
+import "../assets/css/main.css";
+import "../assets/css/responsive.css";
 
-import '../assets/js/jquery-min.js'
+import "../assets/js/jquery-min.js";
 
 export default {
-  name: 'Home',
-  data () {
+  name: "Home",
+  data() {
     return {
-      imgUrl: require('../assets/img/logo.png')
-    }
+      imgUrl: require("../assets/img/logo.png"),
+      loading: true
+    };
   },
   methods: {
-    loginView () {
-      this.$router.push('/login')
+    loginView() {
+      this.$router.push("/login");
     },
-    registerVew () {
-      this.$router.push('/register')
+    registerVew() {
+      this.$router.push("/register");
     }
+  },
+  created() {
+    this.$store.dispatch("GetInfo").then(res => {
+      this.loading = false
+      //console.log(this.$store.getters.isLogin)
+    });
   }
 };
-$(window).on('scroll', function () {
+$(window).on("scroll", function() {
   if ($(window).scrollTop() > 200) {
-    $('#nav').addClass('top-nav-collapse')
-    $('#nav').addClass('menu-bg')
+    $("#nav").addClass("top-nav-collapse");
+    $("#nav").addClass("menu-bg");
   } else {
-    $('#nav').removeClass('top-nav-collapse')
-    $('#nav').removeClass('menu-bg')
+    $("#nav").removeClass("top-nav-collapse");
+    $("#nav").removeClass("menu-bg");
   }
-})
+});
 </script>
 <style>
-  #app {
-    height: 100%;
-    width: 100%;
-  }
+#app {
+  height: 100%;
+  width: 100%;
+}
 
-  .footer-text {
-    width: 100%;
-    text-align: center;
-  }
+.footer-text {
+  width: 100%;
+  text-align: center;
+}
+
+.limit-h {
+  height: 96px;
+}
 </style>

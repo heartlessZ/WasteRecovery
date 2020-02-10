@@ -28,6 +28,9 @@ export default {
     RecycleForm,
     Contact,
     Intro
+  },
+  created(){
+    $("#hero-area").removeClass("limit-h")
   }
 }
 </script>

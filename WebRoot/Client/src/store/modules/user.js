@@ -7,8 +7,9 @@ const user = {
     name: '',
     //头像
     avatar: '',
-    isLogin:false,
-    roles: []
+    isLogin: false,
+    roles: [],
+    userInfo:''
   },
 
   mutations: {
@@ -23,8 +24,13 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
-    },SET_ISLOGIN: (state,isLogin) => {
+    }, 
+    SET_ISLOGIN: (state, isLogin) => {
+      console.log("commit "+isLogin)
       state.isLogin = isLogin;
+    },
+    SET_USER: (state, userInfo)=> {
+      state.userInfo = userInfo
     }
   },
 
@@ -38,7 +44,7 @@ const user = {
           /* const tokenStr = data.tokenHead+data.token
           setToken(tokenStr)
           commit('SET_TOKEN', tokenStr) */
-          commit('SET_ISLOGIN',true);
+          commit('SET_ISLOGIN', true);
           resolve()
         }).catch(error => {
           reject(error)
@@ -51,13 +57,17 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
+          if (response.status) {
+            commit('SET_ISLOGIN', true)
+            if (data.roleId && data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
+              commit('SET_ROLES', data.roles)
+            }
+            commit('SET_NAME', data.username)
+            //commit('SET_AVATAR', data.icon)
+            commit('SET_USER', data)
+          }else{
+            commit('SET_ISLOGIN', false)
           }
-          commit('SET_NAME', data.username)
-          commit('SET_AVATAR', data.icon)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -69,9 +79,10 @@ const user = {
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          // commit('SET_TOKEN', '')
+          // commit('SET_ROLES', [])
           removeToken()
+          commit('SET_ISLOGIN', false)
           resolve()
         }).catch(error => {
           reject(error)

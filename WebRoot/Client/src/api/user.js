@@ -22,14 +22,14 @@ export function register(userInfo){
 // 获取用户信息api
 export function getInfo() {
   return request({
-    url: '/admin/info',
+    url: '/user/theUser',
     method: 'get',
   })
 }
 //退出登录api
 export function logout() {
   return request({
-    url: '/admin/logout',
+    url: '/user/logout',
     method: 'post'
   })
 }
