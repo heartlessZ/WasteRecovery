@@ -5,7 +5,6 @@ import Login from'@/components/Login'
 import Register from'@/components/Register.vue'
 //import PersonalCenter from '@/components/Home/PersonalCenter'
 import OverView from '@/components/Home/OverView'
-
 Vue.use(Router)
 
 const scrollBehavior = function (to, from, savedPosition) {
@@ -19,7 +18,7 @@ const scrollBehavior = function (to, from, savedPosition) {
 
 const PersonalCenter = resolve => require(['@/components/Home/PersonalCenter'], resolve)
 const JoinUs = resolve => require(['@/components/Home/PersonalCenter/JoinUs'], resolve)
-
+const UserInfo = resolve => require(['@/components/Home/PersonalCenter/UserInfo'], resolve)
 export default new Router({
   routes: [
     {
@@ -38,6 +37,9 @@ export default new Router({
             {
               path: 'join-us',
               component:JoinUs
+            },{
+              path: 'user-info',
+              component:UserInfo
             }
           ]
         },

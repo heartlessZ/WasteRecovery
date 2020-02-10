@@ -46,18 +46,18 @@
           </el-col>
         </el-row>
       </div>
-      
+
     </div>
   </section>
 </template>
 
 <script>
 export default {
-  name: "recycle-news"
-};
+  name: 'recycle-news'
+}
 </script>
 
-<style>
+<style scoped>
 .category-icon {
   float: right;
 }
