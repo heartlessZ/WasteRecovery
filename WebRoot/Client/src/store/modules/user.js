@@ -1,4 +1,4 @@
-import { login, logout, getInfo, releaseOrder, queryRootCategory} from '@/api/user'
+import { login, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory} from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -141,7 +141,11 @@ const user = {
     // 根据父Id查询子分类
     QueryChildrenCategory({ commit, state }, classificationId) {
       return new Promise((resolve, reject) => {
-        queryRootCategory(classificationId).then((res) => {
+        queryChildrenCategory(classificationId).then((res) => {
+          if(res.status){
+            console.log(res)
+            commit('SET_CHILDRENCATEGORY', res.records)
+          }
           resolve(res)
         }).catch(error => {
           reject(error)

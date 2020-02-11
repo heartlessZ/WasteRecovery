@@ -6,25 +6,34 @@
         <hr class="lines" />
       </div>
       <div class="row recycle-form">
-        <el-form ref="form" class="recycle-form-child" :model="form" label-width="80px">
+        <el-form
+          ref="form"
+          class="recycle-form-child"
+          :model="form"
+          :rules="rules"
+          label-width="80px"
+        >
           <el-form-item label="废品图片">
             <upload-img @getimageurl="getImageUrl"></upload-img>
           </el-form-item>
           <el-form-item label="废品类别">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
-              <!-- <el-option :v-for="category in categories" :label="category.classificationName" :value="category.id" selected>废纸</el-option> -->
-              <el-option label="废纸" value="0" selected>废纸</el-option>
-              <el-option label="金属" value="1">金属</el-option>
+              <el-option
+                v-for="category in $store.getters.childrenCategories"
+                :key="category.id"
+                :label="category.classificationName"
+                :value="category.id"
+              >{{category.classificationName}}</el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="家庭住址">
             <amap @getposition="getPosition"></amap>
           </el-form-item>
           <el-form-item label="期望价格" prop="expectedPrice">
-            <el-input v-model.number="form.expectedPrice" placeholder="请选择期望价格"></el-input>
+            <el-input v-model="form.expectedPrice" placeholder="请选择期望价格"></el-input>
           </el-form-item>
           <el-form-item label="重量" prop="weight">
-            <el-input v-model.number="form.weight" placeholder="请输入重量"></el-input>
+            <el-input v-model="form.weight" placeholder="请输入重量"></el-input>
           </el-form-item>
           <el-form-item label="废品描述">
             <el-input
@@ -56,6 +65,7 @@
 <script>
 import Amap from "./RecycleForm/Amap";
 import UploadImg from "./RecycleForm/UploadImg";
+import {releaseOrder} from "../../api/user"
 export default {
   name: "recycle-form",
   components: {
@@ -63,6 +73,18 @@ export default {
     UploadImg
   },
   data() {
+    var checkNum = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error("年龄不能为空"));
+      // }
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if (regPos.test(value) || regNeg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("请输入数字值"));
+      }
+    };
     return {
       form: {
         address: "",
@@ -78,12 +100,13 @@ export default {
       },
       rules: {
         address: [
-          { required: true, message: "请输入详细地址", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ]
+          { required: true, message: "请输入详细地址", trigger: "blur" }
+        ],
+        weight: [{ validator: checkNum, trigger: "blur" }],
+        expectedPrice: [{ validator: checkNum, trigger: "blur" }]
       },
       queryClassificationId: undefined,
-      categories: []
+      childrenCategories: []
     };
   },
   methods: {
@@ -96,7 +119,18 @@ export default {
       //console.log(url);
       this.form.photos = url;
     },
-    onSubmit() {
+    onSubmit(formName) {
+      this.$refs[formName].validate(valid => {
+        // if (valid) {
+        //   alert('submit!');
+        // } else {
+        //   console.log('error submit!!');
+        //   return false;
+        // }
+        if (!valid) {
+          return false;
+        }
+      });
       if (!this.$store.getters.isLogin) {
         const h = this.$createElement;
         this.$message({
@@ -128,6 +162,12 @@ export default {
       //填充数据
       this.form.regionId = this.$store.getters.regionId;
       this.form.userId = this.$store.getters.userId;
+      console.log(this.form);
+      releaseOrder(this.form).then((res) => {
+          console.log(res)
+        }).catch(error => {
+          console.log(error)
+        })
       // this.$refs[formName].validate((valid) => {
       //     if (valid) {
       //       alert('submit!');
@@ -139,18 +179,13 @@ export default {
     },
     reset() {},
     loadCategory() {
-      this.$store
-        .dispatch("QueryRootCategory", this.queryClassificationId)
-        .then(res => {
-          if (res.status) {
-            this.categories = res.records;
-            console.log(res.records);
-          }
-        });
+      this.$store.dispatch("QueryChildrenCategory").then(res => {
+        
+      });
     }
   },
-  created() {
-    this.loadCategory();
+  mounted(){
+    this.loadCategory()
   }
 };
 </script>

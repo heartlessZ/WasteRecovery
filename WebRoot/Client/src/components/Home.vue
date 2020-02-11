@@ -142,7 +142,7 @@ export default {
     },
     loadRootCategories() {
       this.$store.dispatch("QueryRootCategory").then(res => {
-        console.log(this.$store.getters.rootCategories)
+        //console.log(this.$store.getters.rootCategories)
       });
     }
   },
