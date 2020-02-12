@@ -10,7 +10,7 @@
       @select="handleSelect"
       clearable
       @focus="showMap"
-      @blur="vanish"
+      @click="vanish"
     >
       <template slot-scope="{ item }">
         <i class="el-icon-search fl mgr10"></i>

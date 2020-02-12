@@ -4,7 +4,7 @@
     <el-upload
       action="http://49.235.151.230:8091/file/imgUpdate"
       list-type="picture-card"
-      :limit="1"
+      :limit="limit"
       :on-change="handleChange"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
@@ -20,6 +20,7 @@
 <script>
 export default {
   name: "upload-img",
+  props: ['limit'],
   data() {
     return {
       dialogImageUrl: "",
@@ -31,15 +32,23 @@ export default {
       
     },
     handleRemove(file, fileList) {
-      this.$emit("getimageurl", "");
+      let urls = []
+      fileList.forEach(item => {
+        urls.push(item.response.data.imgurl)
+      });
+      this.$emit("getimageurl", urls);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
     uploadSuccess(response, file, fileList) {
-      console.log(response);
-      this.$emit("getimageurl", response.data.imgurl);
+      let urls = []
+      fileList.forEach(item => {
+        urls.push(item.response.data.imgurl)
+      });
+      console.log(urls)
+      this.$emit("getimageurl", urls);
     }
   }
 };

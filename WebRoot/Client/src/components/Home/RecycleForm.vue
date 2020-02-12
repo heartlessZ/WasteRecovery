@@ -13,10 +13,10 @@
           :rules="rules"
           label-width="80px"
         >
-          <el-form-item label="废品图片">
-            <upload-img @getimageurl="getImageUrl"></upload-img>
+          <el-form-item label="废品图片" required>
+            <upload-img :limit="limit" @getimageurl="getImageUrl"></upload-img>
           </el-form-item>
-          <el-form-item label="废品类别">
+          <el-form-item label="废品类别" prop="classificationId">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
               <el-option
                 v-for="category in $store.getters.childrenCategories"
@@ -26,7 +26,7 @@
               >{{category.classificationName}}</el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="家庭住址">
+          <el-form-item label="家庭住址" required>
             <amap @getposition="getPosition"></amap>
           </el-form-item>
           <el-form-item label="期望价格" prop="expectedPrice">
@@ -35,7 +35,7 @@
           <el-form-item label="重量" prop="weight">
             <el-input v-model="form.weight" placeholder="请输入重量"></el-input>
           </el-form-item>
-          <el-form-item label="废品描述">
+          <el-form-item label="废品描述" prop="describe">
             <el-input
               type="textarea"
               v-model="form.describe"
@@ -51,6 +51,7 @@
                 type="primary"
                 @click="onSubmit('form')"
                 round
+                v-loading="loading"
                 style="justify-content: center;"
               >发布订单</el-button>
               <!-- <el-button type="default" @click="reset" round>重置</el-button> -->
@@ -65,7 +66,7 @@
 <script>
 import Amap from "./RecycleForm/Amap";
 import UploadImg from "./RecycleForm/UploadImg";
-import {releaseOrder} from "../../api/user"
+import { releaseOrder } from "../../api/user";
 export default {
   name: "recycle-form",
   components: {
@@ -86,6 +87,8 @@ export default {
       }
     };
     return {
+      limit: 1,
+      loading: false,
       form: {
         address: "",
         classificationId: undefined,
@@ -94,16 +97,28 @@ export default {
         latitude: "",
         longitude: "",
         photos: "",
-        regionId: "",
-        userId: "",
-        weight: ""
+        regionId: 2,
+        weight: "",
+        status: 0
       },
       rules: {
         address: [
           { required: true, message: "请输入详细地址", trigger: "blur" }
         ],
-        weight: [{ validator: checkNum, trigger: "blur" }],
-        expectedPrice: [{ validator: checkNum, trigger: "blur" }]
+        weight: [
+          { required: true, message: "请输入重量", trigger: "blur" },
+          { validator: checkNum, trigger: "blur" }
+        ],
+        expectedPrice: [
+          { required: true, message: "请输入期望价格", trigger: "blur" },
+          { validator: checkNum, trigger: "blur" }
+        ],
+        classificationId: [
+          { required: true, message: "请选择分类", trigger: "blur" }
+        ],
+        describe: [
+          { required: true, message: "请输入废品描述", trigger: "blur" }
+        ]
       },
       queryClassificationId: undefined,
       childrenCategories: []
@@ -112,14 +127,15 @@ export default {
   methods: {
     getPosition(address, point) {
       this.form.address = address;
-      this.form.longitude = point.lng;
-      this.form.latitude = point.lat;
+      this.form.longitude = String(point.lng);
+      this.form.latitude = String(point.lat);
     },
-    getImageUrl(url) {
-      //console.log(url);
-      this.form.photos = url;
+    getImageUrl(urls) {
+      console.log(urls);
+      this.form.photos = urls[0];
     },
     onSubmit(formName) {
+      this.loading = true
       this.$refs[formName].validate(valid => {
         // if (valid) {
         //   alert('submit!');
@@ -159,15 +175,34 @@ export default {
         });
         return;
       }
+      if(this.form.classificationId == undefined){
+        this.$message({
+          type: "warning",
+          offset: 70,
+          center: true,
+          message: "请选择分类"
+        });
+        return;
+      }
       //填充数据
-      this.form.regionId = this.$store.getters.regionId;
-      this.form.userId = this.$store.getters.userId;
+      //this.form.regionId = this.$store.getters.regionId;
+      this.form.regionId = 1;
+      //this.form.userId = this.$store.getters.userId;
       console.log(this.form);
-      releaseOrder(this.form).then((res) => {
-          console.log(res)
-        }).catch(error => {
-          console.log(error)
+      releaseOrder(this.form)
+        .then(res => {
+          this.loading = false
+          this.$notify({
+          title: '操作提示',
+          message: '发布订单成功',
+          type: 'success',
+          offset: 70,
+        });
         })
+        .catch(error => {
+          console.log(error);
+          this.loading = false
+        });
       // this.$refs[formName].validate((valid) => {
       //     if (valid) {
       //       alert('submit!');
@@ -179,13 +214,11 @@ export default {
     },
     reset() {},
     loadCategory() {
-      this.$store.dispatch("QueryChildrenCategory").then(res => {
-        
-      });
+      this.$store.dispatch("QueryChildrenCategory").then(res => {});
     }
   },
-  mounted(){
-    this.loadCategory()
+  mounted() {
+    this.loadCategory();
   }
 };
 </script>

@@ -150,7 +150,7 @@ export default {
     this.loadRootCategories()
     this.$store.dispatch("GetInfo").then(res => {
       this.loading = false;
-      //console.log(this.$store.getters.isLogin)
+      console.log(this.$store.getters.userInfo)
     });
   }
 };

@@ -36,10 +36,15 @@ export default new Router({
             {
               path: 'join-us',
               component:JoinUs
-            },{
+            },
+            {
               path: 'user-info',
               component:UserInfo
-            }
+            },
+            {
+              path: '',
+              component:JoinUs
+            },
           ]
         },
         {

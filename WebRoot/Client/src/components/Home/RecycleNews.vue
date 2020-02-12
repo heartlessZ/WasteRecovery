@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { queryChildrenCategory } from "@/api/user";
 export default {
   name: "recycle-news",
   data() {
@@ -64,9 +65,9 @@ export default {
       });
     },
     showChildrenCategory(id) {
-      this.$store.dispatch("QueryChildrenCategory",id).then(res => {
+      queryChildrenCategory(id).then(res=>{
         this.childrenCategories = res.records;
-      });
+      })
     }
   },
   mounted() {

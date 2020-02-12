@@ -30,17 +30,15 @@ export function getInfo() {
 export function logout() {
   return request({
     url: '/user/logout',
-    method: 'post'
+    method: 'get'
   })
 }
 // 发布订单api
 export function releaseOrder(orderInfo) {
   return request({
-    url: '/order/scrapInf',
+    url: '/clien/WasteInformation/add',
     method: 'post',
-    data: {
-      orderInfo
-    }
+    data: orderInfo
   })
 }
 
@@ -65,5 +63,15 @@ export function queryChildrenCategory(classificationId) {
   return request({
     url: url,
     method: 'get'
+  })
+}
+
+// 商家入驻api
+export function settledInApply(identityInfo) {
+  let url = '/clien/settledInApply'
+  return request({
+    url: url,
+    method: 'post',
+    data:identityInfo
   })
 }
