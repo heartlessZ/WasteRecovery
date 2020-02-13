@@ -135,7 +135,7 @@ export default {
       this.form.photos = urls[0];
     },
     onSubmit(formName) {
-      this.loading = true
+      this.loading = true;
       this.$refs[formName].validate(valid => {
         // if (valid) {
         //   alert('submit!');
@@ -175,7 +175,7 @@ export default {
         });
         return;
       }
-      if(this.form.classificationId == undefined){
+      if (this.form.classificationId == undefined) {
         this.$message({
           type: "warning",
           offset: 70,
@@ -191,17 +191,23 @@ export default {
       console.log(this.form);
       releaseOrder(this.form)
         .then(res => {
-          this.loading = false
-          this.$notify({
-          title: '操作提示',
-          message: '发布订单成功',
-          type: 'success',
-          offset: 70,
-        });
+          this.loading = false;
+          if (res.status) {
+            this.$notify({
+              title: "操作提示",
+              message: "发布订单成功",
+              type: "success",
+              offset: 70
+            });
+            this.form.weight = ''
+            this.form.describe = ''
+            this.form.expectedPrice = ''
+            this.form.classificationId = undefined
+          }
         })
         .catch(error => {
           console.log(error);
-          this.loading = false
+          this.loading = false;
         });
       // this.$refs[formName].validate((valid) => {
       //     if (valid) {

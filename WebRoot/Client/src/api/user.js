@@ -36,7 +36,7 @@ export function logout() {
 // 发布订单api
 export function releaseOrder(orderInfo) {
   return request({
-    url: '/clien/WasteInformation/add',
+    url: '/clien/wasteInformation/add',
     method: 'post',
     data: orderInfo
   })
@@ -73,5 +73,15 @@ export function settledInApply(identityInfo) {
     url: url,
     method: 'post',
     data:identityInfo
+  })
+}
+
+// 添加反馈api
+export function addContact(contactInfo) {
+  let url = '/contact/add'
+  return request({
+    url: url,
+    method: 'post',
+    data:contactInfo
   })
 }
