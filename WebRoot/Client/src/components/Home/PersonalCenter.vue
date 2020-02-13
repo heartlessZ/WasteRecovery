@@ -16,7 +16,7 @@
               </el-menu-item>
               <el-menu-item index="2">
                 <i class="el-icon-menu"></i>
-                <router-link class="menu-text" to="">订单管理</router-link>
+                <router-link class="menu-text" to="/home/personal-center/order-mng/order-list/0">订单管理</router-link>
               </el-menu-item>
               <el-menu-item index="3">
                 <i class="el-icon-document"></i>

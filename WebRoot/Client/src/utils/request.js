@@ -2,23 +2,19 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
-
 axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
+axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  baseURL: 'http://safeclean.tx-q.cn:4399', // api的base_url
   timeout: 15000 // 请求超时时间
 })
 
 // request拦截器
 service.interceptors.request.use(config => {
-  /* if (store.getters.token) {
-    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-  } */
   return config
 }, error => {
-  // Do something with request error
-  console.log(error) // for debug
   Promise.reject(error)
 })
 
@@ -29,6 +25,7 @@ service.interceptors.response.use(
   * code为非200是抛错 可结合自己业务进行修改
   */
     const res = response.data
+   /* console.log(res) */
     /* if (res.code !== 200) {
       Message({
         message: res.message,
@@ -50,7 +47,7 @@ service.interceptors.response.use(
       }
       return Promise.reject('error')
     } else {  return response.data}*/
-    return response.data
+    return res
   },
   error => {
     console.log('err' + error)// for debug

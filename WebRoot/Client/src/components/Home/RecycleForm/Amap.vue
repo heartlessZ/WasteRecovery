@@ -157,7 +157,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .el-icon-search {
   margin-top: 11px;
 }
