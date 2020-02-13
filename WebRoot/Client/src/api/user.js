@@ -85,3 +85,32 @@ export function addContact(contactInfo) {
     data:contactInfo
   })
 }
+
+// 发送验证码api
+export function sendSms(phone) {
+  let url = '/tencen/sendSms?phone=' + phone
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
+
+// 验证是否本机操作
+export function verificationPhone(verifiInfo) {
+  let url = '/user/verificationPhone'
+  return request({
+    url: url,
+    method: 'post',
+    data: verifiInfo
+  })
+}
+
+// 修改新手机号
+export function editPhone(phone) {
+  let url = '/user/editPhone?phone=' + phone
+  return request({
+    url: url,
+    method: 'post',
+    data: phone
+  })
+}

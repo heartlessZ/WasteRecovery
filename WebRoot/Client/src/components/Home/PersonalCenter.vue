@@ -45,7 +45,7 @@
                   个人信息
                 </el-menu-item>
               </router-link>
-              <router-link class="menu-text" to>
+              <router-link class="menu-text" to="/home/personal-center/bind-account">
                 <el-menu-item index="5">
                   <i class="el-icon-setting"></i>
                   账号绑定

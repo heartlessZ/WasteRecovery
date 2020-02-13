@@ -18,6 +18,7 @@ const scrollBehavior = function (to, from, savedPosition) {
 const PersonalCenter = resolve => require(['@/components/Home/PersonalCenter'], resolve)
 const JoinUs = resolve => require(['@/components/Home/PersonalCenter/JoinUs'], resolve)
 const UserInfo = resolve => require(['@/components/Home/PersonalCenter/UserInfo'], resolve)
+const BindAccount = resolve => require(['@/components/Home/PersonalCenter/BindAccount'], resolve)
 export default new Router({
   routes: [
     {
@@ -40,6 +41,10 @@ export default new Router({
             {
               path: 'user-info',
               component:UserInfo
+            },
+            {
+              path: 'bind-account',
+              component:BindAccount
             },
             {
               path: '',
