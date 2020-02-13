@@ -6,7 +6,7 @@ import Register from'@/components/Register.vue'
 import OverView from '@/components/Home/OverView'
 Vue.use(Router)
 
-const scrollBehavior = function (to, from, savedPosition) {
+const scrollBehavior = function(to, from, savedPosition) {
   if (to.hash) {
     return {
       // 通过 to.hash 的值來找到对应的元素
@@ -19,14 +19,15 @@ const PersonalCenter = resolve => require(['@/components/Home/PersonalCenter'], 
 const JoinUs = resolve => require(['@/components/Home/PersonalCenter/JoinUs'], resolve)
 const UserInfo = resolve => require(['@/components/Home/PersonalCenter/UserInfo'], resolve)
 const BindAccount = resolve => require(['@/components/Home/PersonalCenter/BindAccount'], resolve)
+const OrderMng = resolve => require(['@/components/Home/PersonalCenter/OrderMng'], resolve)
+const OrderList = resolve => require(['@/components/Home/PersonalCenter/order/OrderList'], resolve)
+
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/home',
       name: 'Home',
       component: Home,
-      children: [
-        {
+      children: [{
           path: 'overview',
           component: OverView
         },
@@ -47,6 +48,14 @@ export default new Router({
               component:BindAccount
             },
             {
+              path: 'order-mng',
+              component: OrderMng,
+              children: [{
+                path:'order-list/:status',
+                component: OrderList
+              }],
+            },
+            {
               path: '',
               component:JoinUs
             },
@@ -59,20 +68,24 @@ export default new Router({
       ]
     },
     {
-      path:'/login',
-      name:'Login',
-      component:Login
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
-      path:'/register',
-      name:'Register',
-      component:Register
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
+    /* {
+       path: '/order-mng',
+       component: OrderMng
+     }, */
     {
       path: '',
       redirect: '/home'
     }
   ],
   scrollBehavior,
-  mode:'history' //html5模式（没有#号）
+  mode: 'history' //html5模式（没有#号）
 })
