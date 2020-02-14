@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home">
     <!-- Header Section Start -->
     <header id="hero-area" data-stellar-background-ratio="0.5">
       <nav id="nav" class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
@@ -85,7 +85,7 @@
     <router-view />
 
     <!-- Footer Section Start -->
-    <footer>
+    <footer class="footer" id="footer">
       <div class="container">
         <div class="row">
           <div class="copyright footer-text">
@@ -147,10 +147,10 @@ export default {
     }
   },
   created() {
-    this.loadRootCategories()
+    this.loadRootCategories();
     this.$store.dispatch("GetInfo").then(res => {
       this.loading = false;
-      console.log(this.$store.getters.userInfo)
+      console.log(this.$store.getters.userInfo);
     });
   }
 };
@@ -166,8 +166,11 @@ $(window).on("scroll", function() {
 </script>
 <style>
 #app {
-  height: 100%;
   width: 100%;
+}
+
+#home{
+  min-height: 936px;
 }
 
 .footer-text {
@@ -177,5 +180,12 @@ $(window).on("scroll", function() {
 
 .limit-h {
   height: 96px;
+}
+
+.footer {
+  width: 100%;
+  bottom: 0px;
+  position: absolute;;
+  height: 92px;
 }
 </style>

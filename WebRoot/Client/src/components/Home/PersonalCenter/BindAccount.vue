@@ -138,6 +138,6 @@ export default {
 .contain {
   width: 100%;
   padding: 10px 40px;
-  padding-top: 120px;
+  min-height: 635px;
 }
 </style>

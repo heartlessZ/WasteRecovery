@@ -46,7 +46,7 @@
                   账号绑定
                 </el-menu-item>
               </router-link>
-              <el-menu-item index="6" @click="logout">
+              <el-menu-item class="menu-text" index="6" @click="logout">
                 <i class="el-icon-setting"></i>
                 退出登录
               </el-menu-item>
@@ -96,21 +96,23 @@ export default {
   },
   mounted () {
     $('#hero-area').addClass('limit-h')
+    $('#footer').addClass('footer')
   }
 }
 </script>
 <style scoped>
   .box {
     height: 100%;
-    width: 100%;
+    width: 80%;
     display: flex;
+    margin: auto;
   }
 
   .left-bar-selfinfo {
-    height: 400px;
+    height: 300px;
     justify-content: center;
     align-items: center;
-    padding-top: 120px;
+    padding-top: 50px;
   }
 
   .personal-info {
@@ -131,11 +133,12 @@ export default {
   }
 
   .left-bar {
-    width: 20%;
+    width: 25%;
+
   }
 
   .content {
-    width: 70%;
+    width: 75%;
   }
 
   .limit-h {
@@ -144,5 +147,13 @@ export default {
 
   .menu-text {
     color: #333;
+    text-align: center;
   }
+
+  .footer {
+  width: 100%;
+  bottom: 0px;
+  position: absolute;
+  height: 92px;
+}
 </style>

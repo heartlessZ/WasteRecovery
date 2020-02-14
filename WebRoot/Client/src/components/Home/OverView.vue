@@ -29,8 +29,9 @@ export default {
     Contact,
     Intro
   },
-  created(){
+  mounted(){
     $("#hero-area").removeClass("limit-h")
+    $("#footer").removeClass("footer")
   }
 }
 </script>
