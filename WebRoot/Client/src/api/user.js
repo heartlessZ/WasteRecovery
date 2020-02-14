@@ -1,6 +1,10 @@
 import request from '@/utils/request'
 
-// 登录api
+/**
+ * 用户名登录
+ * @param {Object} username
+ * @param {Object} password
+ */
 export function login(username, password) {
   return request({
     url: '/user/login',
@@ -8,6 +12,21 @@ export function login(username, password) {
     data: {
       username,
       password
+    }
+  })
+}
+/**
+ * 手机验证码登录
+ * @param {Object} phone
+ * @param {Object} code
+ */
+export function phoneVeriLogin(phone,code) {
+  return request({
+    url:'/user/loginByPhone',
+    method:'post',
+    data:{
+      phone,
+      code
     }
   })
 }
