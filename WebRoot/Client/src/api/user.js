@@ -26,6 +26,15 @@ export function getInfo() {
     method: 'get',
   })
 }
+// 修改用于信息api
+export function updateUserInfo(userInfo) {
+  return request({
+    url:'/user/edit',
+    method:'post',
+    data:userInfo
+  })
+}
+
 //退出登录api
 export function logout() {
   return request({
