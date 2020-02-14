@@ -33,82 +33,82 @@
 </template>
 
 <script>
-import { sendSms, editPhone, verificationPhone } from "../../../api/user";
+import { sendSms, editPhone, verificationPhone } from '../../../api/user'
 export default {
-  name: "bind-account",
-  data() {
+  name: 'bind-account',
+  data () {
     return {
       active: true,
       count: 0,
       applyForm: {
-        code: "",
-        newTelNum: ""
+        code: '',
+        newTelNum: ''
       },
       rules: {
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
         newTelNum: [
-          { required: true, message: "请输入新绑定的手机号码", trigger: "blur" }
+          { required: true, message: '请输入新绑定的手机号码', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let info = {
             phone: this.$store.getters.userInfo.phone,
             code: this.applyForm.code
-          };
+          }
           verificationPhone(info).then(res => {
             if (res.status) {
               editPhone(this.applyForm.newTelNum).then(r => {
                 if (r.status) {
                   this.$notify({
-                    title: "操作提示",
-                    message: "绑定新手机号成功",
-                    type: "success",
+                    title: '操作提示',
+                    message: '绑定新手机号成功',
+                    type: 'success',
                     offset: 70
-                  });
+                  })
                 }
-              });
+              })
             } else {
               this.$notify({
-                title: "操作提示",
-                message: "验证失败",
-                type: "error",
+                title: '操作提示',
+                message: '验证失败',
+                type: 'error',
                 offset: 70
-              });
+              })
             }
-          });
+          })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    sendCode() {
-      let that = this;
+    sendCode () {
+      let that = this
 
-      //发送验证码
+      // 发送验证码
       sendSms(this.$store.getters.userInfo.phone).then(res => {
         if (res.status) {
-          //计数器
-          that.active = false;
-          that.count = 120;
-          let begin = setInterval(function() {
-            that.count--;
+          // 计数器
+          that.active = false
+          that.count = 120
+          let begin = setInterval(function () {
+            that.count--
             if (that.count < 1) {
-              clearInterval(begin);
-              that.active = true;
+              clearInterval(begin)
+              that.active = true
             }
-          }, 1000);
+          }, 1000)
         }
-      });
+      })
 
-      //console.log(this.$store.getters.userInfo.phone);
+      // console.log(this.$store.getters.userInfo.phone);
     }
   }
-};
+}
 </script>
 
 <style scoped>

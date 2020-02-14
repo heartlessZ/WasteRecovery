@@ -1,4 +1,4 @@
-import { login, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory } from '@/api/user'
+import { login,phoneVeriLogin, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -56,10 +56,6 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          const data = response.data
-          /* const tokenStr = data.tokenHead+data.token
-          setToken(tokenStr)
-          commit('SET_TOKEN', tokenStr) */
           if (response.status)
             commit('SET_ISLOGIN', true);
           resolve(response)
@@ -68,7 +64,17 @@ const user = {
         })
       })
     },
-
+    PhoneLogin({ commit }, info) {
+      return new Promise((resolve, reject) => {
+        phoneVeriLogin(info.phone, info.code).then(response => {
+          if (response.status)
+            commit('SET_ISLOGIN', true);
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
