@@ -10,7 +10,7 @@ export const SYS_MENU_UPDATE = CONTEXT + '/sys/menu/update';
 export const SYS_MENU_DELETE = CONTEXT + '/sys/menu/delete';
 export const SYS_MENU_ADD = CONTEXT + '/sys/menu/add';
 export const SYS_MENU_PAGE = CONTEXT + '/sys/menu/page';
-export const SYS_MENU_LIST = CONTEXT + '/sys/menu/list';
+export const SYS_MENU_LIST = CONTEXT + '/menu/getMenu?userId=2';
 export const SYS_MENU_LIST2 = CONTEXT + '/sys/menu/list2';
 
 export const SYS_ROLE_GET = CONTEXT + '/sys/role/get';
@@ -41,4 +41,3 @@ export const SYS_SET_USER_ROLE = CONTEXT + '/sys/user/setRoles';
 
 export const MSG_TOP_TEN = CONTEXT + '/messageList';
 export const TEST_DATA = CONTEXT + '/static/data/data.json';
-
