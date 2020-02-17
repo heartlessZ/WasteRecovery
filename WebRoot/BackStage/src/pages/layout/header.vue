@@ -1,7 +1,7 @@
 <template>
   <header class="main-header animated" :class="{closeLogo:sidebar.collapsed,mobileLogo:device.isMobile}">
     <a href="#" class="logo">
-      <span class="logo-lg"><i class="fa fa-diamond"></i>&nbsp; <b>Vue-Admin</b></span>
+      <span class="logo-lg"><i class="fa fa-diamond"></i>&nbsp; <b>环保卫士后台管理系统</b></span>
     </a>
     <nav class="navbar">
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"
@@ -28,13 +28,13 @@
         <el-dropdown trigger="click" class="navbar-dropdown">
           <div class="el-dropdown-link">
             <img :src='userInfo.avatar' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;" alt="U">
-            {{userInfo.name}}
+            {{userInfo.nikeName}}
           </div>
           <el-dropdown-menu style="padding: 0px">
             <div>
               <div class="header-pic">
                 <img :src='userInfo.avatar' class="img-circle" alt="User Image" >
-                <p>{{userInfo.name}}</p>
+                <p>{{userInfo.nikeName}}</p>
               </div>
               <div class="pull-left">
                 <router-link :to="{ path: '/resetPwd' }">
@@ -65,6 +65,7 @@
       return {
         showMessageBox: false,
         showProfileBox: false,
+        //userInfo: this.$store.getters.user.userInfo,
         list: [],
         count: 4,
         show:true,
@@ -84,16 +85,9 @@
         }
       },
       logout(){
-        this.$http.get(api.LOGOUT)
-          .then(res => {
-            auth.logout();
-            this.$http.defaults.headers.common['authSid'] = '';
-            this.$router.push({path: '/login'});
-          }).catch(error => {
-            auth.logout();
-            this.$http.defaults.headers.common['authSid'] = '';
-            this.$router.push({path: '/login'});
-        })
+        this.$store.dispatch('LogOut').then(res => {
+        this.$router.push('/login')
+      })
       },
       ...mapMutations({
         toggleSidebar: types.TOGGLE_SIDEBAR,
@@ -116,12 +110,12 @@
       }
     },
     created(){
-      let item = window.sessionStorage.getItem("user-info");
-      if (!!item){
-          this.setUserInfo(JSON.parse(item));
-      }
-      this.count = 0;
-      this.list = [];
+      // let item = window.sessionStorage.getItem("user-info");
+      // if (!!item){
+      //     this.setUserInfo(JSON.parse(item));
+      // }
+      // this.count = 0;
+      // this.list = [];
       sysApi.msgList()
         .then(res => {
             if (res && res.length>0){
@@ -131,6 +125,10 @@
         })
     },
     mounted() {
+      if(!this.$store.getters.isLogin){
+        this.$router.push('/login')
+      }
+      console.log(this.userInfo)
       // document.addEventListener('click', this.autoHide, false)
     },
     destroyed() {

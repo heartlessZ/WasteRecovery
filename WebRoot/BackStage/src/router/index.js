@@ -13,7 +13,6 @@ Vue.use(VueRouter)
 const router = new VueRouter({
     routes: routeConfig,
     mode: 'history' //html5模式（没有#号）
-        //mode: 'history'
 })
 
 sync(store, router)

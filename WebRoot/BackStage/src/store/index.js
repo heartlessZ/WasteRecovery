@@ -5,19 +5,32 @@ import defaultValue from "../services/default";
 import * as api from "../api";
 import { getCurrentMenu, getSessionKey } from '../common/utils'
 import { getMenuListByUserId } from '../api/system'
+import user from './modules/user.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     strict: true, // process.env.NODE_ENV !== 'production', 直接修改state 抛出异常
-
+    modules: {
+        user
+    },
     getters: {
         loading: state => state.loading,
         menuList: state => state.menuList,
         sidebar: state => state.sidebar,
-        userInfo: state => state.userInfo,
+        //userInfo: state => state.userInfo,
         device: state => state.device,
         currentMenus: state => state.currentMenus,
+        //user
+        avatar: state => state.user.avatar,
+        isLogin: state => state.user.isLogin,
+        name: state => state.user.name,
+        roles: state => state.user.roles,
+        userInfo: state => state.user.userInfo,
+        userId: state => state.user.userId,
+        regionId: state => state.user.regionId,
+        rootCategories: state => state.user.rootCategories,
+        childrenCategories: state => state.user.childrenCategories
     },
     state: {
         loading: false,
@@ -29,7 +42,7 @@ const store = new Vuex.Store({
         device: {
             isMobile: false
         },
-        userInfo: { name: '佚名' },
+        //userInfo: { name: '佚名' },
         currentMenus: [],
     },
     mutations: {

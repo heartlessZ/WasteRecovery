@@ -18,11 +18,11 @@ const routes = [
         children: [
             { path: '/order', component: OrderList },
             { path: '/resetPwd', component: resetPwd },
-            { path: '/sys/menuList', component: menuList },
-            { path: '/sys/roleList', component: role },
-            { path: '/sys/userList', component: sysUser },
-            { path: '/sys/userAdd', component: userAdd },
-            { path: '/sys/resource', component: resource }
+            { path: '/system/menu', component: menuList },
+            { path: '/system/role', component: role },
+            { path: '/system/user', component: sysUser },
+            { path: '/system/userAdd', component: userAdd },
+            { path: '/system/resource', component: resource }
         ]
     },
     { path: '*', component: NotFoundView }

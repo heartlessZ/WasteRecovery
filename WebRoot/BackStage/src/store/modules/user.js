@@ -56,12 +56,21 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          const data = response.data
-          /* const tokenStr = data.tokenHead+data.token
-          setToken(tokenStr)
-          commit('SET_TOKEN', tokenStr) */
-          if (response.status)
+          if (response.status){
+            console.log(response.data[0])
+            const data = response.data[0]
             commit('SET_ISLOGIN', true);
+            commit('SET_NAME', data.username)
+            commit('SET_AVATAR', data.avatar)
+            //console.log(data[0].regionId)
+            commit('SET_USER', data)
+            commit('SET_USERID', data.id)
+            commit('SET_REGIONID', data.regionId)
+          }else{
+            commit('SET_ISLOGIN', false)
+            commit('SET_USERID', '')
+            commit('SET_REGIONID', '')
+          }
           resolve(response)
         }).catch(error => {
           reject(error)

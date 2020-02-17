@@ -3,14 +3,13 @@
   <imp-panel>
     <h3 class="box-title" slot="header" style="width: 100%;">
       <el-button type="primary" icon="plus" @click="newAdd">新增</el-button>
-      <el-button type="danger" icon="delete" @click="batchDelete">删除</el-button>
+      <!-- <el-button type="danger" icon="delete" @click="batchDelete">删除</el-button> -->
     </h3>
     <el-row slot="body" :gutter="24" style="margin-bottom: 20px;">
       <el-col :span="6" :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 20px;">
         <el-tree v-if="menuTree"
                  ref="menuTree"
                  :data="menuTree"
-                 show-checkbox
                  highlight-current
                  :render-content="renderContent"
                  @node-click="handleNodeClick" clearable node-key="id" :props="defaultProps"></el-tree>
@@ -26,21 +25,21 @@
                 </el-select-tree>
               </el-form-item>
               <el-form-item label="名称" :label-width="formLabelWidth">
-                <el-input v-model="form.name" auto-complete="off"></el-input>
+                <el-input v-model="form.menuName" auto-complete="off"></el-input>
               </el-form-item>
               <el-form-item label="链接" :label-width="formLabelWidth">
-                <el-input v-model="form.href" auto-complete="off"></el-input>
+                <el-input v-model="form.menuUrl" auto-complete="off"></el-input>
               </el-form-item>
-              <el-form-item label="是否显示" :label-width="formLabelWidth">
+              <!-- <el-form-item label="是否显示" :label-width="formLabelWidth">
                 <el-radio class="radio" v-model="form.isShow" label="1">显示</el-radio>
                 <el-radio class="radio" v-model="form.isShow" label="0">不显示</el-radio>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="图标" :label-width="formLabelWidth">
                 <i :class="form.icon" v-model="form.icon"></i>
                 <el-button type="text" @click="selectIconDialog=true">选择</el-button>
               </el-form-item>
               <el-form-item label="排序" :label-width="formLabelWidth">
-                <el-slider v-model="form.sort"></el-slider>
+                <el-slider v-model="form.orderNum"></el-slider>
               </el-form-item>
               <el-form-item label="" :label-width="formLabelWidth">
                 <el-button type="primary" @click="onSubmit" v-text="form.id?'修改':'新增'"></el-button>
@@ -49,7 +48,7 @@
               </el-form-item>
             </el-form>
           </div>
-          <el-dialog title="选择图标" v-model="selectIconDialog" size="tiny">
+          <el-dialog title="选择图标" :visible.sync="selectIconDialog" size="tiny">
             <div class="select-tree">
               <el-scrollbar
                 tag="div"
@@ -528,6 +527,7 @@
 
   import * as api from "../../api"
   import * as sysApi from '../../services/sys'
+  import request from '../../utils/request'
 
   export default {
     mixins: [ treeter ],
@@ -540,22 +540,19 @@
         selectIconDialog: false,
         formLabelWidth: '100px',
         defaultProps: {
-          children: 'children',
-          label: 'name',
+          children: 'childs',
+          label: 'menuName',
           id: "id",
         },
         maxId: 7000000,
         menuTree: [],
         form: {
           id: null,
-          name: '',
-          sort: 0,
+          menuName: '',
+          orderNum: 0,
           icon: '',
-          href: '',
-          isShow: '',
-          delivery: false,
-          parentId: null,
-          desc: ''
+          menuUrl: '',
+          parentId: 0,
         }
       }
     },
@@ -574,27 +571,19 @@
       },
       newAdd(){
         this.form = {
-          id: null,
-          name: '',
-          sort: 0,
+          menuName: '',
+          orderNum: 0,
           icon: '',
-          href: '',
-          isShow: '',
-          delivery: false,
-          parentId: null,
-          desc: ''
+          menuUrl: '',
+          parentId: 0,
         };
       },
       deleteSelected(){
-        this.$http.get(api.SYS_MENU_DELETE + "?menuIds=" + this.form.id)
+        request.get(api.SYS_MENU_DELETE + "?id=" + this.form.id)
           .then(res => {
             this.$message('操作成功');
-            this.deleteFromTree(this.menuTree, this.form.id);
-            this.newAdd();
+            this.load()
           }).catch(e => {
-          this.$message('操作成功');
-          this.deleteFromTree(this.menuTree, this.form.id);
-          this.newAdd();
         })
       },
       batchDelete(){
@@ -608,14 +597,17 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$http.get(api.SYS_MENU_DELETE + "?menuIds=" + checkKeys.join(','))
+          checkKeys.forEach(item => {
+            request.get(api.SYS_MENU_DELETE + "?id=" + item)
             .then(res => {
-              this.$message('操作成功');
-              this.load();
+              if(res.status){
+                this.$message('操作成功');
+                this.load();
+              }
             }).catch(e => {
-            this.$message('操作成功');
-            this.batchDeleteFromTree(this.menuTree, checkKeys);
           })
+          });
+          
         });
 
       },
@@ -624,49 +616,67 @@
       },
       onSubmit(){
         if (this.form.id == null) {
-          this.$http.post(api.SYS_MENU_ADD, this.form)
+          //添加菜单
+          request.post(api.SYS_MENU_ADD, this.form)
             .then(res => {
               this.$message('操作成功');
-              this.form.id = res.data.id;
-              this.appendTreeNode(this.menuTree, res.data);
+              // this.form.id = res.data.id;
+              // this.appendTreeNode(this.menuTree, res.data);
+              this.load()
             }).catch(e => {
-            this.maxId += 1;
-            this.$message('操作成功');
-            this.form.id = this.maxId;
-            var ddd = {
-              id: this.form.id,
-              name: this.form.name,
-              sort: this.form.sort,
-              icon: this.form.icon,
-              href: this.form.href,
-              isShow: this.form.isShow,
-              delivery: this.form.delivery,
-              parentId: this.form.parentId,
-              desc: this.form.desc,
-              children: []
-            }
-            this.appendTreeNode(this.menuTree, ddd);
-            this.menuTree.push({});
-            this.menuTree.pop();
+            // this.maxId += 1;
+            // this.$message('操作成功');
+            // this.form.id = this.maxId;
+            // var ddd = {
+            //   id: this.form.id,
+            //   name: this.form.name,
+            //   sort: this.form.sort,
+            //   icon: this.form.icon,
+            //   href: this.form.href,
+            //   isShow: this.form.isShow,
+            //   delivery: this.form.delivery,
+            //   parentId: this.form.parentId,
+            //   desc: this.form.desc,
+            //   children: []
+            // }
+            // this.appendTreeNode(this.menuTree, ddd);
+            // this.menuTree.push({});
+            // this.menuTree.pop();
           })
         } else {
-          this.$http.post(api.SYS_MENU_UPDATE, this.form)
+          let params = {
+            icon: this.form.icon,
+            id: this.form.id,
+            menuName: this.form.menuName,
+            menuUrl: this.form.menuUrl,
+            orderNum: this.form.orderNum,
+            parentId: this.form.parentId
+          }
+          //return
+          request.post(api.SYS_MENU_UPDATE, params)
             .then(res => {
+              if(!res.status){
+                
+              this.$message('操作失败');
+              return
+              }
               this.$message('操作成功');
-              this.updateTreeNode(this.menuTree, res.data);
+              //this.updateTreeNode(this.menuTree, res.data);
+              this.load()
             }).catch(e => {
-            this.$message('操作成功');
-            this.updateTreeNode(this.menuTree, merge({}, this.form));
+            // this.$message('操作成功');
+            // this.updateTreeNode(this.menuTree, merge({}, this.form));
           })
         }
       },
       load(){
         sysApi.menuList().then(res => {
-          this.menuTree = res;
+          console.log(res)
+          this.menuTree = res.data;
         })
       }
     },
-    created(){
+    mounted(){
       this.load();
     }
   }
