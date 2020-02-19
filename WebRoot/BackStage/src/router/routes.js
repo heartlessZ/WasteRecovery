@@ -32,7 +32,6 @@ const routes = [
             { path: '/system/user', component: sysUser },
             { path: '/system/userAdd', component: userAdd },
             { path: '/system/waste-category', component: category },
-            { path: '/system/resource', component: resource },
             { path: '/system/notice', component: NoticeManager},
         ]
     },

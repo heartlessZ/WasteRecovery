@@ -24,7 +24,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="下单时间" class="date-select">
-          <el-date-picker v-model="formSearch.creatTime" type="daterange" range-separator="至" start-placeholder="开始日期"
+          <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
             end-placeholder="结束日期" value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
@@ -34,7 +34,7 @@
       </el-form>
       <el-table :data="tableData" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
-        <el-table-column fixed="left" type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="orderId" label="订单号" width="260">
         </el-table-column>
         <el-table-column prop="wasteInfo.photos" label="废品图片" width="110">
@@ -61,7 +61,7 @@
         </el-table-column>
         <el-table-column prop="user.phone" label="卖家电话" width="120">
         </el-table-column>
-        <el-table-column prop="businessname" label="商家名" width="120">
+        <el-table-column v-if="roleId!=20" prop="businessname" label="商家名" width="120">
         </el-table-column>
         <el-table-column prop="creatTime" label="下单时间" width="160">
         </el-table-column>
@@ -74,7 +74,7 @@
         </el-table-column>
         <el-table-column prop="wasteInfo.describe" label="废品描述" width="300">
         </el-table-column>
-        <el-table-column v-if="roleId==20" fixed="right" label="操作" width="150">
+        <el-table-column v-if="roleId==20" label="操作" width="150" fixed="right">
           <template slot-scope="scope">
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">取消</el-button>
             <el-button v-else type="info" size="mini" disabled>取消</el-button>
@@ -112,10 +112,12 @@
           address: '',
           orderId: '',
           state: '',
-          creatTime: '',
+          startDate:'',
+          endDate:'',
           classificationId: null
         },
         roleId: null,
+        time:'',
         //数据总条数
         total: 2
       }
@@ -145,6 +147,14 @@
         //去除空串问题
         if (this.formSearch.classificationId === '') {
           this.formSearch.classificationId = null
+        }
+        // 处理传时间段空值问题
+        if(this.time!=null){
+          this.formSearch.startDate = this.time[0]
+          this.formSearch.endDate = this.time[1]
+        }else{
+          this.formSearch.startDate = null
+          this.formSearch.endDate = null
         }
         selOrderListByPage(this.formSearch, this.roleId).then((res) => {
           if (res.status) {

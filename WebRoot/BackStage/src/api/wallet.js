@@ -24,15 +24,15 @@ export function selectWithdrawal(info){
 }
 /**
  * 提现审核api
- * @param {Object} id 提现记录的id
+ * @param {Object} orderId 提现记录单号
  * @param {Object} state 审核状态(1通过 2驳回)
  */
-export function withdrawalAudit(id,state){
+export function withdrawalAudit(orderId,state){
   return request({
     url:'/wallet/admin/audit',
     method:'get',
     params:{
-      id,
+      orderId,
       state
     }
   })

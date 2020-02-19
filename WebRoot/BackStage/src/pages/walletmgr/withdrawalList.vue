@@ -9,10 +9,13 @@
           <el-input v-model="formSearch.phone" placeholder="电话" clearable></el-input>
         </el-form-item>
         <el-form-item>
+          <el-input v-model="formSearch.orderId" placeholder="提现单号" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
           <el-select clearable v-model="formSearch.state" placeholder="状态">
-            <el-option label="已审核" value="1"></el-option>
-            <el-option label="未审核" value="2"></el-option>
-            <el-option label="未通过" value="3"></el-option>
+            <el-option label="未审核" value="0"></el-option>
+            <el-option label="已通过" value="1"></el-option>
+            <el-option label="未通过" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="申请时间" class="date-select">
@@ -27,36 +30,30 @@
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="username" label="用户名" width="120">
         </el-table-column>
-        <el-table-column prop="nickName" label="昵称" width="120" align="center">
-        </el-table-column>
         <el-table-column prop="phone" label="电话" width="160" align="center">
-        </el-table-column>
-        <el-table-column prop="balance" label="钱包余额" width="120" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.balance}}元</span>
-          </template>
         </el-table-column>
         <el-table-column prop="money" label="提现金额" width="110" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.money}}元</span>
           </template>
         </el-table-column>
-        <el-table-column prop="account" label="提现账户">
+        <el-table-column prop="orderId" label="提现单号" align="center">
         </el-table-column>
-        <el-table-column prop="createTime" label="提现时间" width="185">
+        <el-table-column prop="creatTime" label="提现时间" width="185">
         </el-table-column>
         <el-table-column prop="state" label="审核状态" width="110" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state==1" type="info" size="mini">未审核</el-button>
-            <el-button v-if="scope.row.state==2" type="primary" size="mini">已审核</el-button>
-            <el-button v-if="scope.row.state==3" type="warning" size="mini">未通过</el-button>
+            <el-button v-if="scope.row.state==0" type="info" size="mini">未审核</el-button>
+            <el-button v-if="scope.row.state==1" type="primary" size="mini">已通过</el-button>
+            <el-button v-if="scope.row.state==2" type="warning" size="mini">未通过</el-button>
           </template>
         </el-table-column>
         <el-table-column label="审核操作" width="160">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="primary" size="mini">通过</el-button>
+            <!-- 1代表审核通过 2代表审核驳回 -->
+            <el-button v-if="scope.row.state==0" @click="onCheck(scope.row.orderId,1)" type="primary" size="mini">通过</el-button>
             <el-button v-else type="info" size="mini" disabled>审核</el-button>
-            <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">驳回</el-button>
+            <el-button v-if="scope.row.state==0" @click="onCheck(scope.row.orderId,2)" type="warning" size="mini">驳回</el-button>
             <el-button v-else type="info" size="mini" disabled>驳回</el-button>
           </template>
         </el-table-column>
@@ -70,6 +67,7 @@
 </template>
 
 <script>
+  import {selectWithdrawal,withdrawalAudit} from '@/api/wallet.js'
   export default {
     name: 'withdrawalList',
     data() {
@@ -78,10 +76,11 @@
         // 分类列表
         formSearch: {
           pageNum: 1,
-          pageSize: 5,
+          pageSize: 10,
           username: '',
           phone: '',
           state: '',
+          orderId:'',
           starTime:'',
           endTime:''
         },
@@ -120,18 +119,17 @@
           this.formSearch.startTime = null
           this.formSearch.endTime = null
         }
-        for (var i = 0; i < 10; i++) {
-          this.tableData.push({
-            username: '刘建伟',
-            nickName: '大飞猪',
-            phone: '18384623913',
-            balance: 400,
-            money: 100,
-            account: '18384623913',
-            createTime: '2020-02-15 11:05:02',
-            state: 1
-          })
-        }
+        //查询提现列表网络请求
+        selectWithdrawal(this.formSearch).then((res) => {
+          if(res.status){
+            this.tableData = res.records
+            this.total = res.total
+          }else{
+            this.$message.error('查询提现列表失败！')
+          }
+        }).catch((err) => {
+          this.$message.error(err.message)
+        })
       },
       /**
        * 点击查找调用函数
@@ -140,56 +138,23 @@
         this.requestData()
       },
       /**
-       * 取消订单
-       * @param {Object} id 订单id
+       * @param {Object} orderId 提现单号
+       * @param {Object} state 审核状态(0通过 1驳回)
        */
-      cancelOrder(id) {
-        this.$confirm('取消订单后会降低您的信誉, 请谨慎操作！', '确定要取消该订单吗？', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          /* //取消订单网络请求
-          cancelOrderById(id).then((res) => {
-            if (res.status) {
-              this.$message({
-                showClose: true,
-                message: '取消成功！',
-                type: 'success'
-              })
-              this.requestData()
-            } else {
-              this.$message.error('操作失败')
-            }
-          }).catch((err) => {
-            this.$message.error(err.message)
-          }) */
-        })
-      },
-      /**删除订单
-       * @param {Object} id 订单id
-       */
-      delOrder(id) {
-        this.$confirm('此操作将永久删除该订单, 请谨慎操作！', '确要删除该订单吗？', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          /* //删除订单网络请求
-           delOrderById(id).then((res) => {
-             if (res.status) {
-               this.$message({
-                 showClose: true,
-                 message: '删除成功！',
-                 type: 'success'
-               })
-               this.requestData()
-             } else {
-               this.$message.error('操作失败')
-             }
-           }).catch((err) => {
-             this.$message.error(err.message)
-           })*/
+      onCheck(orderId,state){
+        //提现审核网络请求
+        withdrawalAudit(orderId,state).then((res) => {
+          if(res.status){
+             this.$message({
+                      message: '审核成功!',
+                      type: 'success'
+                    });
+            this.requestData()
+          }else{
+            this.$message.error('审核失败!')
+          }
+        }).catch((err) => {
+          this.$message.error(err.message)
         })
       }
     },
