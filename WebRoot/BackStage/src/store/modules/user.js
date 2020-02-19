@@ -57,15 +57,15 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           if (response.status){
-            console.log(response.data[0])
             const data = response.data[0]
             commit('SET_ISLOGIN', true);
             commit('SET_NAME', data.username)
             commit('SET_AVATAR', data.avatar)
+            console.log(response.data[0])
             //console.log(data[0].regionId)
             commit('SET_USER', data)
             commit('SET_USERID', data.id)
-            commit('SET_REGIONID', data.regionId)
+            console.log(response.data[0])
           }else{
             commit('SET_ISLOGIN', false)
             commit('SET_USERID', '')
