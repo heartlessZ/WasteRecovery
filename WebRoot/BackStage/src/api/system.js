@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 登录api
-export function getMenuListByUserId() {
+export function getMenuListByUserId(userid) {
     return request({
-        url: '/menu/getUserMenu?userId=2',
+        url: '/menu/getUserMenu?userId='+userid,
         method: 'get'
     })
 }

@@ -47,7 +47,7 @@ export default {
   name: "login",
   data() {
     return {
-      loading:false,
+      loading: false,
       form: {
         username: "123456",
         password: "123456"
@@ -63,7 +63,7 @@ export default {
       loadMenuList: "loadMenuList" // 映射 this.load() 为 this.$store.dispatch('loadMenuList')
     }),
     login() {
-        this.loading = true;
+      this.loading = true;
       var redirectUrl = "";
       if (
         this.$route.query &&
@@ -88,7 +88,7 @@ export default {
           });
         }
       });
-    },
+    }
     // loginSuccess({ sid, user, redirectUrl }) {
     //   auth.login(sid);
     //   window.sessionStorage.setItem("user-info", JSON.stringify(user));

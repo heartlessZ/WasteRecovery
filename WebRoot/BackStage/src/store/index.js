@@ -82,14 +82,15 @@ const store = new Vuex.Store({
             // Vue.axios.get(api.SYS_MENU_LIST).then(res => {
             //   commit(types.LOAD_MENU, res.data);
             // }).catch(exp => commit(types.LOAD_MENU, defaultValue.menuList));
-            getMenuListByUserId().then(res => {
+            console.log(store.getters.userInfo)
+            getMenuListByUserId(store.getters.userInfo.id).then(res => {
                 console.log(res)
                 commit(types.LOAD_MENU, res.data);
             }).catch(exp => commit(types.LOAD_MENU, defaultValue.menuList));
         },
         changeCurrentMenu: ({ state, commit }, { path, matched, fullPath }) => {
-            const a = getCurrentMenu(fullPath, state.menuList);
-            commit(types.LOAD_CURRENT_MENU, a.reverse());
+            // const a = getCurrentMenu(fullPath, state.menuList);
+            // commit(types.LOAD_CURRENT_MENU, a.reverse());
         }
     },
 })
