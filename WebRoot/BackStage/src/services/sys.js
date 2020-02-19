@@ -70,10 +70,8 @@ export function roleList () {
 export function userList (params) {
   const userList = {total:defaultValue.userList.total,records:defaultValue.userList.records.reverse()}
   return new Promise((resolve, reject) => {
-    axios.get(api.SYS_USER_PAGE, { params }).then(response => {
-      if(response.status){
-        resolve(response);
-      }
+    axios.get(api.SYS_USER_PAGE, {params} ).then(response => {
+      resolve(response);
     }, err => {
       //resolve(userList);
     })
