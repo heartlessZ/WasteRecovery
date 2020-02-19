@@ -9,7 +9,8 @@ import userAdd from "../pages/sys/userAdd.vue";
 import resetPwd from "../pages/resetPwd.vue";
 
 const OrderList = resolve => require(['../pages/order/OrderList'], resolve)
-const WithdrawalList = resolve => require(['../pages/withdrawal/withdrawalList.vue'], resolve)
+const WithdrawalList = resolve => require(['../pages/walletmgr/withdrawalList.vue'], resolve)
+const RechargeList = resolve => require(['../pages/walletmgr/rechargeList.vue'], resolve)
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
 const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
     // Routes
@@ -20,7 +21,8 @@ const routes = [
         component: app,
         children: [
             { path: '/order', component: OrderList },
-            { path: '/withdrawal',component: WithdrawalList},
+            { path: '/wallet-manage/withdraw',component: WithdrawalList},
+            { path: '/wallet-manage/recharge',component: RechargeList},
             { path: '/wallet',component: MyWallet},
             { path: '/resetPwd', component: resetPwd },
             { path: '/system/menu', component: menuList },

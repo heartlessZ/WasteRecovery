@@ -3,13 +3,13 @@
     <el-card class="contain">
       <el-form :inline="true" :model="formSearch" class="search-form" size="mini">
         <el-form-item>
-          <el-input v-model="formSearch.username" placeholder="用户名"></el-input>
+          <el-input v-model="formSearch.username" placeholder="用户名" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="formSearch.address" placeholder="地址"></el-input>
+          <el-input v-model="formSearch.address" placeholder="地址" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="formSearch.orderId" placeholder="订单号"></el-input>
+          <el-input v-model="formSearch.orderId" placeholder="订单号" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-select clearable v-model="formSearch.classificationId" placeholder="废品类别">

@@ -3,10 +3,10 @@
     <el-card class="contain">
       <el-form :inline="true" :model="formSearch" class="search-form" size="mini">
         <el-form-item>
-          <el-input v-model="formSearch.username" placeholder="用户名"></el-input>
+          <el-input v-model="formSearch.username" placeholder="用户名" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="formSearch.phone" placeholder="电话"></el-input>
+          <el-input v-model="formSearch.phone" placeholder="电话" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-select clearable v-model="formSearch.state" placeholder="状态">
@@ -16,7 +16,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="申请时间" class="date-select">
-          <el-date-picker v-model="formSearch.creatTime" type="daterange" range-separator="至" start-placeholder="开始日期"
+          <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
             end-placeholder="结束日期" value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
@@ -52,14 +52,12 @@
             <el-button v-if="scope.row.state==3" type="warning" size="mini">未通过</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="230">
+        <el-table-column label="审核操作" width="160">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">通过</el-button>
+            <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="primary" size="mini">通过</el-button>
             <el-button v-else type="info" size="mini" disabled>审核</el-button>
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">驳回</el-button>
             <el-button v-else type="info" size="mini" disabled>驳回</el-button>
-            <el-button v-if="scope.row.state==1" type="info" size="mini" disabled>删除</el-button>
-            <el-button v-else @click="delOrder(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,7 +71,7 @@
 
 <script>
   export default {
-    name: 'orderList',
+    name: 'withdrawalList',
     data() {
       return {
         tableData: [],
@@ -84,8 +82,10 @@
           username: '',
           phone: '',
           state: '',
-          creatTime: []
+          starTime:'',
+          endTime:''
         },
+        time:'',
         //数据总条数
         total: 2
       }
@@ -98,7 +98,7 @@
       handleSizeChange(val) {
         this.formSearch.pageSize = val
         this.formSearch.pageNum = 1
-        //this.requestData()
+        this.requestData()
       },
       /**
        * 当前页改变调用还是
@@ -106,12 +106,20 @@
        */
       handleCurrentChange(val) {
         this.formSearch.pageNum = val
-        //this.requestData()
+        this.requestData()
       },
       /**
        *网络请求
        */
       requestData() {
+        // 处理传时间段空值问题
+        if(this.time!=null){
+          this.formSearch.startTime = this.time[0]
+          this.formSearch.endTime = this.time[1]
+        }else{
+          this.formSearch.startTime = null
+          this.formSearch.endTime = null
+        }
         for (var i = 0; i < 10; i++) {
           this.tableData.push({
             username: '刘建伟',
@@ -124,17 +132,6 @@
             state: 1
           })
         }
-        /* selOrderListByPage(this.formSearch).then((res) => {
-           if (res.status) {
-             this.tableData = res.records
-             this.total = res.total
-             console.log(res)
-           } else {
-             this.$message.error("获取页面数据失败！")
-           }
-         }).catch((err) => {
-           this.$message.error(err.message)
-         }) */
       },
       /**
        * 点击查找调用函数
@@ -201,14 +198,6 @@
      */
     mounted() {
       this.requestData()
-      // 查询废品分类类别，下拉列表
-      /* selAllClassification().then((res)=>{
-        if(res.status){
-          this.classificationList = res.records
-        }else{
-          this.$message.error("查询废品分类列表失败！")
-        }
-      }) */
     }
   }
 </script>
