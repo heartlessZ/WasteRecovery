@@ -292,9 +292,9 @@ export default {
   }
 };
 </script>
-<style>
-.el-pagination {
-  float: right;
-  margin-top: 15px;
-}
+<style scoped>
+  .el-pagination {
+    float: right;
+    margin-top: 15px;
+  }
 </style>

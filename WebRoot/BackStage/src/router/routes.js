@@ -10,6 +10,9 @@ import resetPwd from "../pages/resetPwd.vue";
 const OrderList = resolve => require(['../pages/order/OrderList'], resolve)
 const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
 const category = resolve => require(['../pages/sys/category'], resolve)
+const WithdrawalList = resolve => require(['../pages/withdrawal/withdrawalList.vue'], resolve)
+const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
+const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
     // Routes
 const routes = [
     { path: '/login', component: login },
@@ -19,16 +22,19 @@ const routes = [
         children: [
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
+            { path: '/withdrawal',component: WithdrawalList},
+            { path: '/wallet',component: MyWallet},
             { path: '/resetPwd', component: resetPwd },
             { path: '/system/menu', component: menuList },
             { path: '/system/role', component: role },
             { path: '/system/user', component: sysUser },
             { path: '/system/userAdd', component: userAdd },
-             { path: '/system/waste-category', component: category },
+            { path: '/system/waste-category', component: category },
+            { path: '/system/resource', component: resource },
+            { path: '/system/notice', component: NoticeManager},
         ]
     },
     { path: '*', component: NotFoundView }
 ]
-
 
 export default routes

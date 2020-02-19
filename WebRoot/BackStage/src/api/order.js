@@ -11,13 +11,21 @@ import request from '@/utils/request'
  *     state 订单状态
  *     username 卖家用户名
  */
-export function selOrderListByPage(info) {
-  // 删除对象中的空属性
-  return request({
-    url: '/order/orderList',
-    method: 'get',
-    params: info
-  })
+export function selOrderListByPage(info,roleId) {
+  //roleId为20是收费品人员
+  if(roleId==20){
+    return request({
+      url: '/order/businessOrderList',
+      method: 'post',
+      params: info
+    })
+  }else{
+    return request({
+      url: '/order/orderList',
+      method: 'get',
+      params: info
+    })
+  }
 }
 /**
  * 根据订单id删除订单的api
@@ -25,7 +33,7 @@ export function selOrderListByPage(info) {
  */
 export function delOrderById(id) {
   return request({
-    url: '/order/delete',
+    url: '/order/deleteBusinessOrder',
     method: 'get',
     params: {
       id
@@ -38,7 +46,7 @@ export function delOrderById(id) {
  */
 export function cancelOrderById(id) {
   return request({
-    url: '/order/cancel',
+    url: '/order/cancelBusinessOrder',
     method: 'get',
     params: {
       id

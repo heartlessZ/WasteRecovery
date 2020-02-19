@@ -12,8 +12,8 @@
           <el-input v-model="formSearch.orderId" placeholder="订单号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-select clearable v-model="classificationId" placeholder="废品类别">
-            <el-option v-for="item in classificationList" :key="item.id"  :label="item.tradeName" :value="item.classificationId"></el-option>
+          <el-select clearable v-model="formSearch.classificationId" placeholder="废品类别">
+            <el-option v-for="item in classificationList" :key="item.id" :label="item.tradeName" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -43,7 +43,7 @@
               :preview-src-list="[scope.row.wasteInfo.photos]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="classificationName" label="废品类别" width="120">
+        <el-table-column prop="tradeName" label="废品类别" width="120" align="center">
         </el-table-column>
         <el-table-column prop="wasteInfo.weight" label="废品重量" width="100" align="center">
           <template slot-scope="scope">
@@ -74,7 +74,7 @@
         </el-table-column>
         <el-table-column prop="wasteInfo.describe" label="废品描述" width="300">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="150">
+        <el-table-column v-if="roleId==20" fixed="right" label="操作" width="150">
           <template slot-scope="scope">
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">取消</el-button>
             <el-button v-else type="info" size="mini" disabled>取消</el-button>
@@ -84,7 +84,7 @@
         </el-table-column>
       </el-table>
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="formSearch.pageNum"
-        :page-sizes="[1,2,3,4]" :page-size="formSearch.pageSzie" layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[10,20,30,40]" :page-size="formSearch.pageSzie" layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
     </el-card>
@@ -107,14 +107,15 @@
         classificationList: [],
         formSearch: {
           pageNum: 1,
-          pageSize: 1,
+          pageSize: 10,
           username: '',
           address: '',
           orderId: '',
           state: '',
-          creatTime: ''
+          creatTime: '',
+          classificationId: null
         },
-        classificationId:'',
+        roleId: null,
         //数据总条数
         total: 2
       }
@@ -141,7 +142,11 @@
        *网络请求
        */
       requestData() {
-        selOrderListByPage(this.formSearch).then((res) => {
+        //去除空串问题
+        if (this.formSearch.classificationId === '') {
+          this.formSearch.classificationId = null
+        }
+        selOrderListByPage(this.formSearch, this.roleId).then((res) => {
           if (res.status) {
             this.tableData = res.records
             this.total = res.total
@@ -217,12 +222,14 @@
      * 页面挂载完成自动调用函数
      */
     mounted() {
+      this.roleId = this.$store.getters.userInfo.roleId;
+      console.log(this.roleId)
       this.requestData()
       // 查询废品分类类别，下拉列表
-      selAllClassification().then((res)=>{
-        if(res.status){
+      selAllClassification().then((res) => {
+        if (res.status) {
           this.classificationList = res.records
-        }else{
+        } else {
           this.$message.error("查询废品分类列表失败！")
         }
       })
