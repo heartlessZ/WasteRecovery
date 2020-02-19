@@ -272,7 +272,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .el-pagination {
     float: right;
     margin-top: 15px;
