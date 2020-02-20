@@ -8,10 +8,14 @@ import userAdd from "../pages/sys/userAdd.vue";
 import resetPwd from "../pages/resetPwd.vue";
 
 const OrderList = resolve => require(['../pages/order/OrderList'], resolve)
+const WithdrawalList = resolve => require(['../pages/walletmgr/withdrawalList.vue'], resolve)
+const RechargeList = resolve => require(['../pages/walletmgr/rechargeList.vue'], resolve)
 const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
 const category = resolve => require(['../pages/sys/category'], resolve)
 const personalCenter = resolve => require(['../pages/sys/percenal-center'], resolve)
 
+const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
+const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
     // Routes
 const routes = [
     { path: '/login', component: login },
@@ -22,16 +26,19 @@ const routes = [
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
             { path: '/personal-center', component: personalCenter },
+            { path: '/wallet-manage/withdraw',component: WithdrawalList},
+            { path: '/wallet-manage/recharge',component: RechargeList},
+            { path: '/wallet',component: MyWallet},
             { path: '/resetPwd', component: resetPwd },
             { path: '/system/menu', component: menuList },
             { path: '/system/role', component: role },
             { path: '/system/user', component: sysUser },
             { path: '/system/userAdd', component: userAdd },
-             { path: '/system/waste-category', component: category },
+            { path: '/system/waste-category', component: category },
+            { path: '/system/notice', component: NoticeManager},
         ]
     },
     { path: '*', component: NotFoundView }
 ]
-
 
 export default routes
