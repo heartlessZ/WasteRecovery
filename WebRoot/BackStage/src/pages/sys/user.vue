@@ -220,29 +220,40 @@ export default {
         };
         request.post(api.SYS_DELETE_USER_ROLE, delparams).then(res => {
           if (res.status) {
+            let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+            if (checkedKeys.length == 0) {
+              this.dialogVisible = false;
+              return;
+            }
+            let params = {
+              roleIds: checkedKeys.join(","),
+              userId: this.currentRow.id
+            };
+            request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+              if (res.status) {
+                this.$message("操作成功");
+                this.dialogVisible = false;
+              }
+            });
+          }
+        });
+      } else {
+        let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+        if (checkedKeys.length == 0) {
+          this.dialogVisible = false;
+          return;
+        }
+        let params = {
+          roleIds: checkedKeys.join(","),
+          userId: this.currentRow.id
+        };
+        request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+          if (res.status) {
+            this.$message("操作成功");
+            this.dialogVisible = false;
           }
         });
       }
-      let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-      if (checkedKeys.length == 0) {
-        this.dialogVisible = false;
-        return;
-      }
-      // this.$http.get(api.SYS_SET_USER_ROLE + "?userId=" + this.currentRow.id + "&roleIds="+checkedKeys.join(','))
-      // .then(res => {
-      //     this.$message('修改成功');
-      //     this.dialogVisible = false;
-      // })
-      let params = {
-        roleIds: checkedKeys.join(","),
-        userId: this.currentRow.id
-      };
-      request.post(api.SYS_SET_USER_ROLE, params).then(res => {
-        if (res.status) {
-          this.$message("操作成功");
-          this.dialogVisible = false;
-        }
-      });
     },
     handleSizeChange(val) {
       this.tableData.pagination.pageSize = val;

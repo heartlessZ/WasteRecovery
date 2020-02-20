@@ -10,6 +10,8 @@ import resetPwd from "../pages/resetPwd.vue";
 const OrderList = resolve => require(['../pages/order/OrderList'], resolve)
 const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
 const category = resolve => require(['../pages/sys/category'], resolve)
+const personalCenter = resolve => require(['../pages/sys/percenal-center'], resolve)
+
     // Routes
 const routes = [
     { path: '/login', component: login },
@@ -19,6 +21,7 @@ const routes = [
         children: [
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
+            { path: '/personal-center', component: personalCenter },
             { path: '/resetPwd', component: resetPwd },
             { path: '/system/menu', component: menuList },
             { path: '/system/role', component: role },

@@ -37,8 +37,8 @@
                 <p>{{userInfo.nikeName}}</p>
               </div>
               <div class="pull-left">
-                <router-link :to="{ path: '/resetPwd' }">
-                  <el-button type="default">修改密码</el-button>
+                <router-link :to="{ path: '/personal-center' }">
+                  <el-button type="default">个人中心</el-button>
                 </router-link>
               </div>
               <div class="pull-right">

@@ -59,10 +59,60 @@
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>卡片名称</span>
-        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        <span>二级分类</span>
+        <el-button style="float: right;" type="primary" icon="plus" @click="newAddSon">新增二级分类</el-button>
       </div>
-      <div v-for="o in 4" :key="o" class="text item">{{'列表内容 ' + o }}</div>
+      <div>
+        <imp-panel>
+          <el-row slot="body" :gutter="24" style="margin-bottom: 20px;">
+            <el-col :span="6" :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 20px;">
+              <el-tree
+                v-if="categoriesChildren"
+                ref="categoriesChildren"
+                :data="categoriesChildren"
+                highlight-current
+                :render-content="renderContent"
+                @node-click="handleChildNodeClick"
+                clearable
+                node-key="id"
+                :props="defaultChildrenProps"
+              ></el-tree>
+            </el-col>
+            <el-col :span="18" :xs="24" :sm="24" :md="18" :lg="18">
+              <el-card class="box-card">
+                <div class="text item">
+                  <el-form :model="formChildren" ref="formChildren">
+                    <el-form-item label="父分类" :label-width="formLabelWidth">
+                      <el-select-tree
+                        v-model="formChildren.id"
+                        :treeData="categoriesParent"
+                        :propNames="defaultProps"
+                        clearable
+                        placeholder="请选择父分类"
+                      ></el-select-tree>
+                    </el-form-item>
+                    <el-form-item label="名称" :label-width="formLabelWidth">
+                      <el-input v-model="formChildren.tradeName" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="价格" :label-width="formLabelWidth">
+                      <el-input v-model="formChildren.price" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label :label-width="formLabelWidth">
+                      <el-button type="primary" @click="onChildSubmit" v-text="formChildren.id?'修改':'新增'"></el-button>
+                      <el-button
+                        type="danger"
+                        @click="deleteSelectedChild"
+                        icon="delete"
+                        v-show="formChildren.id && formChildren.id!=null"
+                      >删除</el-button>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </imp-panel>
+      </div>
     </el-card>
   </div>
 </template>
@@ -92,15 +142,26 @@ export default {
         label: "classificationName",
         id: "id"
       },
+      defaultChildrenProps: {
+        //children: "childs",
+        label: "tradeName",
+        id: "id"
+      },
       maxId: 7000000,
       menuTree: [],
       categoriesParent: [],
+      categoriesChildren: [],
       limit:1,
       form: {
         id: null,
         classificationName: "",
         imgUrl: "",
         describe: ''
+      },
+      formChildren: {
+        id: null,
+        price: 0,
+        tradeName: ''
       }
     };
   },
@@ -110,10 +171,6 @@ export default {
             this.form.imgUrl = urls[0]
         else
             this.form.imgUrl = ""
-    },
-    selectIcon(event) {
-      this.form.icon = event.target.className;
-      this.selectIconDialog = false;
     },
     renderContent(h, { node, data, store }) {
       return (
@@ -135,42 +192,61 @@ export default {
       };
       this.$refs.UploadImg.setFileList([])
     },
+    newAddSon() {
+      this.formChildren = {
+        id: null,
+        price: 0,
+        tradeName: ''
+      };
+    },
     deleteSelected() {
       request
-        .get(api.SYS_MENU_DELETE + "?id=" + this.form.id)
+        .get(api.WASTE_CATEGORY_PARENT_DELETE + "?id=" + this.form.id)
         .then(res => {
           this.$message("操作成功");
           this.load();
         })
         .catch(e => {});
     },
-    batchDelete() {
-      var checkKeys = this.$refs.menuTree.getCheckedKeys();
-      if (checkKeys == null || checkKeys.length <= 0) {
-        this.$message.warning("请选择要删除的资源");
-        return;
-      }
-      this.$confirm("确定删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        checkKeys.forEach(item => {
-          request
-            .get(api.SYS_MENU_DELETE + "?id=" + item)
-            .then(res => {
-              if (res.status) {
-                this.$message("操作成功");
-                this.load();
-              }
-            })
-            .catch(e => {});
-        });
-      });
+    deleteSelectedChild() {
+      request
+        .get(api.WASTE_CATEGORY_CHILDREN_DELETE + "?id=" + this.formChildren.id)
+        .then(res => {
+          this.$message("操作成功");
+          this.load();
+        })
+        .catch(e => {});
     },
+    // batchDelete() {
+    //   var checkKeys = this.$refs.menuTree.getCheckedKeys();
+    //   if (checkKeys == null || checkKeys.length <= 0) {
+    //     this.$message.warning("请选择要删除的资源");
+    //     return;
+    //   }
+    //   this.$confirm("确定删除?", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     checkKeys.forEach(item => {
+    //       request
+    //         .get(api.SYS_MENU_DELETE + "?id=" + item)
+    //         .then(res => {
+    //           if (res.status) {
+    //             this.$message("操作成功");
+    //             this.load();
+    //           }
+    //         })
+    //         .catch(e => {});
+    //     });
+    //   });
+    // },
     handleNodeClick(data) {
       this.form = merge({}, data);
       this.$refs.UploadImg.setFileList([{name:'',url: this.form.imgUrl}])
+    },
+    handleChildNodeClick(data) {
+      this.formChildren = merge({}, data);
     },
     onSubmit() {
         if(!this.form.imgUrl){
@@ -189,29 +265,53 @@ export default {
             
           });
       } else {
-        let params = {
-          icon: this.form.icon,
-          id: this.form.id,
-          menuName: this.form.menuName,
-          menuUrl: this.form.menuUrl,
-          orderNum: this.form.orderNum,
-          parentId: this.form.parentId
-        };
+        // let params = {
+        //   icon: this.form.icon,
+        //   id: this.form.id,
+        //   menuName: this.form.menuName,
+        //   menuUrl: this.form.menuUrl,
+        //   orderNum: this.form.orderNum,
+        //   parentId: this.form.parentId
+        // };
         //return
         request
-          .post(api.SYS_MENU_UPDATE, params)
+          .post(api.WASTE_CATEGORY_PARENT_UPDATE, this.form)
           .then(res => {
             if (!res.status) {
               this.$message("操作失败");
               return;
             }
             this.$message("操作成功");
-            //this.updateTreeNode(this.menuTree, res.data);
             this.load();
           })
           .catch(e => {
-            // this.$message('操作成功');
-            // this.updateTreeNode(this.menuTree, merge({}, this.form));
+          });
+      }
+    },
+    onChildSubmit() {
+      if (this.formChildren.id == null) {
+        //添加一级分类
+        request
+          .post(api.WASTE_CATEGORY_CHILDREN_ADD, this.form)
+          .then(res => {
+            this.$message("操作成功");
+            this.load();
+          })
+          .catch(e => {
+            
+          });
+      } else {
+        request
+          .post(api.WASTE_CATEGORY_CHILDREN_UPDATE, this.formChildren)
+          .then(res => {
+            if (!res.status) {
+              this.$message("操作失败");
+              return;
+            }
+            this.$message("操作成功");
+            this.load();
+          })
+          .catch(e => {
           });
       }
     },
@@ -219,6 +319,11 @@ export default {
       request.get(api.WASTE_CATEGORY_PARENT).then(res=>{
           if(res.status){
               this.categoriesParent = res.records
+          }
+      })
+      request.get(api.WASTE_CATEGORY_CHILDREN).then(res=>{
+          if(res.status){
+              this.categoriesChildren = res.records
           }
       })
     }
@@ -229,7 +334,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .select-tree .icons-wrapper {
   display: block;
 }
