@@ -20,7 +20,7 @@
         </div>
       </template>
     </el-autocomplete>
-    <div :v-if="!show" id="map-container" class="vanish" style="width:100%;height:500px;"></div>
+    <div :v-if="!show" id="map-container" class="vanish" style="width:100%;height:350px;"></div>
   </div>
 </template>
 

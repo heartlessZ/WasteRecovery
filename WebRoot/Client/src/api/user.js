@@ -96,11 +96,20 @@ export function queryChildrenCategory(classificationId) {
 
 // 商家入驻api
 export function settledInApply(identityInfo) {
-  let url = '/clien/settledInApply'
+  let url = '/clien/settledIn/add'
   return request({
     url: url,
     method: 'post',
     data:identityInfo
+  })
+}
+
+// 查询当前用户入驻状态api
+export function settledInInfo() {
+  let url = '/clien/settledIn/get'
+  return request({
+    url: url,
+    method: 'get'
   })
 }
 

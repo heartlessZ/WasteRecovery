@@ -7,3 +7,11 @@ export function getMenuListByUserId(userid) {
         method: 'get'
     })
 }
+
+export function settledInList(info) {
+    return request({
+        url: '/settledIn/list',
+        method: 'post',
+        params: info
+      })
+  }

@@ -188,6 +188,7 @@ export default {
     },
     handleSelectionChange(val) {},
     handleRoleConfig(index, row) {
+      this.dialogLoading = true
       this.currentRow = row;
       this.dialogVisible = true;
       if (this.roleTree.length <= 0) {
@@ -203,6 +204,7 @@ export default {
             this.ids.push(item.id);
           });
           this.$refs.roleTree.setCheckedKeys(this.ids);
+          this.dialogLoading = false
         }
       });
       // this.$http.get(api.SYS_USER_ROLE + "?id=" + row.id)
@@ -220,29 +222,40 @@ export default {
         };
         request.post(api.SYS_DELETE_USER_ROLE, delparams).then(res => {
           if (res.status) {
+            let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+            if (checkedKeys.length == 0) {
+              this.dialogVisible = false;
+              return;
+            }
+            let params = {
+              roleIds: checkedKeys.join(","),
+              userId: this.currentRow.id
+            };
+            request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+              if (res.status) {
+                this.$message("操作成功");
+                this.dialogVisible = false;
+              }
+            });
+          }
+        });
+      } else {
+        let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+        if (checkedKeys.length == 0) {
+          this.dialogVisible = false;
+          return;
+        }
+        let params = {
+          roleIds: checkedKeys.join(","),
+          userId: this.currentRow.id
+        };
+        request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+          if (res.status) {
+            this.$message("操作成功");
+            this.dialogVisible = false;
           }
         });
       }
-      let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-      if (checkedKeys.length == 0) {
-        this.dialogVisible = false;
-        return;
-      }
-      // this.$http.get(api.SYS_SET_USER_ROLE + "?userId=" + this.currentRow.id + "&roleIds="+checkedKeys.join(','))
-      // .then(res => {
-      //     this.$message('修改成功');
-      //     this.dialogVisible = false;
-      // })
-      let params = {
-        roleIds: checkedKeys.join(","),
-        userId: this.currentRow.id
-      };
-      request.post(api.SYS_SET_USER_ROLE, params).then(res => {
-        if (res.status) {
-          this.$message("操作成功");
-          this.dialogVisible = false;
-        }
-      });
     },
     handleSizeChange(val) {
       this.tableData.pagination.pageSize = val;
@@ -274,6 +287,7 @@ export default {
         });
     },
     loadData() {
+      this.listLoading = true;
       let queryString = {
         del: "0", //"默认查未删除用户"
         pageSize: this.tableData.pagination.pageSize,
@@ -282,8 +296,11 @@ export default {
         phone: this.searchData.phone
       };
       sysApi.userList(queryString).then(res => {
-        this.tableData.rows = res.records;
-        this.tableData.pagination.total = res.total;
+        if (res.status) {
+          this.tableData.rows = res.records;
+          this.tableData.pagination.total = res.total;
+        }
+        this.listLoading = false;
       });
     }
   },
@@ -293,8 +310,8 @@ export default {
 };
 </script>
 <style scoped>
-  .el-pagination {
-    float: right;
-    margin-top: 15px;
-  }
+.el-pagination {
+  float: right;
+  margin-top: 15px;
+}
 </style>

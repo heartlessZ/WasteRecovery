@@ -20,6 +20,11 @@ export const SYS_DELETE_ROLE_RESOURCE = CONTEXT + '/authorization/delauthorMenu'
 
 export const SYS_RESOURCE_LIST = CONTEXT + '/menu/getRoleMenus';
 
+export const SYS_SETTLEDIN_LIST = CONTEXT + '/settledIn/list';
+export const SYS_SETTLEDIN_SET_PASS = CONTEXT + '/settledIn/setPass';
+
+export const SYS_CONFIG_LIST = CONTEXT + '/setting/getSetting';
+
 export const SYS_USER_GET = CONTEXT + '/user/list';
 export const SYS_USER_ADD = CONTEXT + '/user/add';
 export const SYS_USER_UPDATE = CONTEXT + '/user/update';
@@ -41,6 +46,7 @@ export const WASTE_CATEGORY_CHILDREN = CONTEXT + '/classification/classification
 export const WASTE_CATEGORY_CHILDREN_UPDATE = CONTEXT + '/classification/updateSon';
 export const WASTE_CATEGORY_CHILDREN_DELETE = CONTEXT + '/classification/deleteSon';
 export const WASTE_CATEGORY_CHILDREN_ADD = CONTEXT + '/classification/addSon';
+
 
 export const MSG_TOP_TEN = CONTEXT + '/messageList';
 export const TEST_DATA = CONTEXT + '/static/data/data.json';
