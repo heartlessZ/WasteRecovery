@@ -84,10 +84,11 @@
                   <el-form :model="formChildren" ref="formChildren">
                     <el-form-item label="父分类" :label-width="formLabelWidth">
                       <el-select-tree
-                        v-model="formChildren.id"
+                        v-model="parentId"
                         :treeData="categoriesParent"
                         :propNames="defaultProps"
                         clearable
+                        :disabled="isUpdate"
                         placeholder="请选择父分类"
                       ></el-select-tree>
                     </el-form-item>
@@ -98,12 +99,12 @@
                       <el-input v-model="formChildren.price" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label :label-width="formLabelWidth">
-                      <el-button type="primary" @click="onChildSubmit" v-text="formChildren.id?'修改':'新增'"></el-button>
+                      <el-button type="primary" @click="onChildSubmit" v-text="isUpdate?'修改':'新增'"></el-button>
                       <el-button
                         type="danger"
                         @click="deleteSelectedChild"
                         icon="delete"
-                        v-show="formChildren.id && formChildren.id!=null"
+                        v-show="isUpdate"
                       >删除</el-button>
                     </el-form-item>
                   </el-form>
@@ -147,8 +148,10 @@ export default {
         label: "tradeName",
         id: "id"
       },
+      parentId:0,
       maxId: 7000000,
       menuTree: [],
+      isUpdate:false,
       categoriesParent: [],
       categoriesChildren: [],
       limit:1,
@@ -159,7 +162,7 @@ export default {
         describe: ''
       },
       formChildren: {
-        id: null,
+        classificationId: null,
         price: 0,
         tradeName: ''
       }
@@ -194,10 +197,11 @@ export default {
     },
     newAddSon() {
       this.formChildren = {
-        id: null,
+        classificationId: null,
         price: 0,
         tradeName: ''
       };
+      this.isUpdate = false
     },
     deleteSelected() {
       request
@@ -247,6 +251,8 @@ export default {
     },
     handleChildNodeClick(data) {
       this.formChildren = merge({}, data);
+        this.isUpdate = true
+        this.parentId = data.classificationId
     },
     onSubmit() {
         if(!this.form.imgUrl){
@@ -289,10 +295,12 @@ export default {
       }
     },
     onChildSubmit() {
-      if (this.formChildren.id == null) {
+      this.formChildren.price = Number(this.formChildren.price)
+      if (!this.isUpdate) {
+        this.formChildren.classificationId = this.parentId
         //添加一级分类
         request
-          .post(api.WASTE_CATEGORY_CHILDREN_ADD, this.form)
+          .post(api.WASTE_CATEGORY_CHILDREN_ADD, this.formChildren)
           .then(res => {
             this.$message("操作成功");
             this.load();

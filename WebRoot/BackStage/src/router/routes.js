@@ -13,6 +13,8 @@ const RechargeList = resolve => require(['../pages/walletmgr/rechargeList.vue'],
 const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
 const category = resolve => require(['../pages/sys/category'], resolve)
 const personalCenter = resolve => require(['../pages/sys/percenal-center'], resolve)
+const config = resolve => require(['../pages/sys/config'], resolve)
+const JoinUs = resolve => require(['../pages/sys/join-us'], resolve)
 
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
 const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
@@ -26,6 +28,7 @@ const routes = [
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
             { path: '/personal-center', component: personalCenter },
+            { path: '/system/config', component: config },
             { path: '/wallet-manage/withdraw',component: WithdrawalList},
             { path: '/wallet-manage/recharge',component: RechargeList},
             { path: '/wallet',component: MyWallet},
@@ -36,6 +39,7 @@ const routes = [
             { path: '/system/userAdd', component: userAdd },
             { path: '/system/waste-category', component: category },
             { path: '/system/notice', component: NoticeManager},
+            { path: '/system/join-us', component: JoinUs},
         ]
     },
     { path: '*', component: NotFoundView }

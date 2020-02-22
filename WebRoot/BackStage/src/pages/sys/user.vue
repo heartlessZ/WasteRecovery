@@ -188,6 +188,7 @@ export default {
     },
     handleSelectionChange(val) {},
     handleRoleConfig(index, row) {
+      this.dialogLoading = true
       this.currentRow = row;
       this.dialogVisible = true;
       if (this.roleTree.length <= 0) {
@@ -203,6 +204,7 @@ export default {
             this.ids.push(item.id);
           });
           this.$refs.roleTree.setCheckedKeys(this.ids);
+          this.dialogLoading = false
         }
       });
       // this.$http.get(api.SYS_USER_ROLE + "?id=" + row.id)
@@ -285,6 +287,7 @@ export default {
         });
     },
     loadData() {
+      this.listLoading = true;
       let queryString = {
         del: "0", //"默认查未删除用户"
         pageSize: this.tableData.pagination.pageSize,
@@ -293,8 +296,11 @@ export default {
         phone: this.searchData.phone
       };
       sysApi.userList(queryString).then(res => {
-        this.tableData.rows = res.records;
-        this.tableData.pagination.total = res.total;
+        if (res.status) {
+          this.tableData.rows = res.records;
+          this.tableData.pagination.total = res.total;
+        }
+        this.listLoading = false;
       });
     }
   },
@@ -304,8 +310,8 @@ export default {
 };
 </script>
 <style scoped>
-  .el-pagination {
-    float: right;
-    margin-top: 15px;
-  }
+.el-pagination {
+  float: right;
+  margin-top: 15px;
+}
 </style>
