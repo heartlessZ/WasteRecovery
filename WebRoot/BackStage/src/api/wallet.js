@@ -41,10 +41,48 @@ export function withdrawalAudit(orderId,state){
  * 用户提现api
  * @param {Object} money 提现金额
  */
-export function withdrawal(money){
+export function withdrawal(payMoney){
   return request({
     url:'/wallet/user/withdrawal',
-    method:'post',
-    data:{money}
+    method:'get',
+    params:{payMoney}
+  })
+}
+/**
+ * 钱包充值api
+ * @param {Object} money
+ */
+export function recharge(money){
+  return request({
+    url:'/alipay/goAlipay',
+    method:'get',
+    params:{money}
+  })
+}
+/**
+ * 用户查询充值记录api
+ * @param {Object} info
+ *    pageNum 当前页
+ *    pageSize 页面记录数
+ */
+export function userSelRechargeRecord(info){
+  return request({
+    url:'/wallet/user/rechargeRecord',
+    method:'get',
+    params:info
+  })
+}
+
+/**
+ * 用户查询提现记录api
+ * @param {Object} info
+ *    pageNum 当前页
+ *    pageSize 页面记录数
+ */
+export function userSelWithdrawRecord(info){
+  return request({
+    url:'/wallet/user/selectWithdrawal',
+    method:'get',
+    params:info
   })
 }

@@ -24,8 +24,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="下单时间" class="date-select">
-          <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
-            end-placeholder="结束日期" value-format="yyyy-MM-dd">
+          <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+            value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -112,12 +112,12 @@
           address: '',
           orderId: '',
           state: '',
-          startDate:'',
-          endDate:'',
+          startDate: '',
+          endDate: '',
           classificationId: null
         },
         roleId: null,
-        time:'',
+        time: '',
         //数据总条数
         total: 2
       }
@@ -149,10 +149,10 @@
           this.formSearch.classificationId = null
         }
         // 处理传时间段空值问题
-        if(this.time!=null){
+        if (this.time != null) {
           this.formSearch.startDate = this.time[0]
           this.formSearch.endDate = this.time[1]
-        }else{
+        } else {
           this.formSearch.startDate = null
           this.formSearch.endDate = null
         }

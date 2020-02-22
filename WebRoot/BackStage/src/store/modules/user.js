@@ -61,11 +61,8 @@ const user = {
             commit('SET_ISLOGIN', true);
             commit('SET_NAME', data.username)
             commit('SET_AVATAR', data.avatar)
-            console.log(response.data[0])
-            //console.log(data[0].regionId)
             commit('SET_USER', data)
             commit('SET_USERID', data.id)
-            console.log(response.data[0])
           }else{
             commit('SET_ISLOGIN', false)
             commit('SET_USERID', '')
@@ -110,9 +107,6 @@ const user = {
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout().then((res) => {
-          // commit('SET_TOKEN', '')
-          // commit('SET_ROLES', [])
-          //removeToken()
           commit('SET_ISLOGIN', false)
           resolve(res)
         }).catch(error => {
