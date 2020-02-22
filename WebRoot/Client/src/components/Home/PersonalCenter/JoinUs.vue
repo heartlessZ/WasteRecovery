@@ -2,20 +2,30 @@
   <div id="userInfo">
     <div class="title">商家入驻</div>
     <el-divider class="line-style"></el-divider>
-    <div class="contain">
+    <div class="contain" v-loading="loading">
       <el-steps :active="active" finish-status="success" align-center>
+        <el-step title="地址信息"></el-step>
         <el-step title="上传身份证明"></el-step>
         <el-step title="营业执照"></el-step>
         <el-step title="申请成功，等待审核"></el-step>
       </el-steps>
-      <div class="form-card" v-if="active === 0">
-        <identity-certificate @nextstep="nextStep"></identity-certificate>
+      <div>
+        <div class="form-card" v-if="active === 0">
+            <amap @getposition="getPosition"></amap>
+            <div><el-button type="primary" @click="addressValidate">下一步</el-button></div>
+        </div>
+        <div class="form-card" v-if="active === 1">
+          <identity-certificate @nextstep="nextStep"></identity-certificate>
+        </div>
+        <div class="form-card" v-else-if="active === 2">
+          <business-info @submitapply="submitApply" @previous="previous"></business-info>
+        </div>
+        <div class="form-card" v-else-if="active === 3">
+          <div
+            style="width:40%;margin:auto;height:100px;text-align:center;font-size:1.1rem;"
+          >提交申请成功，请等待管理员审核，审核结果将在三个工作日内通过短信下发至您的手机</div>
+        </div>
       </div>
-      <div class="form-card" v-else-if="active === 1">
-        <business-info @submitapply="submitApply" @previous="previous"></business-info>
-      </div>
-      <div class="form-card" v-else-if="active === 2"><div style="width:40%;margin:auto;height:100px;text-align:center;font-size:1.1rem;">
-        提交申请成功，请等待管理员审核，审核结果将在三个工作日内通过短信下发至您的手机</div></div>
 
       <!-- <el-button style="margin-top: 12px;" @click="next">下一步</el-button> -->
     </div>
@@ -25,12 +35,15 @@
 <script>
 import IdentityCertificate from "./JoinUs/IdentityCertificate";
 import BusinessInfo from "./JoinUs/BusinessInfo";
-import {settledInApply} from '../../../api/user'
+import { settledInApply, settledInInfo } from "../../../api/user";
+import Amap from '../RecycleForm/Amap'
 export default {
   name: "join-us",
   data() {
     return {
       active: 0,
+      isInputed: false,
+      loading: false,
       applyForm: {
         businessLicense: "",
         businessName: "",
@@ -39,35 +52,65 @@ export default {
         cardPositive: "",
         creditCode: "",
         idCard: "",
-        regionId: 0
+        address:"",
+        lat:"",
+        lng:""
       }
     };
   },
   components: {
     IdentityCertificate,
-    BusinessInfo
+    BusinessInfo,
+    Amap
   },
   methods: {
+    addressValidate(){
+      if(!this.applyForm.address){
+        this.$message({
+              type: "error",
+              offset: 70,
+              center: true,
+              message: "请选择地址"
+            });
+      }else{
+        this.active++
+      }
+    },
     nextStep(identityForm) {
-      this.applyForm.cardName = identityForm.realName
-      this.applyForm.idCard = identityForm.idCard
-      this.applyForm.cardPositive = identityForm.urls[0]
-      this.applyForm.cardBack = identityForm.urls[1]
+      this.applyForm.cardName = identityForm.realName;
+      this.applyForm.idCard = identityForm.idCard;
+      this.applyForm.cardPositive = identityForm.urls[0];
+      this.applyForm.cardBack = identityForm.urls[1];
       this.active++;
     },
-    previous(){
-      console.log(this.applyForm)
+    previous() {
+      console.log(this.applyForm);
       this.active--;
     },
     submitApply(businessForm) {
-      this.applyForm.businessName = businessForm.businessName
-      this.applyForm.creditCode = businessForm.creditCode
-      this.applyForm.businessLicense = businessForm.urls
-      this.regionId = this.$store.getters.userInfo.regionId
-      settledInApply(this.applyForm).then(res=>{
-        this.active++
-      })
+      this.applyForm.businessName = businessForm.businessName;
+      this.applyForm.creditCode = businessForm.creditCode;
+      this.applyForm.businessLicense = businessForm.urls;
+      this.regionId = this.$store.getters.userInfo.regionId;
+      settledInApply(this.applyForm).then(res => {
+        this.active++;
+      });
+    },
+    getPosition(address, point) {
+      this.applyForm.address = address;
+      this.applyForm.lng = String(point.lng);
+      this.applyForm.lat = String(point.lat);
     }
+  },
+  mounted() {
+    this.loading = true
+    settledInInfo().then(res => {
+      if (res.status && res.data) {
+        this.isInputed = true;
+        this.active = 3
+      }
+      this.loading = false
+    });
   }
 };
 </script>
