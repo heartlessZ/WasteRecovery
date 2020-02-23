@@ -25,6 +25,7 @@ const routes = [
         path: '',
         component: app,
         children: [
+            { path: '', redirect:'/waste' },
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
             { path: '/personal-center', component: personalCenter },

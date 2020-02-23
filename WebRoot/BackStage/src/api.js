@@ -35,7 +35,9 @@ export const SYS_USER_ROLE = CONTEXT + '/authorization/getByUserId';
 export const SYS_SET_USER_ROLE = CONTEXT + '/authorization/addToUser';
 export const SYS_DELETE_USER_ROLE = CONTEXT + '/authorization/delToUser';
 
-export const WASTE_PAGE = CONTEXT + '/classification/list';
+export const WASTE_PAGE = CONTEXT + '/business/list';
+
+export const ORDER_CREATE = CONTEXT + '/order/create';
 
 export const WASTE_CATEGORY_PARENT = CONTEXT + '/classification/classificationList';
 export const WASTE_CATEGORY_PARENT_UPDATE = CONTEXT + '/classification/update';

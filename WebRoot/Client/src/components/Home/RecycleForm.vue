@@ -18,8 +18,13 @@
           </el-form-item>
           <el-form-item label="废品类别" prop="classificationId">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
+              
               <el-option
-                v-for="category in $store.getters.childrenCategories"
+                label="请选择分类"
+                value="0"
+              >请选择分类</el-option>
+              <el-option
+                v-for="category in $store.getters.rootCategories"
                 :key="category.id"
                 :label="category.classificationName"
                 :value="category.id"
