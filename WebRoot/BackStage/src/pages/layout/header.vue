@@ -17,39 +17,34 @@
         role="button"
         @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)"
       >
+      </a>
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <!-- <el-badge :value="count" class="item">
+        <i class="fa fa-envelope-o"></i>
+      </el-badge> -->
       <div class="navbar-custom-menu">
-        <el-dropdown class="navbar-dropdown" trigger="click">
-          <div class="el-dropdown-link" style="height: auto;line-height: inherit">
-            <el-badge :value="count" class="item">
-              <i class="fa fa-envelope-o"></i>
+        
+        <el-dropdown class="navbar-dropdown" v-if="$store.getters.userInfo.roleId==20">
+          <div class="el-dropdown-link" style="height: auto;line-height: inherit" @click="onClickNotice">
+            <el-badge :value="count" class="item" style="margin-right: 10px;">
+              <i class="el-icon-message-solid" style="font-size: 20px;"></i>
             </el-badge>
           </div>
-          <el-dropdown-menu>
-            <ul class="message-list">
-              <li v-for="(item,index) in list">
-                <!-- start message -->
-                <router-link :to="{path:'/sys/message',query:{id:item.id}}">
-                  <p>{{index + 1}}. {{item.title}}</p>
-                </router-link>
-              </li>
-            </ul>
-          </el-dropdown-menu>
+          <el-dropdown-menu></el-dropdown-menu>
         </el-dropdown>
+
         <el-dropdown trigger="click" class="navbar-dropdown">
           <div class="el-dropdown-link">
-            <img
-              :src="userInfo.avatar"
-              style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;"
-              alt="U"
-            />
+            <img :src='userInfo.avatar' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;"
+              alt="U">
             {{userInfo.nikeName}}
           </div>
           <el-dropdown-menu style="padding: 0px">
             <div>
               <div class="header-pic">
-                <img :src="userInfo.avatar" class="img-circle" alt="User Image" />
+                <img :src='userInfo.avatar' class="img-circle" alt="User Image">
                 <p>{{userInfo.nikeName}}</p>
               </div>
               <div class="pull-left">
@@ -68,83 +63,92 @@
   </header>
 </template>
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import types from "../../store/mutation-types";
-import * as api from "../../api";
-import auth from "../../common/auth";
-import * as sysApi from "../../services/sys";
-
-export default {
-  data() {
-    return {
-      showMessageBox: false,
-      showProfileBox: false,
-      //userInfo: this.$store.getters.userInfo,
-      list: [],
-      count: 4,
-      show: true
-    };
-  },
-  computed: mapGetters({
-    sidebar: "sidebar",
-    userInfo: "userInfo",
-    device: "device"
-  }),
-  methods: {
-    toggleMenu(collapsed, isMobile) {
-      if (isMobile) {
-        this.toggleSidebarShow();
-      } else {
-        this.toggleSidebar();
+  import {
+    mapGetters,
+    mapActions,
+    mapMutations
+  } from 'vuex'
+  import types from "../../store/mutation-types"
+  import * as api from "../../api"
+  import auth from '../../common/auth'
+  import * as sysApi from '../../services/sys'
+  import {userFindNewNoticeNum} from '@/api/notice.js'
+  export default {
+    data() {
+      return {
+        showMessageBox: false,
+        showProfileBox: false,
+        //userInfo: this.$store.getters.user.userInfo,
+        list: [],
+        count: 0,
+        show: true,
       }
     },
-    logout() {
-      this.$store.dispatch("LogOut").then(res => {
-        this.$router.push("/login");
-      });
-    },
-    ...mapMutations({
-      toggleSidebar: types.TOGGLE_SIDEBAR,
-      toggleSidebarShow: types.TOGGLE_SIDEBAR_SHOW,
-      setUserInfo: types.SET_USER_INFO
+    computed: mapGetters({
+      sidebar: 'sidebar',
+      userInfo: 'userInfo',
+      device: 'device',
     }),
-    toggleMessage() {
-      this.showMessageBox = !this.showMessageBox;
-    },
-    toggleProfile() {
-      this.showProfileBox = !this.showProfileBox;
-    },
-    autoHide(evt) {
-      if (!this.$el.querySelector("li.messages-menu").contains(evt.target)) {
-        this.showMessageBox = false;
+    methods: {
+      toggleMenu(collapsed, isMobile) {
+        if (isMobile) {
+          this.toggleSidebarShow();
+        } else {
+          this.toggleSidebar();
+        }
+      },
+      //点击公告图标事件
+      onClickNotice () {
+        this.$router.push({path:'/system/user-notice'})
+        this.count = null
+      },
+      logout() {
+        this.$store.dispatch('LogOut').then(res => {
+          this.$router.push('/login')
+        })
+      },
+      ...mapMutations({
+        toggleSidebar: types.TOGGLE_SIDEBAR,
+        toggleSidebarShow: types.TOGGLE_SIDEBAR_SHOW,
+        setUserInfo: types.SET_USER_INFO,
+      }),
+      toggleMessage() {
+        this.showMessageBox = !this.showMessageBox;
+      },
+      toggleProfile() {
+        this.showProfileBox = !this.showProfileBox;
+      },
+      autoHide(evt) {
+        if (!this.$el.querySelector('li.messages-menu').contains(evt.target)) {
+          this.showMessageBox = false
+        }
+        if (!this.$el.querySelector('li.user-menu').contains(evt.target)) {
+          this.showProfileBox = false
+        }
       }
-      if (!this.$el.querySelector("li.user-menu").contains(evt.target)) {
-        this.showProfileBox = false;
-      }
-    }
-  },
-  created() {
-    // let item = window.sessionStorage.getItem("user-info");
-    // if (!!item){
-    //     this.setUserInfo(JSON.parse(item));
-    // }
-    // this.count = 0;
-    // this.list = [];
-    // sysApi.msgList()
-    //   .then(res => {
-    //       if (res && res.length>0){
-    //           this.count = res.length;
-    //           this.list = res;
-    //       }
-    //   })
-  },
-  mounted() {
-    // this.$store.dispatch("GetInfo").then(res => {
-    //   console.log(this.$store.getters.userInfo);
-    // });
-  },
-  destroyed() {}
-};
+    },
+    created() {
+      sysApi.msgList()
+        .then(res => {
+          if (res && res.length > 0) {
+            this.count = res.length;
+            this.list = res;
+          }
+        })
+    },
+    mounted() {
+      //查询新公告数目
+      userFindNewNoticeNum().then((res) => {
+        if(res.status){
+          this.count = res.num
+        }else{
+          this.$message.error(res.msg)
+        }
+      }).catch((err) => {
+        this.$message.error(err.message)
+      })
+    },
+  }
 </script>
 <style scoped>
 .animated {
@@ -248,14 +252,40 @@ body.hold-transition .main-header .logo {
     display: none;
   }
 
-  .main-header .navbar {
-    margin: 0;
+
+  @media (max-width: 800px) {
+
+    .main-header .logo {
+      display: none;
+    }
+
+    .main-header .navbar {
+      margin: 0;
+    }
+
+    .main-header .logo,
+    .main-header .navbar {
+      width: 100%;
+      float: none;
+    }
+
   }
 
-  .main-header .logo,
-  .main-header .navbar {
-    width: 100%;
-    float: none;
+  .main-header.closeLogo .navbar {
+    margin-left: 44px;
+  }
+
+  .main-header.closeLogo .logo {
+    width: 44px;
+    padding: 0 8px;
+  }
+
+  .main-header.closeLogo .logo .logo-lg b {
+    display: none;
+  }
+
+  .main-header.closeLogo .sidebar-toggle {
+    background: #f9f9f9;
   }
 }
 .main-header.closeLogo .navbar {
@@ -277,73 +307,78 @@ body.hold-transition .main-header .logo {
   content: "\f03c";
 }
 
-.main-header.mobileLogo .navbar .sidebar-toggle:before {
-  content: "\f03a";
-}
+  .navbar-custom-menu {
+    float: right;
+  }
 
-.navbar-custom-menu {
-  float: right;
-}
+  .navbar-custom-menu .el-dropdown-link {
+    cursor: pointer;
+    height: 50px;
+    padding: 13px 5px;
+    min-width: 50px;
+    text-align: center;
+  }
 
-.navbar-custom-menu .el-dropdown-link {
-  cursor: pointer;
-  height: 50px;
-  padding: 13px 5px;
-  min-width: 50px;
-  text-align: center;
-}
-.navbar-custom-menu .el-dropdown-link img {
-  background-color: #108ee9;
-}
+  .navbar-custom-menu .el-dropdown-link img {
+    background-color: #108ee9;
+  }
 
-.navbar-custom-menu .el-dropdown-link:hover {
-  background: #f9f9f9;
-}
-.message-list {
-  list-style: none;
-  padding: 0 10px;
-}
-.message-list li {
-  list-style: none;
-  height: 25px;
-  line-height: 25px;
-}
-.message-list li a {
-  text-decoration: none;
-  color: #666666;
-}
-.message-list li:hover {
-  background-color: #f9f9f9;
-}
+  .navbar-custom-menu .el-dropdown-link:hover {
+    background: #f9f9f9;
+  }
 
-.el-dropdown-menu .header-pic {
-  text-align: center;
-  background-color: #108ee9;
-  padding: 20px;
-}
-.el-dropdown-menu .header-pic img {
-  vertical-align: middle;
-  height: 90px;
-  width: 90px;
-  border: 3px solid;
-  border-color: transparent;
-  border-color: hsla(0, 0%, 100%, 0.2);
-  background-color: #108ee9;
-}
-.el-dropdown-menu .header-pic p {
-  font-size: 1.5rem;
-  color: #ffffff;
-}
-.el-dropdown-menu .pull-left {
-  background-color: #f9f9f9;
-  padding: 10px;
-  display: inline-block;
-  float: left;
-}
-.el-dropdown-menu .pull-right {
-  background-color: #f9f9f9;
-  padding: 10px;
-  float: right;
-  display: inline-block;
-}
+  .message-list {
+    list-style: none;
+    padding: 0 10px;
+  }
+
+  .message-list li {
+    list-style: none;
+    height: 25px;
+    line-height: 25px;
+  }
+
+  .message-list li a {
+    text-decoration: none;
+    color: #666666;
+  }
+
+  .message-list li:hover {
+    background-color: #f9f9f9;
+  }
+
+  .el-dropdown-menu .header-pic {
+    text-align: center;
+    background-color: #108ee9;
+    padding: 20px;
+  }
+
+  .el-dropdown-menu .header-pic img {
+    vertical-align: middle;
+    height: 90px;
+    width: 90px;
+    border: 3px solid;
+    border-color: transparent;
+    border-color: hsla(0, 0%, 100%, .2);
+    background-color: #108ee9;
+  }
+
+  .el-dropdown-menu .header-pic p {
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+
+  .el-dropdown-menu .pull-left {
+    background-color: #f9f9f9;
+    padding: 10px;
+    display: inline-block;
+    float: left;
+  }
+
+  .el-dropdown-menu .pull-right {
+    background-color: #f9f9f9;
+    padding: 10px;
+    float: right;
+    display: inline-block;
+  }
 </style>
