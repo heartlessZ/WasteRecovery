@@ -18,7 +18,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="registerForm.password" auto-complete="off" placeholder="密码"></el-input>
+          <el-input type="password" v-model="registerForm.password" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item prop="nikeName">
           <el-input v-model="registerForm.nikeName" auto-complete="off" placeholder="昵称"></el-input>
