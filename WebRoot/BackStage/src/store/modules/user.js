@@ -32,6 +32,7 @@ const user = {
     },
     SET_ISLOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
+      console.log("登录状态被修改了==="+isLogin)
     },
     SET_USER: (state, userInfo) => {
       state.userInfo = userInfo
@@ -81,10 +82,10 @@ const user = {
         getInfo().then(response => {
           if (response.status) {
             const data = response.data[0]
-            commit('SET_ISLOGIN', true)
-            if (data.roleId && data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
-              commit('SET_ROLES', data.roles)
-            }
+            // commit('SET_ISLOGIN', true)
+            // if (data.roleId && data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
+            //   commit('SET_ROLES', data.roles)
+            // }
             commit('SET_NAME', data.username)
             commit('SET_AVATAR', data.avatar)
             //console.log(data[0].regionId)

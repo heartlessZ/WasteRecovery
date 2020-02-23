@@ -91,7 +91,13 @@ export default {
     //      }
   },
   created: function() {
-    this.load();
+    this.$store.dispatch("GetInfo").then(res => {
+      if (res.status) {
+        this.load();
+      } else {
+        this.$router.push("/login");
+      }
+    });
   },
   methods: {
     handleSelect() {

@@ -19,19 +19,20 @@ sync(store, router)
 
 const { state } = store
 
-// router.beforeEach((route, redirect, next) => {
-//     if (state.device.isMobile && state.sidebar.opened) {
-//         store.commit(types.TOGGLE_SIDEBAR, false)
-//     }
-//     if (!auth.loggedIn() && route.path !== '/login') {
-//         next({
-//             path: '/login',
-//             query: { redirect: route.fullPath }
+router.beforeEach((route, redirect, next) => {
+    if (state.device.isMobile && state.sidebar.opened) {
+        store.commit(types.TOGGLE_SIDEBAR, false)
+    }
+    next()
+    // if (!auth.loggedIn() && route.path !== '/login') {
+    //     next({
+    //         path: '/login',
+    //         query: { redirect: route.fullPath }
             
-//         })
-//     } else {
-//         next()
-//     }
-// })
+    //     })
+    // } else {
+    //     next()
+    // }
+})
 
 export default router

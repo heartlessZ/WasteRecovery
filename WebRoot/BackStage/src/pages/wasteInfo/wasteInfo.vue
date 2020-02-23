@@ -42,7 +42,7 @@
                 v-for="(item,index) in categories"
                 :key="index"
                 :label="item.classificationName"
-                :value="item.classificationId"
+                :value="item.id"
               ></el-option>
             </el-select>
           </div>
@@ -65,7 +65,7 @@
               icon="setting"
               @click="handleRoleConfig(scope.$index, scope.row)"
             >查看详情</el-button>
-            <!-- <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+            <el-button size="small" type="success" @click="createOrder(scope.$index, scope.row)">接单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,7 +105,7 @@ import * as api from "../../api";
 import testData from "../../../static/data/data.json";
 import * as sysApi from "../../services/sys";
 import request from "../../utils/request";
-import { queryChildrenCategory } from "../../api/user";
+import { queryRootCategory } from "../../api/user";
 
 export default {
   components: {
@@ -156,6 +156,17 @@ export default {
       this.dialogVisible = true;
     },
 
+    createOrder(index, row) {
+      this.currentRow = row;
+      request.post(api.ORDER_CREATE+"?scInfoReId="+row.id).then(res=>{
+        if(res.status){
+          this.$message("接单成功")
+          this.loadData()
+        }else{
+          this.$message(res.msg)
+        }
+      })
+    },
     handleSizeChange(val) {
       this.tableData.pagination.pageSize = val;
       this.loadData();
@@ -184,7 +195,8 @@ export default {
         username: this.searchData.username,
         phone: this.searchData.phone,
         address: this.searchData.address,
-        classificationId: this.searchData.classificationId
+        classificationId: this.searchData.classificationId,
+        status:0
       };
       request.get(api.WASTE_PAGE, { params: queryString }).then(res => {
         if (res.status) {
@@ -197,7 +209,7 @@ export default {
   },
   created() {
     this.loadData();
-    queryChildrenCategory().then(res => {
+    queryRootCategory().then(res => {
       if (res.status) {
         this.categories = res.records;
       }
