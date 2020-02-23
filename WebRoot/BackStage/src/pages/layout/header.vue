@@ -4,36 +4,32 @@
       <span class="logo-lg"><i class="fa fa-diamond"></i>&nbsp; <b>环保卫士后台管理系统</b></span>
     </a>
     <nav class="navbar">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"
-         @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <!-- <el-badge :value="count" class="item">
+        <i class="fa fa-envelope-o"></i>
+      </el-badge> -->
       <div class="navbar-custom-menu">
-        <el-dropdown class="navbar-dropdown" trigger="click">
-          <div class="el-dropdown-link" style="height: auto;line-height: inherit">
-            <el-badge :value="count" class="item">
-            <i class="fa fa-envelope-o"></i>
+        <el-dropdown class="navbar-dropdown" v-if="$store.getters.userInfo.roleId==20">
+          <div class="el-dropdown-link" style="height: auto;line-height: inherit" @click="onClickNotice">
+            <el-badge :value="count" class="item" style="margin-right: 10px;">
+              <i class="el-icon-message-solid" style="font-size: 20px;"></i>
             </el-badge>
           </div>
-          <el-dropdown-menu>
-            <ul class="message-list">
-            <li v-for="(item,index) in list"><!-- start message -->
-            <router-link :to="{path:'/sys/message',query:{id:item.id}}">
-            <p>{{index + 1}}. {{item.title}}</p>
-            </router-link>
-            </li>
-            </ul>
-          </el-dropdown-menu>
+          <el-dropdown-menu></el-dropdown-menu>
         </el-dropdown>
+
         <el-dropdown trigger="click" class="navbar-dropdown">
           <div class="el-dropdown-link">
-            <img :src='userInfo.avatar' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;" alt="U">
+            <img :src='userInfo.avatar' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;"
+              alt="U">
             {{userInfo.nikeName}}
           </div>
           <el-dropdown-menu style="padding: 0px">
             <div>
               <div class="header-pic">
-                <img :src='userInfo.avatar' class="img-circle" alt="User Image" >
+                <img :src='userInfo.avatar' class="img-circle" alt="User Image">
                 <p>{{userInfo.nikeName}}</p>
               </div>
               <div class="pull-left">
@@ -54,50 +50,59 @@
   </header>
 </template>
 <script>
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {
+    mapGetters,
+    mapActions,
+    mapMutations
+  } from 'vuex'
   import types from "../../store/mutation-types"
   import * as api from "../../api"
-  import  auth from '../../common/auth'
+  import auth from '../../common/auth'
   import * as sysApi from '../../services/sys'
-
+  import {userFindNewNoticeNum} from '@/api/notice.js'
   export default {
-    data(){
+    data() {
       return {
         showMessageBox: false,
         showProfileBox: false,
         //userInfo: this.$store.getters.user.userInfo,
         list: [],
-        count: 4,
-        show:true,
+        count: 0,
+        show: true,
       }
     },
     computed: mapGetters({
       sidebar: 'sidebar',
       userInfo: 'userInfo',
-      device:'device',
+      device: 'device',
     }),
     methods: {
-      toggleMenu(collapsed,isMobile){
-        if(isMobile){
+      toggleMenu(collapsed, isMobile) {
+        if (isMobile) {
           this.toggleSidebarShow();
-        }else{
+        } else {
           this.toggleSidebar();
         }
       },
-      logout(){
+      //点击公告图标事件
+      onClickNotice () {
+        this.$router.push({path:'/system/user-notice'})
+        this.count = null
+      },
+      logout() {
         this.$store.dispatch('LogOut').then(res => {
-        this.$router.push('/login')
-      })
+          this.$router.push('/login')
+        })
       },
       ...mapMutations({
         toggleSidebar: types.TOGGLE_SIDEBAR,
         toggleSidebarShow: types.TOGGLE_SIDEBAR_SHOW,
         setUserInfo: types.SET_USER_INFO,
       }),
-      toggleMessage(){
+      toggleMessage() {
         this.showMessageBox = !this.showMessageBox;
       },
-      toggleProfile(){
+      toggleProfile() {
         this.showProfileBox = !this.showProfileBox;
       },
       autoHide(evt) {
@@ -109,31 +114,30 @@
         }
       }
     },
-    created(){
-      // let item = window.sessionStorage.getItem("user-info");
-      // if (!!item){
-      //     this.setUserInfo(JSON.parse(item));
-      // }
-      // this.count = 0;
-      // this.list = [];
+    created() {
       sysApi.msgList()
         .then(res => {
-            if (res && res.length>0){
-                this.count = res.length;
-                this.list = res;
-            }
+          if (res && res.length > 0) {
+            this.count = res.length;
+            this.list = res;
+          }
         })
     },
     mounted() {
-      if(!this.$store.getters.isLogin){
+      if (!this.$store.getters.isLogin) {
         this.$router.push('/login')
       }
-      console.log(this.userInfo)
-      // document.addEventListener('click', this.autoHide, false)
+      //查询新公告数目
+      userFindNewNoticeNum().then((res) => {
+        if(res.status){
+          this.count = res.num
+        }else{
+          this.$message.error(res.msg)
+        }
+      }).catch((err) => {
+        this.$message.error(err.message)
+      })
     },
-    destroyed() {
-      // document.removeEventListener('click', this.autoHide, false)
-    }
   }
 </script>
 <style scoped>
@@ -245,23 +249,27 @@
       margin: 0;
     }
 
-    .main-header .logo, .main-header .navbar {
+    .main-header .logo,
+    .main-header .navbar {
       width: 100%;
       float: none;
     }
 
   }
-  .main-header.closeLogo .navbar{
+
+  .main-header.closeLogo .navbar {
     margin-left: 44px;
   }
 
-  .main-header.closeLogo .logo{
+  .main-header.closeLogo .logo {
     width: 44px;
     padding: 0 8px;
   }
-  .main-header.closeLogo .logo .logo-lg b{
+
+  .main-header.closeLogo .logo .logo-lg b {
     display: none;
   }
+
   .main-header.closeLogo .sidebar-toggle {
     background: #f9f9f9;
   }
@@ -274,66 +282,75 @@
     content: "\f03a";
   }
 
-  .navbar-custom-menu{
+  .navbar-custom-menu {
     float: right;
   }
 
-  .navbar-custom-menu .el-dropdown-link{
+  .navbar-custom-menu .el-dropdown-link {
     cursor: pointer;
     height: 50px;
     padding: 13px 5px;
     min-width: 50px;
     text-align: center;
   }
-  .navbar-custom-menu .el-dropdown-link img{
+
+  .navbar-custom-menu .el-dropdown-link img {
     background-color: #108ee9;
   }
 
-  .navbar-custom-menu .el-dropdown-link:hover{
+  .navbar-custom-menu .el-dropdown-link:hover {
     background: #f9f9f9;
   }
+
   .message-list {
     list-style: none;
     padding: 0 10px;
   }
-  .message-list li{
+
+  .message-list li {
     list-style: none;
     height: 25px;
     line-height: 25px;
   }
-  .message-list li a{
+
+  .message-list li a {
     text-decoration: none;
     color: #666666;
   }
-  .message-list li:hover{
+
+  .message-list li:hover {
     background-color: #f9f9f9;
   }
 
-  .el-dropdown-menu .header-pic{
+  .el-dropdown-menu .header-pic {
     text-align: center;
     background-color: #108ee9;
     padding: 20px;
   }
-  .el-dropdown-menu .header-pic img{
+
+  .el-dropdown-menu .header-pic img {
     vertical-align: middle;
     height: 90px;
     width: 90px;
     border: 3px solid;
     border-color: transparent;
-    border-color: hsla(0,0%,100%,.2);
+    border-color: hsla(0, 0%, 100%, .2);
     background-color: #108ee9;
   }
-  .el-dropdown-menu .header-pic p{
+
+  .el-dropdown-menu .header-pic p {
     font-size: 1.5rem;
     color: #ffffff;
   }
-  .el-dropdown-menu .pull-left{
+
+  .el-dropdown-menu .pull-left {
     background-color: #f9f9f9;
     padding: 10px;
     display: inline-block;
     float: left;
   }
-  .el-dropdown-menu .pull-right{
+
+  .el-dropdown-menu .pull-right {
     background-color: #f9f9f9;
     padding: 10px;
     float: right;

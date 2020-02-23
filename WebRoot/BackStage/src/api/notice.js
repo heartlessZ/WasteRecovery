@@ -88,7 +88,7 @@ export function userFindNewNoticeNum(){
  */
 export function setIsRead(id){
   return request({
-    url:'/notice/getBusinessNewNoticeNum',
+    url:'/notice/setIsRead',
     method:'get',
     params:{id}
   })

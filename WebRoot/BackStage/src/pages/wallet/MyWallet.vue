@@ -57,8 +57,8 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination layout="prev, pager, next" style="text-align: center;margin-top: 10px;"
-          :total="total" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize" @current-change="pageCurrentChange">
+        <el-pagination layout="prev, pager, next" style="text-align: center;margin-top: 10px;" :total="total"
+          :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize" @current-change="pageCurrentChange">
         </el-pagination>
       </div>
     </div>
@@ -217,10 +217,6 @@
           money = this.rechargeForm.money
         }
         window.open('http://safeclean.tx-q.cn:4399/alipay/goAlipay?money=' + money, 'about:blank')
-        /* recharge(money).then((res) => {
-          document.querySelector('body').innerHTML = res
-          document.forms[0].submit()
-        }) */
         this.rechargeForm.money = '300'
         this.rechargeForm.imoney = null
       },
@@ -231,7 +227,7 @@
           if (valid) {
             withdrawal(this.withdrawForm.money).then((res) => {
               if (res.status) {
-                this.$store.dispatch("GetInfo", this.form).then((res) => {
+                this.$store.dispatch("GetInfo").then((res) => {
                   if (res.status) {
                     this.balance = this.$store.getters.userInfo.balance
                   }
@@ -268,8 +264,13 @@
       }
     },
     mounted() {
-      this.balance = this.$store.getters.userInfo.balance
+      //调用获取个人信息刷新钱包金额
       this.requestRecordData()
+      this.$store.dispatch("GetInfo").then((res) => {
+        if (res.status) {
+          this.balance = this.$store.getters.userInfo.balance
+        }
+      })
     }
   }
 </script>
