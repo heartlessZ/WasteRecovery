@@ -13,3 +13,14 @@ export function needPush(info){
     params:info
   })
 }
+/**
+ * 购买废品api
+ * @param {Object} id 废品id
+ */
+export function buy(scInfoReId){
+  return request({
+    url:'/order/create',
+    method:'post',
+    params:{scInfoReId}
+  })
+}

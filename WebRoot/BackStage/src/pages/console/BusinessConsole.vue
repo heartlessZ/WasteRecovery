@@ -25,7 +25,11 @@
         <p style="border-top: 1px solid #b7bbbf;padding-top:5px "><b>卖家信息：</b></p>
         <p class="order-info" style="display: inline-block;">昵称：<span>{{item.nikeName}}</span><span class="phone">电话：{{item.phone}}</span></p>
         <p style="height: 36px;">卖家地址：{{item.address}}</p>
-        <p style="margin-top: 5px;"><b>距离:</b>约{{item.distance}}m</p>
+        <!-- <p style="margin-top: 5px;"><b>距离:</b>约{{item.distance}}m</p> -->
+        <div style="overflow: hidden;">
+           <span style="float: left;font-size: 12px;line-height: 28px;"><b>距离:</b>约{{item.distance}}m</span>
+           <el-button size="mini" type="info" style="float: right;" @click="onBuy(item.id)">购买</el-button>
+        </div>
       </div>
     </div>
     <el-pagination @current-change="handleCurrentChange" :current-page.sync="formSearch.pageNum" :page-size="formSearch.pageSize" :total="total" layout="total, prev, pager, next" style="text-align: center;padding-bottom: 20px;">
@@ -39,7 +43,8 @@
 
 <script>
   import {
-   needPush
+   needPush,
+   buy
   } from '@/api/console.js'
   export default {
     data() {
@@ -85,6 +90,20 @@
           this.formSearch.distance=5000
         }
         this.requestData()
+      },
+      //购买废品按钮事件
+      onBuy(id){
+        buy(id).then((res)=>{
+          if(res.status){
+            this.$message({
+              message:'购买成功!',
+              type:'success'
+            })
+            this.requestData()
+          }
+        }).catch((err)=>{
+          this.$message.error(err.message)
+        })
       }
     },
     mounted() {
