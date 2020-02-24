@@ -74,10 +74,12 @@
         </el-table-column>
         <el-table-column prop="wasteInfo.describe" label="废品描述" width="300">
         </el-table-column>
-        <el-table-column v-if="roleId==20" label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="230" fixed="right" v-if="roleId==20">
           <template slot-scope="scope">
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">取消</el-button>
             <el-button v-else type="info" size="mini" disabled>取消</el-button>
+            <el-button v-if="scope.row.state==1" @click="finishOrder(scope.row.id)" type="primary" size="mini">完成</el-button>
+            <el-button v-else type="info" size="mini" disabled>完成</el-button>
             <el-button v-if="scope.row.state==1" type="info" size="mini" disabled="">删除</el-button>
             <el-button v-else @click="delOrder(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
@@ -96,7 +98,8 @@
     selOrderListByPage,
     delOrderById,
     cancelOrderById,
-    selAllClassification
+    selAllClassification,
+    finishOrder
   } from '@/api/order.js'
   export default {
     name: 'orderList',
@@ -199,6 +202,25 @@
           }).catch((err) => {
             this.$message.error(err.message)
           })
+        })
+      },
+      /**
+       * 完成订单
+       * @param {Object} id 订单id
+       */
+      finishOrder(id) {
+        //取消订单网络请求
+        finishOrder(id).then((res) => {
+          if (res.status) {
+            this.$message({
+              showClose: true,
+              message: '操作成功！',
+              type: 'success'
+            })
+            this.requestData()
+          } else {
+            this.$message.error('操作失败')
+          }
         })
       },
       /**删除订单

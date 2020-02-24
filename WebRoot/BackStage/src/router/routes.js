@@ -18,6 +18,7 @@ const JoinUs = resolve => require(['../pages/sys/join-us'], resolve)
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
 const UserNoticeList = resolve => require(['../pages/notice/UserNoticeList.vue'], resolve)
 const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
+const BusinessConsole = resolve => require(['../pages/console/BusinessConsole.vue'], resolve)
     // Routes
 const routes = [
     { path: '/login', component: login },
@@ -28,6 +29,7 @@ const routes = [
             { path: '', redirect:'/waste' },
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
+            { path: '/busi-console',component:BusinessConsole},
             { path: '/personal-center', component: personalCenter },
             { path: '/system/config', component: config },
             { path: '/wallet-manage/withdraw',component: WithdrawalList},

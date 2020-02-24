@@ -63,3 +63,17 @@ export function selAllClassification() {
     method: 'get'
   })
 }
+
+/**
+ * 完成订单api
+ * @param {Object} id 订单id
+ */
+export function finishOrder(id) {
+  return request({
+    url: '/order/finishBusinessOrder',
+    method: 'get',
+    params:{
+      id
+    }
+  })
+}

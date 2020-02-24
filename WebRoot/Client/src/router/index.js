@@ -21,6 +21,7 @@ const UserInfo = resolve => require(['@/components/Home/PersonalCenter/UserInfo'
 const BindAccount = resolve => require(['@/components/Home/PersonalCenter/BindAccount'], resolve)
 const OrderMng = resolve => require(['@/components/Home/PersonalCenter/OrderMng'], resolve)
 const OrderList = resolve => require(['@/components/Home/PersonalCenter/order/OrderList'], resolve)
+const Notice = resolve => require(['@/components/Home/Notice'], resolve)
 
 export default new Router({
   routes: [{
@@ -60,6 +61,10 @@ export default new Router({
               component:JoinUs
             },
           ]
+        },
+        {
+          path:'notice',
+          component:Notice
         },
         {
           path: '',

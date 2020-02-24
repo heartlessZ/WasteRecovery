@@ -10,7 +10,7 @@
     <el-card class="order-item" v-for="(order,index) in orderList" :key="order.id">
       <p class="myorder-number" v-if="formState!='0'"><i class="el-icon-tickets" style="color:#61D2B4;margin-right: 10px;font-size: 14px;"></i><span>订单编号：{{order.orderId}}</span><span
           class="date">下单日期：{{order.creatTime}}</span></p>
-      <p class="myorder-number" v-else><span>分类：废纸</span><span class="date">发布日期：{{order.creatTime}}</span></p>
+      <p class="myorder-number" v-else><span>分类：{{order.classification.classificationName}}</span><span class="date">发布日期：{{order.creatTime}}</span></p>
       <el-row :gutter="10" class="contain">
         <el-col :span="6" v-if="formState!='0'">
           <!-- 状态不同，数据结构不同，数据接口封装有问题 -->
@@ -103,6 +103,7 @@ export default {
           if (res.status) {
             this.total = res.total
             this.orderList = res.records
+            console.log(res)
           } else {
             this.$message.error('获取数据失败！')
           }
