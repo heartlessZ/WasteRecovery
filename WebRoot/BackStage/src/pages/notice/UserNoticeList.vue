@@ -64,13 +64,7 @@
         //查询未读公告数目
         userFindNewNoticeNum().then((res) => {
           if (res.status) {
-            console.log(res.num)
-            console.log(typeof(res.num))
-            if(res.num==0){
-              this.count = null
-            }else{
               this.count = res.num
-            }
           }
         })
       },

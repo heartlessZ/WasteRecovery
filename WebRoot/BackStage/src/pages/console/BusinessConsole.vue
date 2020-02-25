@@ -130,6 +130,7 @@
     overflow: hidden;
     width: 100%;
     padding: 0px 20px 20px 20px;
+    min-height: 400px;
   }
 
   .img_icon_error {
