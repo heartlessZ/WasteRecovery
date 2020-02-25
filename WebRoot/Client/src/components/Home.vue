@@ -8,15 +8,8 @@
             <a href="index.html" class="navbar-brand">
               <img class="img-fulid" :src="imgUrl" alt />
             </a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#main-navbar"
-              aria-controls="main-navbar"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
+              aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
               <i class="lnr lnr-menu"></i>
             </button>
           </div>
@@ -40,6 +33,13 @@
               <li v-if="$store.getters.isLogin" class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/personal-center">个人中心</router-link>
               </li>
+              <li v-if="$store.getters.isLogin" class="nav-item" @click="onClickNotice">
+                <router-link class="nav-link page-scroll" to="/home/notice">
+                  <el-badge :value="count">
+                    <i class="el-icon-message-solid" style="font-size: 20px;line-height: 40px;"></i>
+                  </el-badge>
+                </router-link>
+              </li>
             </ul>
           </div>
         </div>
@@ -61,6 +61,13 @@
           </li>
           <li v-if="$store.getters.isLogin">
             <router-link class="page-scroll" to="/home/personal-center">个人中心</router-link>
+          </li>
+          <li v-if="$store.getters.isLogin" class="nav-item" @click="onClickNotice">
+            <router-link class="nav-link page-scroll" to="/home/notice">
+              <el-badge :value="count">
+                <i class="el-icon-message-solid" style="font-size: 20px;line-height: 40px;"></i>
+              </el-badge>
+            </router-link>
           </li>
         </ul>
         <div v-if="!$store.getters.isLogin" style="margin-right:20px;color:#333;">
@@ -111,81 +118,103 @@
 </template>
 
 <script>
-import "../assets/css/bootstrap.min.css";
-import "../assets/css/font-awesome.min.css";
-import "../assets/css/line-icons.css";
-import "../assets/css/owl.carousel.css";
-import "../assets/css/owl.theme.css";
-import "../assets/css/nivo-lightbox.css";
-import "../assets/css/magnific-popup.css";
-import "../assets/css/slicknav.css";
-import "../assets/css/animate.css";
-import "../assets/css/main.css";
-import "../assets/css/responsive.css";
+  import '../assets/css/bootstrap.min.css'
+  import '../assets/css/font-awesome.min.css'
+  import '../assets/css/line-icons.css'
+  import '../assets/css/owl.carousel.css'
+  import '../assets/css/owl.theme.css'
+  import '../assets/css/nivo-lightbox.css'
+  import '../assets/css/magnific-popup.css'
+  import '../assets/css/slicknav.css'
+  import '../assets/css/animate.css'
+  import '../assets/css/main.css'
+  import '../assets/css/responsive.css'
 
-import "../assets/js/jquery-min.js";
-
-export default {
-  name: "Home",
-  data() {
-    return {
-      imgUrl: require("../assets/img/logo.png"),
-      loading: true
-    };
-  },
-  methods: {
-    loginView() {
-      this.$router.push("/login");
+  import '../assets/js/jquery-min.js'
+  import {
+    userFindNewNoticeNum
+  } from '@/api/notice.js'
+  export default {
+    name: 'Home',
+    data() {
+      return {
+        imgUrl: require('../assets/img/logo.png'),
+        loading: true,
+        count: 0,
+      }
     },
-    registerVew() {
-      this.$router.push("/register");
+    methods: {
+      loginView() {
+        this.$router.push('/login')
+      },
+      registerVew() {
+        this.$router.push('/register')
+      },
+      loadRootCategories() {
+        this.$store.dispatch('QueryRootCategory').then(res => {
+          // console.log(this.$store.getters.rootCategories)
+        })
+      },
+      //点击公告图标事件
+      onClickNotice() {
+        this.count = null
+      }
     },
-    loadRootCategories() {
-      this.$store.dispatch("QueryRootCategory").then(res => {
-        //console.log(this.$store.getters.rootCategories)
-      });
+    created() {
+      this.loadRootCategories()
+      this.$store.dispatch('GetInfo').then(res => {
+        this.loading = false
+        console.log(this.$store.getters.userInfo)
+      })
+      //查询新公告数目
+      userFindNewNoticeNum().then((res) => {
+        if (res.status) {
+          if (res.num == 0) {
+            this.count = null
+          } else {
+            this.count = res.num
+          }
+        } else {
+          this.$message.error(res.msg)
+        }
+      }).catch((err) => {
+        this.$message.error(err.message)
+      })
     }
-  },
-  created() {
-    this.loadRootCategories();
-    this.$store.dispatch("GetInfo").then(res => {
-      this.loading = false;
-      console.log(this.$store.getters.userInfo);
-    });
   }
-};
-$(window).on("scroll", function() {
-  if ($(window).scrollTop() > 200) {
-    $("#nav").addClass("top-nav-collapse");
-    $("#nav").addClass("menu-bg");
-  } else {
-    $("#nav").removeClass("top-nav-collapse");
-    $("#nav").removeClass("menu-bg");
-  }
-});
+  $(window).on('scroll', function() {
+    if ($(window).scrollTop() > 200) {
+      $('#nav').addClass('top-nav-collapse')
+      $('#nav').addClass('menu-bg')
+    } else {
+      $('#nav').removeClass('top-nav-collapse')
+      $('#nav').removeClass('menu-bg')
+    }
+  })
 </script>
 <style>
-#app {
-  width: 100%;
-}
+  #app {
+    width: 100%;
+  }
 
-#home{
-  min-height: 936px;
-}
+  #home {
+    min-height: 936px;
+  }
 
-.footer-text {
-  width: 100%;
-  text-align: center;
-}
+  .footer-text {
+    width: 100%;
+    text-align: center;
+  }
 
-.limit-h {
-  height: 96px;
-}
+  .limit-h {
+    height: 96px;
+  }
 
-.footer {
-  width: 100%;
-  bottom: 0px;
-  position: absolute;;
-  height: 92px;
-}
+  .footer {
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
+    ;
+    height: 92px;
+  }
 </style>
