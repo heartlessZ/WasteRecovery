@@ -19,8 +19,7 @@
           <div class="text item">
             <el-form :model="form" ref="form">
               <el-form-item label="父级" :label-width="formLabelWidth">
-                <!--<el-input v-model="form.parentId" auto-complete="off"></el-input>-->
-                <el-select-tree v-model="form.parentId" :treeData="menuTree" :propNames="defaultProps" clearable
+                <el-select-tree v-model="form.parentId" :treeData="menuTree" :propNames="defaultParentProps" clearable
                                 placeholder="请选择父级">
                 </el-select-tree>
               </el-form-item>
@@ -544,6 +543,11 @@
           label: 'menuName',
           id: "id",
         },
+        defaultParentProps: {
+          //children: 'childs',
+          label: 'menuName',
+          id: "id",
+        },
         maxId: 7000000,
         menuTree: [],
         form: {
@@ -624,24 +628,6 @@
               // this.appendTreeNode(this.menuTree, res.data);
               this.load()
             }).catch(e => {
-            // this.maxId += 1;
-            // this.$message('操作成功');
-            // this.form.id = this.maxId;
-            // var ddd = {
-            //   id: this.form.id,
-            //   name: this.form.name,
-            //   sort: this.form.sort,
-            //   icon: this.form.icon,
-            //   href: this.form.href,
-            //   isShow: this.form.isShow,
-            //   delivery: this.form.delivery,
-            //   parentId: this.form.parentId,
-            //   desc: this.form.desc,
-            //   children: []
-            // }
-            // this.appendTreeNode(this.menuTree, ddd);
-            // this.menuTree.push({});
-            // this.menuTree.pop();
           })
         } else {
           let params = {
@@ -671,7 +657,6 @@
       },
       load(){
         sysApi.menuList().then(res => {
-          console.log(res)
           this.menuTree = res.data;
         })
       }

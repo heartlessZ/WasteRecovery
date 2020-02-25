@@ -14,6 +14,7 @@ const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
 const category = resolve => require(['../pages/sys/category'], resolve)
 const personalCenter = resolve => require(['../pages/sys/percenal-center'], resolve)
 const config = resolve => require(['../pages/sys/config'], resolve)
+const authorization = resolve => require(['../pages/sys/authorization'], resolve)
 const JoinUs = resolve => require(['../pages/sys/join-us'], resolve)
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
 const UserNoticeList = resolve => require(['../pages/notice/UserNoticeList.vue'], resolve)
@@ -42,6 +43,7 @@ const routes = [
             { path: '/system/notice', component: NoticeManager},
             { path: '/system/user-notice', component: UserNoticeList},
             { path: '/system/join-us', component: JoinUs},
+            { path: '/system/authorization', component: authorization},
         ]
     },
     { path: '*', component: NotFoundView }
