@@ -18,6 +18,12 @@ export const SYS_ROLE_LIST = CONTEXT + '/role/selectAllRole';
 export const SYS_SET_ROLE_RESOURCE = CONTEXT + '/authorization/addauthorMenu';
 export const SYS_DELETE_ROLE_RESOURCE = CONTEXT + '/authorization/delauthorMenu';
 
+export const SYS_ROLE_MENU = CONTEXT + '/authorization/authorMenuList';
+export const SYS_ROLE_AUTHORIZATION = CONTEXT + '/authorization/selectMenuByReloId';
+
+export const SYS_AUTHORIZATION = CONTEXT + '/authorization/allmenuAuthority';
+export const SYS_AUTHORIZATION_ADD = CONTEXT + '/authorization/authorityMenuAdd';
+
 export const SYS_RESOURCE_LIST = CONTEXT + '/menu/getRoleMenus';
 
 export const SYS_SETTLEDIN_LIST = CONTEXT + '/settledIn/list';

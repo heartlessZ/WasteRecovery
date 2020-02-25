@@ -37,6 +37,12 @@
                   v-show="form.id && form.id!=null"
                 >配置菜单</el-button>
                 <el-button
+                  type="info"
+                  @click="settingAuthority($event,form.id)"
+                  icon="setting"
+                  v-show="form.id && form.id!=null"
+                >配置权限</el-button>
+                <el-button
                   type="danger"
                   @click="deleteSelected"
                   icon="delete"
@@ -71,6 +77,30 @@
             <el-button type="primary" @click="configRoleResources">确 定</el-button>
           </span>
         </el-dialog>
+        <el-dialog title="配置权限" :visible.sync="dialogAuthorityVisible" size="tiny">
+          <div class="select-tree">
+            <el-scrollbar
+              tag="div"
+              class="is-empty"
+              wrap-class="el-select-dropdown__wrap"
+              view-class="el-select-dropdown__list"
+            >
+              <el-tree
+                :data="authorityTree"
+                ref="authorityTree"
+                show-checkbox
+                check-strictly
+                node-key="id"
+                v-loading="dialogAuthorityLoading"
+                :props="defaultMenuProps"
+              ></el-tree>
+            </el-scrollbar>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogAuthorityVisible = false">取 消</el-button>
+            <el-button type="primary" @click="configRoleAuthority">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-col>
     </el-row>
   </imp-panel>
@@ -94,6 +124,8 @@ export default {
     return {
       dialogLoading: false,
       dialogVisible: false,
+      dialogAuthorityLoading: false,
+      dialogAuthorityVisible: false,
       formLabelWidth: "100px",
       defaultProps: {
         children: "children",
@@ -101,12 +133,13 @@ export default {
         id: "id"
       },
       defaultMenuProps: {
-        children: "children",
+        //children: "jurisdiction",
         label: "menuName",
         id: "id"
       },
       roleTree: [],
       resourceTree: [],
+      authorityTree: [],
       maxId: 700000,
       form: {
         id: null,
@@ -125,9 +158,9 @@ export default {
       };
       if (this.checkKeys.length == 0) {
         let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-        if(checkedKeys.length == 0){
-            this.dialogVisible = false;
-          return
+        if (checkedKeys.length == 0) {
+          this.dialogVisible = false;
+          return;
         }
         let params = { menuId: checkedKeys.join(","), roleId: this.form.id };
         request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
@@ -141,9 +174,9 @@ export default {
           if (res.status) {
             //绑定菜单
             let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-            if(checkedKeys.length==0){
-            this.dialogVisible = false;
-              return
+            if (checkedKeys.length == 0) {
+              this.dialogVisible = false;
+              return;
             }
             let params = {
               menuId: checkedKeys.join(","),
@@ -153,6 +186,47 @@ export default {
               if (res.status) {
                 this.$message("绑定成功");
                 this.dialogVisible = false;
+              }
+            });
+          }
+        });
+      }
+    },
+    configRoleAuthority() {
+      let delparams = {
+        menuId: this.checkKeys.join(","),
+        roleId: this.form.id
+      };
+      if (this.checkKeys.length == 0) {
+        let checkedKeys = this.$refs.authorityTree.getCheckedKeys();
+        if (checkedKeys.length == 0) {
+          this.dialogAuthorityVisible = false;
+          return;
+        }
+        let params = { menuId: checkedKeys.join(","), roleId: this.form.id };
+        request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
+          if (res.status) {
+            this.$message("绑定成功");
+            this.dialogAuthorityVisible = false;
+          }
+        });
+      } else {
+        request.post(api.SYS_DELETE_ROLE_RESOURCE, delparams).then(res => {
+          if (res.status) {
+            //绑定菜单
+            let checkedKeys = this.$refs.authorityTree.getCheckedKeys();
+            if (checkedKeys.length == 0) {
+              this.dialogAuthorityVisible = false;
+              return;
+            }
+            let params = {
+              menuId: checkedKeys.join(","),
+              roleId: this.form.id
+            };
+            request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
+              if (res.status) {
+                this.$message("绑定成功");
+                this.dialogAuthorityVisible = false;
               }
             });
           }
@@ -246,12 +320,13 @@ export default {
     settingResource(event, id) {
       event.stopPropagation();
       this.dialogVisible = true;
-      if (this.resourceTree == null || this.resourceTree.length <= 0) {
         this.dialogLoading = true;
-        sysApi.menuList().then(res => {
-          this.dialogLoading = false;
-          console.log(res.data);
-          this.resourceTree = res.data;
+      if (this.resourceTree == null || this.resourceTree.length <= 0) {
+        request.get(api.SYS_ROLE_MENU).then(res => {
+          if (res.status) {
+            console.log(res.data);
+            this.resourceTree = res.data;
+          }
         });
       }
       sysApi.resourceList(id).then(res => {
@@ -265,6 +340,29 @@ export default {
           this.checkKeys.push(element.id);
         });
         this.$refs.resourceTree.setCheckedKeys(this.checkKeys);
+            this.dialogLoading = false;
+      });
+    },
+    settingAuthority(event, id) {
+      event.stopPropagation();
+      this.dialogAuthorityVisible = true;
+        this.dialogAuthorityLoading = true;
+      if (this.authorityTree == null || this.authorityTree.length <= 0) {
+        request.get(api.SYS_AUTHORIZATION).then(res => {
+          if (res.status) {
+            this.authorityTree = res.data;
+          }
+        });
+      }
+      request.get(api.SYS_ROLE_AUTHORIZATION + "?reloId=" + id).then(res => {
+        if (res.status) {
+          this.checkKeys = [];
+          res.data.forEach(element => {
+            this.checkKeys.push(element.id);
+          });
+          this.$refs.authorityTree.setCheckedKeys(this.checkKeys);
+            this.dialogAuthorityLoading = false;
+        }
       });
     }
   },
