@@ -17,7 +17,7 @@
       </el-badge> -->
       <div class="navbar-custom-menu">
 
-        <el-dropdown class="navbar-dropdown" v-if="$store.getters.userInfo.roleId==20">
+        <el-dropdown class="navbar-dropdown" v-if="$store.getters.userInfo.roleId==2">
           <div class="el-dropdown-link" style="height: auto;line-height: inherit" @click="onClickNotice">
             <el-badge :value="count" class="item" style="margin-right: 10px;">
               <i class="el-icon-message-solid" style="font-size: 20px;"></i>

@@ -22,7 +22,7 @@
                   商家入驻
                 </el-menu-item>
               </router-link>
-              <router-link class="menu-text" to="/home/personal-center/order-mng/order-list/0">
+              <router-link class="menu-text" to="/home/personal-center/order-mng">
                 <el-menu-item index="2">
                   <i class="el-icon-menu"></i>
                   订单管理

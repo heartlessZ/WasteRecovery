@@ -13,7 +13,7 @@
     <div class="content">
       <div class="order-item" v-for="(item) in tableData" :key="item.id">
         <el-image style="width: 100%; height: 150px;background: #F5F7FA;border-radius: 8px;" :src="item.photos"
-          :preview-src-list="[item.photos]">
+          :preview-src-list="[item.photos]" fit="cover">
           <div slot="error" style="height: 100%;text-align: center;display: flex;justify-content: center;align-items: center;">
             <i class="el-icon-picture-outline"></i>
           </div>
@@ -94,15 +94,18 @@
       //购买废品按钮事件
       onBuy(id){
         buy(id).then((res)=>{
+          console.log(res)
           if(res.status){
             this.$message({
               message:'购买成功!',
               type:'success'
             })
             this.requestData()
+          }else{
+            this.$message.error(res.msg)
           }
         }).catch((err)=>{
-          this.$message.error(err.message)
+          this.$message.error("购买失败!")
         })
       }
     },

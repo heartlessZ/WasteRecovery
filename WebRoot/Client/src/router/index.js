@@ -51,10 +51,10 @@ export default new Router({
             {
               path: 'order-mng',
               component: OrderMng,
-              children: [{
+              /* children: [{
                 path:'order-list/:status',
                 component: OrderList
-              }],
+              }], */
             },
             {
               path: '',
@@ -82,10 +82,6 @@ export default new Router({
       name: 'Register',
       component: Register
     },
-    /* {
-       path: '/order-mng',
-       component: OrderMng
-     }, */
     {
       path: '',
       redirect: '/home'

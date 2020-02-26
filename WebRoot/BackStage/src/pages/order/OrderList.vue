@@ -3,9 +3,6 @@
     <el-card class="contain">
       <el-form :inline="true" :model="formSearch" class="search-form" size="mini">
         <el-form-item>
-          <el-input v-model="formSearch.username" placeholder="用户名" clearable></el-input>
-        </el-form-item>
-        <el-form-item>
           <el-input v-model="formSearch.address" placeholder="地址" clearable></el-input>
         </el-form-item>
         <el-form-item>
@@ -18,7 +15,7 @@
         </el-form-item>
         <el-form-item>
           <el-select clearable v-model="formSearch.state" placeholder="订单状态">
-            <el-option label="已接单" value="1"></el-option>
+            <el-option label="进行中" value="1"></el-option>
             <el-option label="已完成" value="2"></el-option>
             <el-option label="已取消" value="3"></el-option>
           </el-select>
@@ -28,42 +25,30 @@
             value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSearch">查询</el-button>
-        </el-form-item>
+        <el-button type="primary" @click="onSearch" size="mini">查询</el-button>
       </el-form>
       <el-table :data="tableData" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="orderId" label="订单号" width="260">
-        </el-table-column>
         <el-table-column prop="wasteInfo.photos" label="废品图片" width="110">
           <template slot-scope="scope">
-            <el-image style="width: 90px; height: 50px;padding-top: 5px;" :src="scope.row.wasteInfo.photos" fit="scale-down"
+            <el-image style="width: 90px; height: 50px;padding-top: 5px;" :src="scope.row.wasteInfo.photos" fit="cover"
               :preview-src-list="[scope.row.wasteInfo.photos]"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="tradeName" label="废品类别" width="120" align="center">
+        <el-table-column prop="tradeName" label="废品类别" align="center">
         </el-table-column>
-        <el-table-column prop="wasteInfo.weight" label="废品重量" width="100" align="center">
+        <el-table-column prop="wasteInfo.weight" label="废品重量" width="140" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.wasteInfo.weight}}kg</span>
           </template>
         </el-table-column>
-        <el-table-column prop="wasteInfo.expectedPrice" label="卖家期望价格" width="120" align="center">
+        <el-table-column prop="wasteInfo.expectedPrice" label="卖家期望价格" width="140" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.wasteInfo.expectedPrice}}元</span>
           </template>
         </el-table-column>
-        <el-table-column prop="user.username" label="卖家名" width="150">
-        </el-table-column>
-        <el-table-column prop="wasteInfo.address" label="卖家地址" width="300">
-        </el-table-column>
-        <el-table-column prop="user.phone" label="卖家电话" width="120">
-        </el-table-column>
-        <el-table-column v-if="roleId!=20" prop="businessname" label="商家名" width="120">
-        </el-table-column>
-        <el-table-column prop="creatTime" label="下单时间" width="160">
+        <el-table-column prop="creatTime" label="下单时间" align="center">
         </el-table-column>
         <el-table-column prop="state" label="订单状态" width="120" align="center">
           <template slot-scope="scope">
@@ -72,10 +57,9 @@
             <el-button v-if="scope.row.state==3" type="info" size="mini">已取消</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="wasteInfo.describe" label="废品描述" width="300">
-        </el-table-column>
-        <el-table-column label="操作" width="230" fixed="right" v-if="roleId==20">
+        <el-table-column label="操作" width="290" v-if="roleId==2">
           <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">取消</el-button>
             <el-button v-else type="info" size="mini" disabled>取消</el-button>
             <el-button v-if="scope.row.state==1" @click="finishOrder(scope.row.id)" type="primary" size="mini">完成</el-button>
@@ -84,11 +68,27 @@
             <el-button v-else @click="delOrder(scope.row.id)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="80" v-else>
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="formSearch.pageNum"
         :page-sizes="[10,20,30,40]" :page-size="formSearch.pageSzie" layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
+      <!-- 查看公告内容对话框 -->
+      <el-dialog title="订单详情" :visible.sync="lookdialogVisible" width="40%">
+        <div v-if="orderItem!=null">
+          <p>订单号：{{orderItem.orderId}}</p>
+          <p>卖家名：{{orderItem.user.username}}</p>
+          <p>卖家地址：{{orderItem.wasteInfo.address}}</p>
+          <p>卖家电话：{{orderItem.user.phone}}</p>
+          <p>商家名：{{orderItem.businessname}}</p>
+          <p>废品描述：{{orderItem.wasteInfo.describe}}</p>
+        </div>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -120,9 +120,11 @@
           classificationId: null
         },
         roleId: null,
+        lookdialogVisible: false,
         time: '',
         //数据总条数
-        total: 2
+        total: 2,
+        orderItem: null
       }
     },
     methods: {
@@ -142,6 +144,12 @@
       handleCurrentChange(val) {
         this.formSearch.pageNum = val
         this.requestData()
+      },
+      //查看订单详情
+      showDetail(orderItem) {
+        this.orderItem = orderItem
+        console.log(this.orderItem)
+        this.lookdialogVisible = true
       },
       /**
        *网络请求
@@ -255,7 +263,6 @@
      */
     mounted() {
       this.roleId = this.$store.getters.userInfo.roleId;
-      console.log(this.roleId)
       this.requestData()
       // 查询废品分类类别，下拉列表
       selAllClassification().then((res) => {
@@ -270,6 +277,13 @@
 </script>
 
 <style scoped>
+  p {
+    font-size: 16px;
+    line-height: 26px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
   #orderList {
     width: 100%;
   }
