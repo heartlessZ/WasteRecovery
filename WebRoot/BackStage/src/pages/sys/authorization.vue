@@ -33,7 +33,7 @@
                 <el-input v-model="form.perms" auto-complete="off"></el-input>
               </el-form-item>
               <el-form-item label="" :label-width="formLabelWidth">
-                <el-button type="primary" @click="onSubmit" :disabled="form.id!=null" v-text="'新增'"></el-button>
+                <el-button type="primary" @click="onSubmit" v-show="form.id==null" v-text="'新增'"></el-button>
                 <!-- <el-button type="danger" @click="deleteSelected" icon="delete" v-show="form.id && form.id!=null">删除
                 </el-button> -->
               </el-form-item>
@@ -67,7 +67,7 @@
         selectIconDialog: false,
         formLabelWidth: '100px',
         defaultProps: {
-          //children: 'jurisdiction',
+          children: 'jurisdiction',
           label: 'menuName',
           id: "id",
         },
@@ -140,7 +140,7 @@
           })
       },
       load(){
-        request.get(api.SYS_AUTHORIZATION).then(res=>{
+        request.get(api.SYS_ROLE_MENU).then(res=>{
           if(res.status){
             this.menuTree = res.data
           }

@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="6">
           <div class="el-input" style="width: 200px; ">
-            <el-select v-model="searchData.state" placeholder="请选择状态">
+            <el-select v-model="searchData.state" @change="search($event)" placeholder="请选择状态">
               <el-option label="待审核" value="0"></el-option>
               <el-option label="审核通过" value="1"></el-option>
             </el-select>

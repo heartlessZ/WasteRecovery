@@ -27,7 +27,7 @@ const routes = [
         path: '',
         component: app,
         children: [
-            { path: '', redirect:'/waste' },
+            { path: '', redirect:'/busi-console' },
             { path: '/waste', component: wasteInfo },
             { path: '/order', component: OrderList },
             { path: '/busi-console',component:BusinessConsole},
