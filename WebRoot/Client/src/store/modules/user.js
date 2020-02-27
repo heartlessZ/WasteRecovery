@@ -1,4 +1,4 @@
-import { login,phoneVeriLogin, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory } from '@/api/user'
+import { login,phoneVeriLogin, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory, getConfig} from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -14,7 +14,8 @@ const user = {
     userId: '',
     regionId: '',
     rootCategories: [],
-    childrenCategories: []
+    childrenCategories: [],
+    config:[]
   },
 
   mutations: {
@@ -47,6 +48,9 @@ const user = {
     },
     SET_CHILDRENCATEGORY: (state, category) => {
       state.childrenCategories = category
+    },
+    SET_CONFIG: (state, config) => {
+      state.config = config
     },
   },
 
@@ -152,6 +156,20 @@ const user = {
           if (res.status) {
             console.log(res)
             commit('SET_CHILDRENCATEGORY', res.records)
+          }
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 获取系统配置
+    GetConfig({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        getConfig().then((res) => {
+          if (res.status) {
+            commit('SET_CONFIG', res.data)
           }
           resolve(res)
         }).catch(error => {

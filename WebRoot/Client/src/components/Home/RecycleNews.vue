@@ -37,7 +37,7 @@
             :offset="index>1?2:2"
           >
             <div class="children-category-box">
-              <span>{{o.classificationName}}</span>
+              <span>{{o.tradeName}}</span>
               <br />
               <br />
               <span>{{o.price}}元/kg</span>

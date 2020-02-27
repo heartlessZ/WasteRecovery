@@ -90,6 +90,7 @@ export default {
   },
   mounted () {
     this.requestData()
+    $('#hero-area').addClass('limit-h')
   }
 }
 </script>
@@ -121,5 +122,10 @@ export default {
 
   a:hover {
     color: #61D2B4;
+  }
+
+  
+  .limit-h {
+    height: 96px;
   }
 </style>

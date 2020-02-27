@@ -28,12 +28,6 @@
                   订单管理
                 </el-menu-item>
               </router-link>
-              <!-- <router-link class="menu-text" to="">
-                <el-menu-item index="3">
-                  <i class="el-icon-document"></i>
-                  我的钱包
-                </el-menu-item>
-              </router-link> -->
               <router-link class="menu-text" to="/home/personal-center/user-info">
                 <el-menu-item index="4">
                   <i class="el-icon-setting"></i>
@@ -106,6 +100,7 @@ export default {
     width: 80%;
     display: flex;
     margin: auto;
+    margin-bottom: 20px;
   }
 
   .left-bar-selfinfo {

@@ -113,6 +113,15 @@ export function settledInInfo() {
   })
 }
 
+// 获取系统配置
+export function getConfig() {
+  let url = '/setting/getSetting'
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
+
 // 添加反馈api
 export function addContact(contactInfo) {
   let url = '/contact/add'

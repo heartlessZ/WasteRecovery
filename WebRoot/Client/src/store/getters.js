@@ -8,6 +8,7 @@ const getters = {
   userId: state => state.user.userId,
   regionId: state => state.user.regionId,
   rootCategories: state => state.user.rootCategories,
-  childrenCategories: state => state.user.childrenCategories
+  childrenCategories: state => state.user.childrenCategories,
+  config:state=>state.user.config
 }
 export default getters

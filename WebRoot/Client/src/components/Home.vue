@@ -166,6 +166,10 @@
         this.loading = false
         console.log(this.$store.getters.userInfo)
       })
+      
+      this.$store.dispatch('GetConfig').then(res => {
+        console.log(this.$store.getters.config)
+      })
       //查询新公告数目
       userFindNewNoticeNum().then((res) => {
         if (res.status) {
@@ -210,11 +214,4 @@
     height: 96px;
   }
 
-  .footer {
-    width: 100%;
-    bottom: 0px;
-    position: absolute;
-    ;
-    height: 92px;
-  }
 </style>
