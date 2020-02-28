@@ -122,45 +122,58 @@ export default {
   },
   methods: {
     configRoleResources() {
-      let delparams = {
-        menuId: this.checkKeys.join(","),
+      // let delparams = {
+      //   menuId: this.checkKeys.join(","),
+      //   roleId: this.form.id
+      // };
+      // if (this.checkKeys.length == 0) {
+      //   let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
+      //   if (checkedKeys.length == 0) {
+      //     this.dialogVisible = false;
+      //     return;
+      //   }
+      //   let params = { menuId: checkedKeys.join(","), roleId: this.form.id };
+      //   request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
+      //     if (res.status) {
+      //       this.$message("绑定成功");
+      //       this.dialogVisible = false;
+      //     }
+      //   });
+      // } else {
+      //   request.post(api.SYS_DELETE_ROLE_RESOURCE, delparams).then(res => {
+      //     if (res.status) {
+      //       //绑定菜单
+      //       let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
+      //       if (checkedKeys.length == 0) {
+      //         this.dialogVisible = false;
+      //         return;
+      //       }
+      //       let params = {
+      //         menuId: checkedKeys.join(","),
+      //         roleId: this.form.id
+      //       };
+      //       request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
+      //         if (res.status) {
+      //           this.$message("绑定成功");
+      //           this.dialogVisible = false;
+      //         }
+      //       });
+      //     }
+      //   });
+      // }
+      let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
+      let params = {
+        menuId: checkedKeys.join(","),
         roleId: this.form.id
       };
-      if (this.checkKeys.length == 0) {
-        let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-        if (checkedKeys.length == 0) {
-          this.dialogVisible = false;
-          return;
+      request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
+        if (res.status) {
+          this.$message("绑定成功");
+        } else {
+          this.$message(res.msg);
         }
-        let params = { menuId: checkedKeys.join(","), roleId: this.form.id };
-        request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
-          if (res.status) {
-            this.$message("绑定成功");
-            this.dialogVisible = false;
-          }
-        });
-      } else {
-        request.post(api.SYS_DELETE_ROLE_RESOURCE, delparams).then(res => {
-          if (res.status) {
-            //绑定菜单
-            let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-            if (checkedKeys.length == 0) {
-              this.dialogVisible = false;
-              return;
-            }
-            let params = {
-              menuId: checkedKeys.join(","),
-              roleId: this.form.id
-            };
-            request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
-              if (res.status) {
-                this.$message("绑定成功");
-                this.dialogVisible = false;
-              }
-            });
-          }
-        });
-      }
+        this.dialogVisible = false;
+      });
     },
     handleNodeClick(data) {
       this.form = data;

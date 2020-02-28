@@ -215,36 +215,48 @@ export default {
       // })
     },
     configUserRoles() {
-      if (this.ids.length != 0) {
-        let delparams = {
-          roleIds: this.ids.join(","),
-          userId: this.currentRow.id
-        };
-        request.post(api.SYS_DELETE_USER_ROLE, delparams).then(res => {
-          if (res.status) {
-            let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-            if (checkedKeys.length == 0) {
-              this.dialogVisible = false;
-              return;
-            }
-            let params = {
-              roleIds: checkedKeys.join(","),
-              userId: this.currentRow.id
-            };
-            request.post(api.SYS_SET_USER_ROLE, params).then(res => {
-              if (res.status) {
-                this.$message("操作成功");
-                this.dialogVisible = false;
-              }
-            });
-          }
-        });
-      } else {
-        let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-        if (checkedKeys.length == 0) {
-          this.dialogVisible = false;
-          return;
-        }
+      // if (this.ids.length != 0) {
+      //   let delparams = {
+      //     roleIds: this.ids.join(","),
+      //     userId: this.currentRow.id
+      //   };
+      //   request.post(api.SYS_DELETE_USER_ROLE, delparams).then(res => {
+      //     if (res.status) {
+      //       let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+      //       if (checkedKeys.length == 0) {
+      //         this.dialogVisible = false;
+      //         return;
+      //       }
+      //       let params = {
+      //         roleIds: checkedKeys.join(","),
+      //         userId: this.currentRow.id
+      //       };
+      //       request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+      //         if (res.status) {
+      //           this.$message("操作成功");
+      //           this.dialogVisible = false;
+      //         }
+      //       });
+      //     }
+      //   });
+      // } else {
+      //   let checkedKeys = this.$refs.roleTree.getCheckedKeys();
+      //   if (checkedKeys.length == 0) {
+      //     this.dialogVisible = false;
+      //     return;
+      //   }
+      //   let params = {
+      //     roleIds: checkedKeys.join(","),
+      //     userId: this.currentRow.id
+      //   };
+      //   request.post(api.SYS_SET_USER_ROLE, params).then(res => {
+      //     if (res.status) {
+      //       this.$message("操作成功");
+      //       this.dialogVisible = false;
+      //     }
+      //   });
+      // }
+      let checkedKeys = this.$refs.roleTree.getCheckedKeys();
         let params = {
           roleIds: checkedKeys.join(","),
           userId: this.currentRow.id
@@ -252,10 +264,11 @@ export default {
         request.post(api.SYS_SET_USER_ROLE, params).then(res => {
           if (res.status) {
             this.$message("操作成功");
-            this.dialogVisible = false;
+          }else{
+            this.$message(res.msg);
           }
+            this.dialogVisible = false;
         });
-      }
     },
     handleSizeChange(val) {
       this.tableData.pagination.pageSize = val;
