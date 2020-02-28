@@ -25,7 +25,6 @@
         <p style="border-top: 1px solid #b7bbbf;padding-top:5px "><b>卖家信息：</b></p>
         <p class="order-info" style="display: inline-block;">昵称：<span>{{item.nikeName}}</span><span class="phone">电话：{{item.phone}}</span></p>
         <p style="height: 36px;">卖家地址：{{item.address}}</p>
-        <!-- <p style="margin-top: 5px;"><b>距离:</b>约{{item.distance}}m</p> -->
         <div style="overflow: hidden;">
            <span style="float: left;font-size: 12px;line-height: 28px;"><b>距离:</b>约{{item.distance}}m</span>
            <el-button size="mini" type="info" style="float: right;" @click="onBuy(item.id)">购买</el-button>
@@ -57,7 +56,8 @@
           pageSize:10
         },
         tableData:[],
-        total:0
+        total:0,
+        list:[1,2,3]
       }
     },
     methods: {
@@ -110,7 +110,7 @@
       }
     },
     mounted() {
-      this.requestData()
+     this.requestData()
     }
   }
 </script>
@@ -124,16 +124,31 @@
   #console {
     width: 100%;
     background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
   }
   .title{
    width: 100%;
-   text-align: center;
+   display: flex;
+   justify-content: center;
   }
   .content {
     overflow: hidden;
     width: 100%;
     padding: 0px 20px 20px 20px;
     min-height: 400px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .order-item {
+    width: 300px;
+    padding: 18px;
+    border-radius: 5px;
+  }
+
+  .order-item:hover {
+    background: #F4F4F4;
   }
 
   .img_icon_error {
@@ -142,17 +157,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .order-item {
-    width: 300px;
-    float: left;
-    padding: 18px;
-    border-radius: 5px;
-  }
-
-  .order-item:hover {
-    background: #F4F4F4;
   }
 
   .myorder-number {

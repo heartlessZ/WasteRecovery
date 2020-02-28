@@ -8,6 +8,7 @@
         <el-menu
           :default-active="onRoutes"
           :default-openeds="onRouteKeys"
+          :unique-opened=true
           class="el-menu-style"
           theme="light"
           router

@@ -41,8 +41,6 @@
             <span v-if="scope.row.noticeType==3">全体公告</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="content" label="公告内容">
-        </el-table-column> -->
         <el-table-column prop="userObj.username" label="发布人" width="120" align="center">
         </el-table-column>
         <el-table-column prop="creatTime" label="发布时间" width="160" align="center">

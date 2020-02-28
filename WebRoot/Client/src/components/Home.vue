@@ -1,6 +1,5 @@
 <template>
   <div id="home">
-    <!-- Header Section Start -->
     <header id="hero-area" data-stellar-background-ratio="0.5">
       <nav id="nav" class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
         <div class="container">
@@ -166,7 +165,7 @@
         this.loading = false
         console.log(this.$store.getters.userInfo)
       })
-      
+
       this.$store.dispatch('GetConfig').then(res => {
         console.log(this.$store.getters.config)
       })
@@ -203,6 +202,8 @@
 
   #home {
     min-height: 936px;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer-text {
@@ -213,5 +214,4 @@
   .limit-h {
     height: 96px;
   }
-
 </style>
