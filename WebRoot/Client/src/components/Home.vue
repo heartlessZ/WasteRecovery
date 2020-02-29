@@ -117,83 +117,83 @@
 </template>
 
 <script>
-  import '../assets/css/bootstrap.min.css'
-  import '../assets/css/font-awesome.min.css'
-  import '../assets/css/line-icons.css'
-  import '../assets/css/owl.carousel.css'
-  import '../assets/css/owl.theme.css'
-  import '../assets/css/nivo-lightbox.css'
-  import '../assets/css/magnific-popup.css'
-  import '../assets/css/slicknav.css'
-  import '../assets/css/animate.css'
-  import '../assets/css/main.css'
-  import '../assets/css/responsive.css'
+import '../assets/css/bootstrap.min.css'
+import '../assets/css/font-awesome.min.css'
+import '../assets/css/line-icons.css'
+import '../assets/css/owl.carousel.css'
+import '../assets/css/owl.theme.css'
+import '../assets/css/nivo-lightbox.css'
+import '../assets/css/magnific-popup.css'
+import '../assets/css/slicknav.css'
+import '../assets/css/animate.css'
+import '../assets/css/main.css'
+import '../assets/css/responsive.css'
 
-  import '../assets/js/jquery-min.js'
-  import {
-    userFindNewNoticeNum
-  } from '@/api/notice.js'
-  export default {
-    name: 'Home',
-    data() {
-      return {
-        imgUrl: require('../assets/img/logo.png'),
-        loading: true,
-        count: 0,
-      }
+import '../assets/js/jquery-min.js'
+import {
+  userFindNewNoticeNum
+} from '@/api/notice.js'
+export default {
+  name: 'Home',
+  data () {
+    return {
+      imgUrl: require('../assets/img/logo.png'),
+      loading: true,
+      count: 0
+    }
+  },
+  methods: {
+    loginView () {
+      this.$router.push('/login')
     },
-    methods: {
-      loginView() {
-        this.$router.push('/login')
-      },
-      registerVew() {
-        this.$router.push('/register')
-      },
-      loadRootCategories() {
-        this.$store.dispatch('QueryRootCategory').then(res => {
-          // console.log(this.$store.getters.rootCategories)
-        })
-      },
-      //点击公告图标事件
-      onClickNotice() {
-        this.count = null
-      }
+    registerVew () {
+      this.$router.push('/register')
     },
-    created() {
-      this.loadRootCategories()
-      this.$store.dispatch('GetInfo').then(res => {
-        this.loading = false
-        console.log(this.$store.getters.userInfo)
+    loadRootCategories () {
+      this.$store.dispatch('QueryRootCategory').then(res => {
+        // console.log(this.$store.getters.rootCategories)
       })
+    },
+    // 点击公告图标事件
+    onClickNotice () {
+      this.count = null
+    }
+  },
+  created () {
+    this.loadRootCategories()
+    this.$store.dispatch('GetInfo').then(res => {
+      this.loading = false
+      console.log(this.$store.getters.userInfo)
+    })
 
-      this.$store.dispatch('GetConfig').then(res => {
-        console.log(this.$store.getters.config)
-      })
-      //查询新公告数目
-      userFindNewNoticeNum().then((res) => {
-        if (res.status) {
-          if (res.num == 0) {
-            this.count = null
-          } else {
-            this.count = res.num
-          }
+    this.$store.dispatch('GetConfig').then(res => {
+      console.log(this.$store.getters.config)
+    })
+    // 查询新公告数目
+    userFindNewNoticeNum().then((res) => {
+      if (res.status) {
+        if (res.num == 0) {
+          this.count = null
         } else {
-          this.$message.error(res.msg)
+          this.count = res.num
         }
-      }).catch((err) => {
-        this.$message.error(err.message)
-      })
-    }
+      } else {
+        this.$message.error(res.msg)
+      }
+    }).catch((err) => {
+      this.$message.error(err.message)
+    })
   }
-  $(window).on('scroll', function() {
-    if ($(window).scrollTop() > 200) {
-      $('#nav').addClass('top-nav-collapse')
-      $('#nav').addClass('menu-bg')
-    } else {
-      $('#nav').removeClass('top-nav-collapse')
-      $('#nav').removeClass('menu-bg')
-    }
-  })
+}
+$(window).on('scroll', function () {
+  if ($(window).scrollTop() > 200) {
+    $('#nav').addClass('top-nav-collapse')
+    $('#nav').addClass('menu-bg')
+  } else {
+    $('#nav').removeClass('top-nav-collapse')
+    $('#nav').removeClass('menu-bg')
+  }
+})
 </script>
 <style>
   #app {
@@ -202,8 +202,6 @@
 
   #home {
     min-height: 936px;
-    display: flex;
-    flex-direction: column;
   }
 
   .footer-text {
