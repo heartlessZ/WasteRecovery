@@ -1,7 +1,7 @@
 <template>
   <div id="orderList">
     <el-card class="contain">
-      <el-form :inline="true" :model="formSearch" class="search-form" size="mini">
+      <el-form :inline="true"  :model="formSearch" class="search-form" size="mini">
         <el-form-item>
           <el-input v-model="formSearch.address" placeholder="地址" clearable></el-input>
         </el-form-item>
@@ -52,9 +52,9 @@
         </el-table-column>
         <el-table-column prop="state" label="订单状态" width="120" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.state==1" type="warning" size="mini">进行中</el-button>
-            <el-button v-if="scope.row.state==2" type="primary" size="mini">已完成</el-button>
-            <el-button v-if="scope.row.state==3" type="info" size="mini">已取消</el-button>
+            <span v-if="scope.row.state==1"  style="color: #E6A23C;">进行中</span>
+            <span v-if="scope.row.state==2"  style="color: #69D4B7;">已完成</span>
+            <span v-if="scope.row.state==3"  style="color:#909399 ;">已取消</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="290" v-if="roleId==2">

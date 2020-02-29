@@ -44,7 +44,7 @@
                 <i class="el-icon-setting"></i>
                 退出登录
               </el-menu-item>
-              </el-menu>
+            </el-menu>
           </el-col>
         </el-row>
       </div>
@@ -56,43 +56,43 @@
 </template>
 
 <script>
-export default {
-  name: 'personal-center',
-  data () {
-    return {
-      imgUrl: require('../../assets/img/cat.jpg')
-    }
-  },
-  methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
+  export default {
+    name: 'personal-center',
+    data() {
+      return {
+        imgUrl: require('../../assets/img/cat.jpg')
+      }
     },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    logout () {
-      this.$store.dispatch('LogOut').then(res => {
-        this.$router.push('/home/overview')
-      })
-    }
-  },
-  created () {
-    this.$store.dispatch('GetInfo').then(res => {
-      if (!res.status) {
-        this.$alert('会话已经过期，请重新登录', '会话超时', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$router.push('/home/overview')
-          }
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      logout() {
+        this.$store.dispatch('LogOut').then(res => {
+          this.$router.push('/home/overview')
         })
       }
-    })
-  },
-  mounted () {
-    $('#hero-area').addClass('limit-h')
-    $('#footer').addClass('footer')
+    },
+    created() {
+      this.$store.dispatch('GetInfo').then(res => {
+        if (!res.status) {
+          this.$alert('会话已经过期，请重新登录', '会话超时', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.push('/home/overview')
+            }
+          })
+        }
+      })
+    },
+    mounted() {
+      $('#hero-area').addClass('limit-h')
+      $('#footer').addClass('footer')
+    }
   }
-}
 </script>
 <style scoped>
   .box {
@@ -129,7 +129,7 @@ export default {
 
   .left-bar {
     width: 25%;
-
+    background-color: #F8FAFC;
   }
 
   .content {
@@ -146,9 +146,12 @@ export default {
   }
 
   .footer {
-  width: 100%;
-  bottom: 0px;
-  position: absolute;
-  height: 92px;
-}
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
+    height: 92px;
+  }
+  li{
+    background-color: #F8FAFC;
+  }
 </style>

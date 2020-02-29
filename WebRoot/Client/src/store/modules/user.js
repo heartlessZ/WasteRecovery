@@ -1,5 +1,18 @@
-import { login,phoneVeriLogin, logout, getInfo, releaseOrder, queryRootCategory, queryChildrenCategory, getConfig} from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import {
+  login,
+  phoneVeriLogin,
+  logout,
+  getInfo,
+  releaseOrder,
+  queryRootCategory,
+  queryChildrenCategory,
+  getConfig
+} from '@/api/user'
+import {
+  getToken,
+  setToken,
+  removeToken
+} from '@/utils/auth'
 
 const user = {
   state: {
@@ -15,7 +28,7 @@ const user = {
     regionId: '',
     rootCategories: [],
     childrenCategories: [],
-    config:[]
+    config: []
   },
 
   mutations: {
@@ -56,10 +69,12 @@ const user = {
 
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
+    Login({
+      commit
+    }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        login(username, userInfo.password, userInfo.verifyCode).then(response => {
           if (response.status)
             commit('SET_ISLOGIN', true);
           resolve(response)
@@ -68,7 +83,9 @@ const user = {
         })
       })
     },
-    PhoneLogin({ commit }, info) {
+    PhoneLogin({
+      commit
+    }, info) {
       return new Promise((resolve, reject) => {
         phoneVeriLogin(info.phone, info.code).then(response => {
           if (response.status)
@@ -80,7 +97,10 @@ const user = {
       })
     },
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({
+      commit,
+      state
+    }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           if (response.status) {
@@ -108,7 +128,10 @@ const user = {
     },
 
     // 登出
-    LogOut({ commit, state }) {
+    LogOut({
+      commit,
+      state
+    }) {
       return new Promise((resolve, reject) => {
         logout().then((res) => {
           // commit('SET_TOKEN', '')
@@ -123,7 +146,10 @@ const user = {
     },
 
     // 发布订单
-    ReleaseOrder({ commit, state }, orderInfo) {
+    ReleaseOrder({
+      commit,
+      state
+    }, orderInfo) {
       return new Promise((resolve, reject) => {
         releaseOrder(orderInfo).then((res) => {
 
@@ -135,7 +161,10 @@ const user = {
     },
 
     // 查询分类
-    QueryRootCategory({ commit, state }, classificationName) {
+    QueryRootCategory({
+      commit,
+      state
+    }, classificationName) {
       return new Promise((resolve, reject) => {
         queryRootCategory(classificationName).then((res) => {
           if (res.status) {
@@ -150,7 +179,10 @@ const user = {
     },
 
     // 根据父Id查询子分类
-    QueryChildrenCategory({ commit, state }, classificationId) {
+    QueryChildrenCategory({
+      commit,
+      state
+    }, classificationId) {
       return new Promise((resolve, reject) => {
         queryChildrenCategory(classificationId).then((res) => {
           if (res.status) {
@@ -165,7 +197,10 @@ const user = {
     },
 
     // 获取系统配置
-    GetConfig({ commit, state }) {
+    GetConfig({
+      commit,
+      state
+    }) {
       return new Promise((resolve, reject) => {
         getConfig().then((res) => {
           if (res.status) {
@@ -179,7 +214,9 @@ const user = {
     },
 
     // 前端 登出
-    FedLogOut({ commit }) {
+    FedLogOut({
+      commit
+    }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()

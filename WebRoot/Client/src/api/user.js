@@ -5,13 +5,14 @@ import request from '@/utils/request'
  * @param {Object} username
  * @param {Object} password
  */
-export function login(username, password) {
+export function login (username, password, verifyCode) {
   return request({
     url: '/user/login',
     method: 'post',
     data: {
       username,
-      password
+      password,
+      verifyCode
     }
   })
 }
@@ -20,18 +21,18 @@ export function login(username, password) {
  * @param {Object} phone
  * @param {Object} code
  */
-export function phoneVeriLogin(phone,code) {
+export function phoneVeriLogin (phone, code) {
   return request({
-    url:'/user/loginByPhone',
-    method:'post',
-    data:{
+    url: '/user/loginByPhone',
+    method: 'post',
+    data: {
       phone,
       code
     }
   })
 }
 // 用户注册api
-export function register(userInfo) {
+export function register (userInfo) {
   return request({
     url: '/user/regist',
     method: 'post',
@@ -39,30 +40,30 @@ export function register(userInfo) {
   })
 }
 // 获取用户信息api
-export function getInfo() {
+export function getInfo () {
   return request({
     url: '/user/theUser',
-    method: 'get',
+    method: 'get'
   })
 }
 // 修改用于信息api
-export function updateUserInfo(userInfo) {
+export function updateUserInfo (userInfo) {
   return request({
-    url:'/user/edit',
-    method:'post',
-    data:userInfo
+    url: '/user/edit',
+    method: 'post',
+    data: userInfo
   })
 }
 
-//退出登录api
-export function logout() {
+// 退出登录api
+export function logout () {
   return request({
     url: '/user/logout',
     method: 'get'
   })
 }
 // 发布订单api
-export function releaseOrder(orderInfo) {
+export function releaseOrder (orderInfo) {
   return request({
     url: '/clien/wasteInformation/add',
     method: 'post',
@@ -71,10 +72,10 @@ export function releaseOrder(orderInfo) {
 }
 
 // 查询父分类集合api
-export function queryRootCategory(classificationName) {
+export function queryRootCategory (classificationName) {
   let url = '/classification/classificationList'
   if (classificationName != undefined) {
-    url += "?classificationName=" + classificationName
+    url += '?classificationName=' + classificationName
   }
   return request({
     url: url,
@@ -83,10 +84,10 @@ export function queryRootCategory(classificationName) {
 }
 
 // 根据父分类id查询子分类集合api
-export function queryChildrenCategory(classificationId) {
+export function queryChildrenCategory (classificationId) {
   let url = '/classification/classificationSonList'
   if (classificationId != undefined) {
-    url += "?classificationId=" + classificationId
+    url += '?classificationId=' + classificationId
   }
   return request({
     url: url,
@@ -95,17 +96,17 @@ export function queryChildrenCategory(classificationId) {
 }
 
 // 商家入驻api
-export function settledInApply(identityInfo) {
+export function settledInApply (identityInfo) {
   let url = '/clien/settledIn/add'
   return request({
     url: url,
     method: 'post',
-    data:identityInfo
+    data: identityInfo
   })
 }
 
 // 查询当前用户入驻状态api
-export function settledInInfo() {
+export function settledInInfo () {
   let url = '/clien/settledIn/get'
   return request({
     url: url,
@@ -114,7 +115,7 @@ export function settledInInfo() {
 }
 
 // 获取系统配置
-export function getConfig() {
+export function getConfig () {
   let url = '/setting/getSetting'
   return request({
     url: url,
@@ -123,17 +124,17 @@ export function getConfig() {
 }
 
 // 添加反馈api
-export function addContact(contactInfo) {
+export function addContact (contactInfo) {
   let url = '/contact/add'
   return request({
     url: url,
     method: 'post',
-    data:contactInfo
+    data: contactInfo
   })
 }
 
 // 发送验证码api
-export function sendSms(phone) {
+export function sendSms (phone) {
   let url = '/tencen/sendSms?phone=' + phone
   return request({
     url: url,
@@ -142,7 +143,7 @@ export function sendSms(phone) {
 }
 
 // 验证是否本机操作
-export function verificationPhone(verifiInfo) {
+export function verificationPhone (verifiInfo) {
   let url = '/user/verificationPhone'
   return request({
     url: url,
@@ -152,7 +153,7 @@ export function verificationPhone(verifiInfo) {
 }
 
 // 修改新手机号
-export function editPhone(phone) {
+export function editPhone (phone) {
   let url = '/user/editPhone?phone=' + phone
   return request({
     url: url,

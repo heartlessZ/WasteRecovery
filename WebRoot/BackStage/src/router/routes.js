@@ -20,7 +20,9 @@ const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], 
 const UserNoticeList = resolve => require(['../pages/notice/UserNoticeList.vue'], resolve)
 const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
 const BusinessConsole = resolve => require(['../pages/console/BusinessConsole.vue'], resolve)
-    // Routes
+const LoginLog = resolve => require(['../pages/log/LoginLog.vue'], resolve)
+const SystemLog = resolve => require(['../pages/log/SystemLog.vue'], resolve)
+const OnlineUserList = resolve => require(['../pages/log/OnlineUserList.vue'], resolve)
 const routes = [
     { path: '/login', component: login },
     {
@@ -35,6 +37,9 @@ const routes = [
             { path: '/system/config', component: config },
             { path: '/wallet-manage/withdraw',component: WithdrawalList},
             { path: '/wallet-manage/recharge',component: RechargeList},
+            { path: '/log/login-log',component: LoginLog},
+            { path: '/log/system-log',component: SystemLog},
+            { path: '/log/online-user',component: OnlineUserList},
             { path: '/wallet',component: MyWallet},
             { path: '/resetPwd', component: resetPwd },
             { path: '/system/menu', component: menuList },
