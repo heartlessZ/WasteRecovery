@@ -618,7 +618,7 @@
             }).catch(e => {
           })
           });
-          
+
         });
 
       },
@@ -651,7 +651,7 @@
           request.post(api.SYS_MENU_UPDATE, params)
             .then(res => {
               if(!res.status){
-                
+
               this.$message('操作失败');
               return
               }

@@ -48,7 +48,7 @@ export default {
     async showMap() {
       $("#map-container").removeClass("vanish");
       if (!this.isRun) {
-        await loadMap("8K3RjFBltDcKqGxKLKsYyxbYVzPKG9hN"); //加载引入BMap
+        await loadMap("N5Gz0uOiHk8r9fnA9pQ9M8nzWM7lcqaG"); //加载引入BMap
         this.initMap();
       }
       this.isRun = true;

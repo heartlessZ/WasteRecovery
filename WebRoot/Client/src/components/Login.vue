@@ -21,12 +21,12 @@
             </el-form-item>
             <el-form-item prop="verifycode">
               <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
-              <el-input v-model="loginForm.verifycode" placeholder="请输入验证码"></el-input>
+              <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码"></el-input>
             </el-form-item>
             <el-form-item style="margin: 0rem;">
               <div class="identifybox">
                 <div @click="refreshCode">
-                  <s-identify :identifyCode="identifyCode"></s-identify>
+                  <img :src="imgCode" />
                 </div>
                 <el-button @click="refreshCode" type="text" class="textbtn">看不清，换一张</el-button>
               </div>
@@ -65,8 +65,9 @@
 </template>
 
 <script>
-import SIdentify from '@/components/identify.vue'
-import {sendSms} from '@/api/user.js'
+import {
+  sendSms
+} from '@/api/user.js'
 export default {
   name: 'login',
   data () {
@@ -76,16 +77,6 @@ export default {
         callback(new Error('用户名不能为空'))
       } else {
         console.log('user', value)
-        callback()
-      }
-    }
-    // 验证码自定义验证规则
-    const validateVerifycode = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入验证码'))
-      } else if (value !== this.identifyCode) {
-        callback(new Error('验证码不正确!'))
-      } else {
         callback()
       }
     }
@@ -105,7 +96,7 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        verifycode: ''
+        verifyCode: ''
       },
       phLoginForm: {
         phone: '',
@@ -114,15 +105,14 @@ export default {
       loading: false,
       activeName: 'first',
       checked: false,
-      identifyCodes: '1234567890',
-      identifyCode: '',
+      imgCode: 'http://safeclean.tx-q.cn:4399/user/images/captcha',
       sendCodeBtn: {
         btntxt: '获取验证码',
         disabled: true,
         count: 0
       },
       loginBtnShow: true,
-      begin: {}, 
+      begin: {},
       loginRules: {
         // 绑定在form表单中的验证规则
         username: [{
@@ -140,12 +130,7 @@ export default {
           message: '密码长度最少为6位',
           trigger: 'blur'
         }
-        ],
-        verifycode: [{
-          required: true,
-          trigger: 'blur',
-          validator: validateVerifycode
-        }]
+        ]
       },
       phLoginRules: {
         phone: [{
@@ -157,13 +142,8 @@ export default {
       passwordType: 'password'
     }
   },
-  components: {
-    SIdentify
-  },
   mounted () {
-    // 验证码初始化
-    this.identifyCode = ''
-    this.makeCode(this.identifyCodes, 4)
+
   },
   props: [],
   methods: {
@@ -181,6 +161,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          console.log(this.loginForm)
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.loading = false
             if (res.status) {
@@ -194,6 +175,7 @@ export default {
                 center: true,
                 message: res.msg
               })
+              this.refreshCode()
             }
           })
         }
@@ -264,16 +246,8 @@ export default {
     },
     // 切换验证码
     refreshCode () {
-      this.identifyCode = ''
-      this.makeCode(this.identifyCodes, 4)
-    },
-    // 生成四位随机验证码
-    makeCode (o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ]
-      }
+      var num = Math.ceil(Math.random() * 10) // 生成一个随机数（防止缓存）
+      this.imgCode = 'http://safeclean.tx-q.cn:4399/user/images/captcha?' + num
     }
   }
 }
