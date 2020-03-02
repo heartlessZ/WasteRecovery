@@ -29,10 +29,13 @@
               <el-form-item label="链接" :label-width="formLabelWidth">
                 <el-input v-model="form.menuUrl" auto-complete="off"></el-input>
               </el-form-item>
-              <!-- <el-form-item label="是否显示" :label-width="formLabelWidth">
-                <el-radio class="radio" v-model="form.isShow" label="1">显示</el-radio>
-                <el-radio class="radio" v-model="form.isShow" label="0">不显示</el-radio>
-              </el-form-item> -->
+              <el-form-item label="标签" :label-width="formLabelWidth">
+                <el-input v-model="form.perms" auto-complete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="菜单属性" :label-width="formLabelWidth">
+                <el-radio class="radio" v-model="form.type" label="0">普通菜单</el-radio>
+                <el-radio class="radio" v-model="form.type" label="1">接口权限</el-radio>
+              </el-form-item>
               <el-form-item label="图标" :label-width="formLabelWidth">
                 <i :class="form.icon" v-model="form.icon"></i>
                 <el-button type="text" @click="selectIconDialog=true">选择</el-button>
@@ -544,7 +547,7 @@
           id: "id",
         },
         defaultParentProps: {
-          //children: 'childs',
+          children: 'childs',
           label: 'menuName',
           id: "id",
         },
@@ -557,6 +560,8 @@
           icon: '',
           menuUrl: '',
           parentId: 0,
+          perms:'',
+          type:''
         }
       }
     },
@@ -580,6 +585,8 @@
           icon: '',
           menuUrl: '',
           parentId: 0,
+          perms:'',
+          type:''
         };
       },
       deleteSelected(){
@@ -636,7 +643,9 @@
             menuName: this.form.menuName,
             menuUrl: this.form.menuUrl,
             orderNum: this.form.orderNum,
-            parentId: this.form.parentId
+            parentId: this.form.parentId,
+            perms:this.form.perms,
+            type:this.form.type
           }
           //return
           request.post(api.SYS_MENU_UPDATE, params)

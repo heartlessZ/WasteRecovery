@@ -103,7 +103,7 @@ export default {
         id: "id"
       },
       defaultMenuProps: {
-        children: "jurisdiction",
+        children: "childs",
         label: "menuName",
         id: "id"
       },
@@ -250,35 +250,48 @@ export default {
         </span>
       );
     },
+    appendKeys(data) {
+      data.forEach(element => {
+        this.checkKeys.push(element.id);
+        this.appendKeys(element.childs);
+      });
+    },
     settingResource(event, id) {
       event.stopPropagation();
       this.dialogVisible = true;
       this.dialogLoading = true;
       if (this.resourceTree == null || this.resourceTree.length <= 0) {
-        request.get(api.SYS_ROLE_MENU).then(res => {
+        request.get(api.SYS_MENU_LIST2).then(res => {
           if (res.status) {
-            console.log(res.data);
             this.resourceTree = res.data;
           }
         });
       }
       this.checkKeys = [];
       request.get(api.SYS_ROLE_AUTHORIZATION + "?reloId=" + id).then(res => {
-        if (res.status) {
-          res.data.forEach(element => {
-            this.checkKeys.push(element.id);
-          });
-          //this.$refs.resourceTree.setCheckedKeys(this.checkKeys);
-        }
-      });
-      sysApi.resourceList(id).then(res => {
         this.dialogLoading = false;
         if (!res.status) {
           return;
         }
-        res.data.forEach(element => {
-          this.checkKeys.push(element.id);
-        });
+        this.appendKeys(res.data);
+        // res.data.forEach(element => {
+        //   this.checkKeys.push(element.id);
+        //   if (element.childs.length > 0) {
+        //     element.childs.forEach(item => {
+        //       this.checkKeys.push(item.id);
+        //       if (item.childs.length > 0) {
+        //         item.childs.forEach(i => {
+        //           this.checkKeys.push(i.id);
+        //           if (i.childs.length > 0) {
+        //             i.childs.forEach(j => {
+        //               this.checkKeys.push(j.id);
+        //             });
+        //           }
+        //         });
+        //       }
+        //     });
+        //   }
+        //});
         this.$refs.resourceTree.setCheckedKeys(this.checkKeys);
         this.dialogLoading = false;
       });
