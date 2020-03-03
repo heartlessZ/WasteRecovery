@@ -52,7 +52,7 @@ const routes = [
             { path: '/system/notice', component: NoticeManager},
             { path: '/system/user-notice', component: UserNoticeList},
             { path: '/system/join-us', component: JoinUs},
-            { path: '/system/authorization', component: authorization},
+            //{ path: '/system/authorization', component: authorization},
         ]
     },
     { path: '*', component: NotFoundView }

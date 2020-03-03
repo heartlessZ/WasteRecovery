@@ -37,11 +37,11 @@
         </el-col>
         <el-col :span="6">
           <div class="el-input" style="width: 200px; ">
-            <el-select v-model="searchData.classificationId" placeholder="请选择分类">
+            <el-select v-model="searchData.classificationId" @change="loadData" clearable placeholder="请选择分类">
               <el-option
                 v-for="(item,index) in categories"
                 :key="index"
-                :label="item.classificationName"
+                :label="item.tradeName"
                 :value="item.id"
               ></el-option>
             </el-select>
@@ -52,10 +52,10 @@
     <div slot="body">
       <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
         <el-table-column prop="address" label="详细地址"></el-table-column>
-        <el-table-column prop="classificationName" label="废品类别"></el-table-column>
+        <el-table-column prop="tradeName" label="废品类别"></el-table-column>
         <el-table-column prop="weight" label="重量"></el-table-column>
         <el-table-column prop="expectedPrice" label="期望价格"></el-table-column>
-        <el-table-column prop="username" label="发布人"></el-table-column>
+        <el-table-column prop="nikeName" label="发布人"></el-table-column>
         <el-table-column prop="phone" label="手机号码"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -105,7 +105,7 @@ import * as api from "../../api";
 import testData from "../../../static/data/data.json";
 import * as sysApi from "../../services/sys";
 import request from "../../utils/request";
-import { queryRootCategory } from "../../api/user";
+import { queryRootCategory, queryChildrenCategory } from "../../api/user";
 
 export default {
   components: {
@@ -133,7 +133,7 @@ export default {
         username: "",
         phone: "",
         address: "",
-        classificationId: undefined
+        classificationId: null
       },
       tableData: {
         pagination: {
@@ -195,7 +195,7 @@ export default {
         username: this.searchData.username,
         phone: this.searchData.phone,
         address: this.searchData.address,
-        classificationId: this.searchData.classificationId,
+        classificationId: this.searchData.classificationId =='' ? null : this.searchData.classificationId,
         status:0
       };
       request.get(api.WASTE_PAGE, { params: queryString }).then(res => {
@@ -209,7 +209,7 @@ export default {
   },
   created() {
     this.loadData();
-    queryRootCategory().then(res => {
+    queryChildrenCategory().then(res => {
       if (res.status) {
         this.categories = res.records;
       }

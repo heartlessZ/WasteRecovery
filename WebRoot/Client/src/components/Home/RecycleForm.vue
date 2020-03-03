@@ -20,11 +20,11 @@
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
               
               <el-option
-                v-for="category in $store.getters.rootCategories"
+                v-for="category in $store.getters.childrenCategories"
                 :key="category.id"
-                :label="category.classificationName"
+                :label="category.tradeName"
                 :value="category.id"
-              >{{category.classificationName}}</el-option>
+              >{{category.tradeName}}</el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="家庭住址" required>
@@ -144,6 +144,7 @@ export default {
         //   console.log('error submit!!');
         //   return false;
         // }
+      this.loading = false;
         if (!valid) {
           return false;
         }

@@ -9,7 +9,7 @@ export const SYS_MENU_UPDATE = CONTEXT + '/menu/editMenu';
 export const SYS_MENU_DELETE = CONTEXT + '/menu/delSunMenu';
 export const SYS_MENU_ADD = CONTEXT + '/menu/addSunMenu';
 export const SYS_MENU_LIST = CONTEXT + '/menu/getUserMenu';
-export const SYS_MENU_LIST2 = CONTEXT + '/menu/getMenuList';
+export const SYS_MENU_LIST2 = CONTEXT + '/menu/listAll';
 
 export const SYS_ROLE_UPDATE = CONTEXT + '/role/update';
 export const SYS_ROLE_DELETE = CONTEXT + '/role/delete';
@@ -19,7 +19,7 @@ export const SYS_SET_ROLE_RESOURCE = CONTEXT + '/authorization/addauthorMenu';
 export const SYS_DELETE_ROLE_RESOURCE = CONTEXT + '/authorization/delauthorMenu';
 
 export const SYS_ROLE_MENU = CONTEXT + '/authorization/authorMenuList';
-export const SYS_ROLE_AUTHORIZATION = CONTEXT + '/authorization/selectMenuByReloId';
+export const SYS_ROLE_AUTHORIZATION = CONTEXT + '/menu/getReloMenu';
 
 export const SYS_AUTHORIZATION = CONTEXT + '/authorization/allmenuAuthority';
 export const SYS_AUTHORIZATION_ADD = CONTEXT + '/authorization/authorityMenuAdd';
@@ -41,7 +41,7 @@ export const SYS_USER_ROLE = CONTEXT + '/authorization/getByUserId';
 export const SYS_SET_USER_ROLE = CONTEXT + '/authorization/addToUser';
 export const SYS_DELETE_USER_ROLE = CONTEXT + '/authorization/delToUser';
 
-export const WASTE_PAGE = CONTEXT + '/business/list';
+export const WASTE_PAGE = CONTEXT + '/classification/list';
 
 export const ORDER_CREATE = CONTEXT + '/order/create';
 
