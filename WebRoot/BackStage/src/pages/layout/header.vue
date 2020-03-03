@@ -125,7 +125,7 @@
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
           let username = this.$store.getters.userInfo.username
-          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/"+username;
+          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + username;
           this.websock = new WebSocket(wsuri);
           this.websock.onmessage = this.websocketonmessage;
           this.websock.onopen = this.websocketonopen;
@@ -145,7 +145,12 @@
       },
       websocketonmessage(e) { //数据接收
         console.log('websocket返回数据')
-        console.log(e.data)
+        var data = JSON.parse(e.data)
+        this.$notify.info({
+          title: data.data.title,
+          message: data.data.message+data.data.sendTime
+        });
+        console.log(data)
       },
       websocketsend(Data) { //数据发送
         this.websock.send(Data);

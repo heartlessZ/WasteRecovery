@@ -74,7 +74,7 @@
           <p>卖家名：{{orderItem.user.nikeName}}</p>
           <p>卖家地址：{{orderItem.wasteInfo.address}}</p>
           <p>卖家电话：{{orderItem.user.phone}}</p>
-          <p>商家名：{{orderItem.businessname}}</p>
+          <p>商家名：{{orderItem.businessNikeName}}</p>
           <p>废品描述：{{orderItem.wasteInfo.describe}}</p>
         </div>
       </el-dialog>
