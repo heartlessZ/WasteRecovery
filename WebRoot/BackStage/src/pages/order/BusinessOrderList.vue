@@ -57,7 +57,7 @@
             <span v-if="scope.row.state==3"  style="color:#909399 ;">已取消</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="290" v-if="roleId==2">
+        <el-table-column label="操作" width="290">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
             <el-button v-if="scope.row.state==1" @click="cancelOrder(scope.row.id)" type="warning" size="mini">取消</el-button>
@@ -66,11 +66,6 @@
             <el-button v-else type="info" size="mini" disabled>完成</el-button>
             <el-button v-if="scope.row.state==1" type="info" size="mini" disabled="">删除</el-button>
             <el-button v-else @click="delOrder(scope.row.id)" type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="80" v-else>
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,10 +77,9 @@
       <el-dialog title="订单详情" :visible.sync="lookdialogVisible" width="40%">
         <div v-if="orderItem!=null">
           <p>订单号：{{orderItem.orderId}}</p>
-          <p>卖家名：{{orderItem.user.username}}</p>
+          <p>卖家名：{{orderItem.user.nikeName}}</p>
           <p>卖家地址：{{orderItem.wasteInfo.address}}</p>
           <p>卖家电话：{{orderItem.user.phone}}</p>
-          <p>商家名：{{orderItem.businessname}}</p>
           <p>废品描述：{{orderItem.wasteInfo.describe}}</p>
         </div>
       </el-dialog>
@@ -95,7 +89,7 @@
 
 <script>
   import {
-    selOrderListByPage,
+    busiFindOrderList,
     delOrderById,
     cancelOrderById,
     selAllClassification,
@@ -119,7 +113,6 @@
           endDate: '',
           classificationId: null
         },
-        roleId: null,
         lookdialogVisible: false,
         time: '',
         //数据总条数
@@ -167,11 +160,11 @@
           this.formSearch.startDate = null
           this.formSearch.endDate = null
         }
-        selOrderListByPage(this.formSearch, this.roleId).then((res) => {
+        busiFindOrderList(this.formSearch).then((res) => {
+          console.log(res)
           if (res.status) {
             this.tableData = res.records
             this.total = res.total
-            console.log(res)
           } else {
             this.$message.error("获取页面数据失败！")
           }
@@ -262,7 +255,6 @@
      * 页面挂载完成自动调用函数
      */
     mounted() {
-      this.roleId = this.$store.getters.userInfo.roleId;
       this.requestData()
       // 查询废品分类类别，下拉列表
       selAllClassification().then((res) => {

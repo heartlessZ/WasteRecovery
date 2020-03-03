@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column prop="username" label="操作人" width="120">
         </el-table-column>
-        <el-table-column prop="operation" label="操作描述" width="120" >
+        <el-table-column prop="operation" label="操作描述" width="120" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column prop="time" label="耗时" width="120" >
           <template slot-scope="scope">
@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column prop="method" label="操作方法"  :show-overflow-tooltip="true">
         </el-table-column>
-        <el-table-column prop="method" label="方法参数"  :show-overflow-tooltip="true">
+        <el-table-column prop="params" label="方法参数"  :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column prop="ip" label="IP地址" width="160">
         </el-table-column>

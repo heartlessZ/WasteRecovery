@@ -9,15 +9,8 @@
     <nav class="navbar">
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
       </a>
-      <!-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
-        <span class="sr-only">Toggle navigation</span>
-      </a> -->
-      <!-- <el-badge :value="count" class="item">
-        <i class="fa fa-envelope-o"></i>
-      </el-badge> -->
       <div class="navbar-custom-menu">
-
-        <el-dropdown class="navbar-dropdown" v-if="$store.getters.userInfo.roleId==2">
+        <el-dropdown class="navbar-dropdown">
           <div class="el-dropdown-link" style="height: auto;line-height: inherit" @click="onClickNotice">
             <el-badge :value="count" class="item" style="margin-right: 10px;">
               <i class="el-icon-message-solid" style="font-size: 20px;"></i>
@@ -71,10 +64,10 @@
       return {
         showMessageBox: false,
         showProfileBox: false,
-        //userInfo: this.$store.getters.user.userInfo,
         list: [],
-        count: 0,
+        count: null,
         show: true,
+        websock: null
       }
     },
     computed: mapGetters({
@@ -82,6 +75,13 @@
       userInfo: 'userInfo',
       device: 'device',
     }),
+    created() {
+
+    },
+    beforeDestroy() {
+      console.log('销毁')
+      this.websock.close() //离开路由之后断开websocket连接
+    },
     methods: {
       toggleMenu(collapsed, isMobile) {
         if (isMobile) {
@@ -120,6 +120,38 @@
         if (!this.$el.querySelector('li.user-menu').contains(evt.target)) {
           this.showProfileBox = false
         }
+      },
+      initWebSocket() { //初始化weosocket
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+          let username = this.$store.getters.userInfo.username
+          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/"+username;
+          this.websock = new WebSocket(wsuri);
+          this.websock.onmessage = this.websocketonmessage;
+          this.websock.onopen = this.websocketonopen;
+          this.websock.onerror = this.websocketonerror;
+          this.websock.onclose = this.websocketclose;
+          console.log("初始化")
+        } else {
+          alert('当前浏览器 Not support websocket')
+        }
+      },
+      websocketonopen() { //连接建立之后执行send方法发送数据
+        console.log("连接成功!")
+      },
+      websocketonerror() { //连接建立失败重连
+        console.log("连接失败调用")
+        this.initWebSocket();
+      },
+      websocketonmessage(e) { //数据接收
+        console.log('websocket返回数据')
+        console.log(e.data)
+      },
+      websocketsend(Data) { //数据发送
+        this.websock.send(Data);
+      },
+      websocketclose(e) { //关闭
+        console.log('断开连接', e);
       }
     },
     created() {
@@ -135,13 +167,18 @@
       //查询新公告数目
       userFindNewNoticeNum().then((res) => {
         if (res.status) {
-          this.count = res.num
+          if (res.num == 0) {
+            this.count = null
+          } else {
+            this.count = res.num
+          }
         } else {
           this.$message.error(res.msg)
         }
       }).catch((err) => {
         this.$message.error(err.message)
       })
+      this.initWebSocket();
     },
   }
 </script>

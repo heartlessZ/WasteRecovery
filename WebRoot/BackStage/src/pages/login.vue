@@ -89,14 +89,6 @@ export default {
         }
       });
     }
-    // loginSuccess({ sid, user, redirectUrl }) {
-    //   auth.login(sid);
-    //   window.sessionStorage.setItem("user-info", JSON.stringify(user));
-    //   this.setUserInfo(user);
-    //   this.$http.defaults.headers.common["authSid"] = sid;
-    //   this.loadMenuList();
-    //   redirectUrl && this.$router.push({ path: redirectUrl });
-    // }
   }
 };
 </script>

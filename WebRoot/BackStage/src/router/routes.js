@@ -7,7 +7,8 @@ import sysUser from "../pages/sys/user.vue";
 import userAdd from "../pages/sys/userAdd.vue";
 import resetPwd from "../pages/resetPwd.vue";
 
-const OrderList = resolve => require(['../pages/order/OrderList'], resolve)
+const AdminOrderList = resolve => require(['../pages/order/AdminOrderList.vue'], resolve)
+const BusinessOrderList = resolve => require(['../pages/order/BusinessOrderList.vue'], resolve)
 const WithdrawalList = resolve => require(['../pages/walletmgr/withdrawalList.vue'], resolve)
 const RechargeList = resolve => require(['../pages/walletmgr/rechargeList.vue'], resolve)
 const wasteInfo = resolve => require(['../pages/wasteInfo/wasteInfo'], resolve)
@@ -31,7 +32,8 @@ const routes = [
         children: [
             { path: '', redirect:'/busi-console' },
             { path: '/waste', component: wasteInfo },
-            { path: '/order', component: OrderList },
+            { path: '/admin-order', component: AdminOrderList},
+            { path: '/business-order', component: BusinessOrderList},
             { path: '/busi-console',component:BusinessConsole},
             { path: '/personal-center', component: personalCenter },
             { path: '/system/config', component: config },
