@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
-// 登录api
-export function login(username, password) {
+/**
+ * 用户名登录
+ */
+export function login (userInfo) {
   return request({
     url: '/user/login',
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    data: userInfo
   })
 }
+
 // 用户注册api
 export function register(userInfo) {
   return request({
