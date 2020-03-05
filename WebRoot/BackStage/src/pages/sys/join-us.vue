@@ -44,7 +44,7 @@
         <el-table-column prop="businessName" label="营业执照名"></el-table-column>
         <el-table-column label="操作" width="285">
           <template slot-scope="scope">
-            <el-button size="small" type="info" icon="setting" @click="dialogVisible=true">查看详情</el-button>
+            <el-button size="small" type="info" icon="setting" @click="showDetail(scope.row)">查看详情</el-button>
             <!-- <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
             <el-button size="small" type="success" v-show="scope.row.state=='0'" @click="handleStatus(scope.$index, scope.row)">通过</el-button>
             <!-- <el-button
@@ -148,6 +148,10 @@ export default {
     };
   },
   methods: {
+    showDetail(data){
+      this.dialogVisible = true
+      this.currentRow = data
+    },
     search(target) {
       this.loadData();
     },
