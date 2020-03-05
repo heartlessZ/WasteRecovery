@@ -49,7 +49,7 @@ export default {
     return {
       loading: false,
       form: {
-        username: "123456",
+        username: "admin",
         password: "123456"
       }
     };
