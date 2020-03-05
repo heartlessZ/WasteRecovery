@@ -3,25 +3,23 @@
   <div slot="header" class="clearfix">
     <span>系统配置</span>
   </div>
-  <el-table
-      :data="tableData"
-      style="width: 100%">
-      <!-- <el-table-column
-        prop="vkey"
-        label="配置名"
-        width="180">
-      </el-table-column> -->
-      <el-table-column
-        prop="vdescribe"
-        label="配置描述">
-      </el-table-column>
-      <el-table-column
-        prop="vvalue"
-        label="值">
-      </el-table-column>
-    </el-table>
+   <vxe-table
+     border
+     resizable
+     :data="tableData"
+     :edit-config="{trigger: 'dblclick', mode: 'cell'}">
+     <vxe-table-column field="vkey" title="配置key"></vxe-table-column>
+     <vxe-table-column field="vdescribe" title="配置名"></vxe-table-column>
+     <vxe-table-column field="vvalue" title="配置描述" :edit-render="{name: 'input', attrs: {type: 'vvalue'}}"></vxe-table-column>
+     <vxe-table-column title="操作" width="200">
+       <template v-slot="{ row, rowIndex }">
+         <template>
+           <vxe-button status="primary" @click="saveEvent(row)" :loading="row.loading">更新</vxe-button>
+         </template>
+       </template>
+     </vxe-table-column>
+   </vxe-table>
 </el-card>
-    
   </template>
 
   <script>
@@ -30,15 +28,39 @@ import * as api from "../../api";
     export default {
       data() {
         return {
-          tableData: []
+          tableData: [],
+
         }
       },
-      created(){
+      methods: {
+        getData(){
           request.get(api.SYS_CONFIG_LIST).then(res=>{
-              if(res.status){
-                  this.tableData = res.data
-              }
+            if(res.status){
+              this.tableData = res.data
+            }
           })
+        },
+        saveEvent (row, field) {
+          let params =  {
+            vkey: row.vkey,
+            describe:row.vdescribe,
+            vvalue:row.vvalue
+          }
+          console.log(row)
+          console.log(field)
+          request.post(api.SYS_CONFIG_EDIT, params)
+            .then(res => {
+            if(res.status){
+              this.$message(res.msg);
+            }else {
+              this.$message(res.msg);
+
+            }
+          })
+        },
+      },
+      created(){
+          this.getData();
       }
     }
   </script>
@@ -56,5 +78,5 @@ import * as api from "../../api";
   .box-card {
     width: 100%;
   }
-  
+
   </style>

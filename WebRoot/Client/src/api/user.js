@@ -2,20 +2,15 @@ import request from '@/utils/request'
 
 /**
  * 用户名登录
- * @param {Object} username
- * @param {Object} password
  */
-export function login (username, password, verifyCode) {
+export function login (userInfo) {
   return request({
     url: '/user/login',
     method: 'post',
-    data: {
-      username,
-      password,
-      verifyCode
-    }
+    data: userInfo
   })
 }
+
 /**
  * 手机验证码登录
  * @param {Object} phone

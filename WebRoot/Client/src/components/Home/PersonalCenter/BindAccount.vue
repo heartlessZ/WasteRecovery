@@ -62,20 +62,17 @@ export default {
           }
           verificationPhone(info).then(res => {
             if (res.status) {
-              editPhone(this.applyForm.newTelNum).then(r => {
-                if (r.status) {
-                  this.$notify({
-                    title: '操作提示',
-                    message: '绑定新手机号成功',
-                    type: 'success',
-                    offset: 70
-                  })
-                }
+              console.log(res)
+              this.$notify({
+                title: '操作提示',
+                message: res.msg,
+                type: 'success',
+                offset: 70
               })
             } else {
               this.$notify({
                 title: '操作提示',
-                message: '验证失败',
+                message: res.msg,
                 type: 'error',
                 offset: 70
               })
@@ -88,7 +85,6 @@ export default {
     },
     sendCode () {
       let that = this
-
       // 发送验证码
       sendSms(this.$store.getters.userInfo.phone).then(res => {
         if (res.status) {

@@ -78,9 +78,7 @@
         <div id="head-container" class="row justify-content-md-center">
           <div class="col-md-10">
             <div class="contents text-center">
-              <h1 class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="0.3s">一句响亮的口号</h1>
-              <p class="lead wow fadeIn" data-wow-duration="1000ms" data-wow-delay="400ms">这个网站是干什么的</p>
-              <!-- <a href="#" class="btn btn-common wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">Download</a> -->
+              <h1 class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="0.3s" style="font-family: FangSong;">无废城市，你我同行</h1>
             </div>
           </div>
         </div>

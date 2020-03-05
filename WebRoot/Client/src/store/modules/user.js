@@ -19,7 +19,7 @@ const user = {
     token: '1234',
     name: '',
     nickName: '',
-    //头像
+    // 头像
     avatar: '',
     isLogin: false,
     roles: [],
@@ -45,7 +45,7 @@ const user = {
       state.roles = roles
     },
     SET_ISLOGIN: (state, isLogin) => {
-      state.isLogin = isLogin;
+      state.isLogin = isLogin
     },
     SET_USER: (state, userInfo) => {
       state.userInfo = userInfo
@@ -64,32 +64,30 @@ const user = {
     },
     SET_CONFIG: (state, config) => {
       state.config = config
-    },
+    }
   },
 
   actions: {
     // 登录
-    Login({
+    Login ({
       commit
     }, userInfo) {
-      const username = userInfo.username.trim()
+      userInfo.username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password, userInfo.verifyCode).then(response => {
-          if (response.status)
-            commit('SET_ISLOGIN', true);
+        login(userInfo).then(response => {
+          if (response.status) { commit('SET_ISLOGIN', true) }
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    PhoneLogin({
+    PhoneLogin ({
       commit
     }, info) {
       return new Promise((resolve, reject) => {
         phoneVeriLogin(info.phone, info.code).then(response => {
-          if (response.status)
-            commit('SET_ISLOGIN', true);
+          if (response.status) { commit('SET_ISLOGIN', true) }
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -97,7 +95,7 @@ const user = {
       })
     },
     // 获取用户信息
-    GetInfo({
+    GetInfo ({
       commit,
       state
     }) {
@@ -111,7 +109,7 @@ const user = {
             }
             commit('SET_NAME', data.username)
             commit('SET_AVATAR', data.avatar)
-            //console.log(data[0].regionId)
+            // console.log(data[0].regionId)
             commit('SET_USER', data)
             commit('SET_USERID', data.id)
             commit('SET_REGIONID', data.regionId)
@@ -128,7 +126,7 @@ const user = {
     },
 
     // 登出
-    LogOut({
+    LogOut ({
       commit,
       state
     }) {
@@ -136,7 +134,7 @@ const user = {
         logout().then((res) => {
           // commit('SET_TOKEN', '')
           // commit('SET_ROLES', [])
-          //removeToken()
+          // removeToken()
           commit('SET_ISLOGIN', false)
           resolve(res)
         }).catch(error => {
@@ -146,13 +144,12 @@ const user = {
     },
 
     // 发布订单
-    ReleaseOrder({
+    ReleaseOrder ({
       commit,
       state
     }, orderInfo) {
       return new Promise((resolve, reject) => {
         releaseOrder(orderInfo).then((res) => {
-
           resolve(res)
         }).catch(error => {
           reject(error)
@@ -161,7 +158,7 @@ const user = {
     },
 
     // 查询分类
-    QueryRootCategory({
+    QueryRootCategory ({
       commit,
       state
     }, classificationName) {
@@ -179,7 +176,7 @@ const user = {
     },
 
     // 根据父Id查询子分类
-    QueryChildrenCategory({
+    QueryChildrenCategory ({
       commit,
       state
     }, classificationId) {
@@ -197,7 +194,7 @@ const user = {
     },
 
     // 获取系统配置
-    GetConfig({
+    GetConfig ({
       commit,
       state
     }) {
@@ -214,7 +211,7 @@ const user = {
     },
 
     // 前端 登出
-    FedLogOut({
+    FedLogOut ({
       commit
     }) {
       return new Promise(resolve => {

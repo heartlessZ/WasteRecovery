@@ -26,9 +26,9 @@
             <el-form-item style="margin: 0rem;">
               <div class="identifybox">
                 <div @click="refreshCode">
-                  <img :src="imgCode" />
+                  <img :src="imgCode"/>
                 </div>
-                <el-button @click="refreshCode" type="text" class="textbtn">看不清，换一张</el-button>
+                 <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
               </div>
             </el-form-item>
             <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
@@ -96,7 +96,8 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        verifyCode: ''
+        verifyCode: '',
+        rememberMe: false
       },
       phLoginForm: {
         phone: '',
@@ -104,7 +105,6 @@ export default {
       },
       loading: false,
       activeName: 'first',
-      checked: false,
       imgCode: 'http://safeclean.tx-q.cn:4399/user/images/captcha',
       sendCodeBtn: {
         btntxt: '获取验证码',
@@ -240,10 +240,6 @@ export default {
       this.resetForm('loginForm')
       this.resetForm('phLoginForm')
     },
-    // 生成随机数
-    randomNum (min, max) {
-      return Math.floor(Math.random() * (max - min) + min)
-    },
     // 切换验证码
     refreshCode () {
       var num = Math.ceil(Math.random() * 10) // 生成一个随机数（防止缓存）
@@ -289,5 +285,9 @@ export default {
 
   .iconstyle {
     color: #61d2b4;
+  }
+  .el-checkbox{
+    line-height: 40px;
+    text-align: center;
   }
 </style>
