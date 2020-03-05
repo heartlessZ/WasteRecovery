@@ -43,10 +43,14 @@
             <span>{{scope.row.wasteInfo.weight}}kg</span>
           </template>
         </el-table-column>
+        <el-table-column prop="user.nikeName" label="卖家昵称" align="center" width="120">
+        </el-table-column>
         <el-table-column prop="wasteInfo.expectedPrice" label="卖家期望价格" width="140" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.wasteInfo.expectedPrice}}元</span>
           </template>
+        </el-table-column>
+        <el-table-column prop="businessNikeName" label="商家昵称" align="center" width="120">
         </el-table-column>
         <el-table-column prop="creatTime" label="下单时间" align="center">
         </el-table-column>
