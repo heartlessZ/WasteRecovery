@@ -3,7 +3,7 @@
     class="main-sidebar animated"
     :class="{ showSlide: sidebar.show, hideSlide: !sidebar.show, expandSide:(!sidebar.collapsed||device.isMobile)}"
   >
-    <el-scrollbar tag="div" wrapClass="vue-scrollbar" v-if="(!sidebar.collapsed||device.isMobile)">
+    <el-scrollbar tag="div" wrapClass="vue-scrollbar" v-if="(device.isMobile)">
       <div class="sidebar">
         <el-menu
           :default-active="onRoutes"
@@ -12,7 +12,7 @@
           class="el-menu-style"
           theme="light"
           router
-          :collapse="sidebar.collapsed&&!device.isMobile"
+          :collapse="sidebar.collapsed"
           @select="handleSelect"
         >
           <template v-for="item in menuList">
@@ -27,7 +27,7 @@
         class="el-menu-style"
         theme="light"
         router
-        :collapse="sidebar.collapsed&&!device.isMobile"
+        :collapse="sidebar.collapsed"
         @select="handleSelect"
       >
         <template v-for="item in menuList">
@@ -41,7 +41,6 @@
 import subMenu from "./subMenu.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import types from "../store/mutation-types";
-
 export default {
   props: {
     show: Boolean
@@ -115,6 +114,7 @@ export default {
   }
 };
 </script>
+
 <style>
 .showSlide {
   animation-duration: 0.2s;
