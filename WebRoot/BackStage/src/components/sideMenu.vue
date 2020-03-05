@@ -3,7 +3,7 @@
     class="main-sidebar animated"
     :class="{ showSlide: sidebar.show, hideSlide: !sidebar.show, expandSide:(!sidebar.collapsed||device.isMobile)}"
   >
-    <el-scrollbar tag="div" wrapClass="vue-scrollbar" v-if="(device.isMobile)">
+    <el-scrollbar tag="div" wrapClass="vue-scrollbar" v-if="(sidebar.collapsed||device.isMobile)">
       <div class="sidebar">
         <el-menu
           :default-active="onRoutes"
@@ -12,7 +12,7 @@
           class="el-menu-style"
           theme="light"
           router
-          :collapse="sidebar.collapsed"
+          :collapse="!sidebar.collapsed&&sidebar.collapsed"
           @select="handleSelect"
         >
           <template v-for="item in menuList">
@@ -27,7 +27,7 @@
         class="el-menu-style"
         theme="light"
         router
-        :collapse="sidebar.collapsed"
+        :collapse="!sidebar.collapsed&&sidebar.collapsed"
         @select="handleSelect"
       >
         <template v-for="item in menuList">
