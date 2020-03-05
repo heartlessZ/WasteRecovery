@@ -3,11 +3,12 @@ import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
-axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
+ axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
+// axios.defaults.baseURL = 'http://localhost:4399';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // 创建axios实例
 const service = axios.create({
-  baseURL: 'http://safeclean.tx-q.cn:4399', // api的base_url
+  // baseURL: 'http://safeclean.tx-q.cn:4399', // api的base_url
   timeout: 15000 // 请求超时时间
 })
 
