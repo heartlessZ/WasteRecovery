@@ -8,8 +8,8 @@
      resizable
      :data="tableData"
      :edit-config="{trigger: 'dblclick', mode: 'cell'}">
-     <vxe-table-column field="vkey" v-show="false" title="配置key"></vxe-table-column>
-     <vxe-table-column field="vdescribe" title="配置名" :edit-render="{name: 'input', attrs: {type: 'vdescribe'}}"></vxe-table-column>
+     <vxe-table-column field="vkey" title="配置key"></vxe-table-column>
+     <vxe-table-column field="vdescribe" title="配置名"></vxe-table-column>
      <vxe-table-column field="vvalue" title="配置描述" :edit-render="{name: 'input', attrs: {type: 'vvalue'}}"></vxe-table-column>
      <vxe-table-column title="操作" width="200">
        <template v-slot="{ row, rowIndex }">
