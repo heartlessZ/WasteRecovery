@@ -124,8 +124,7 @@
       initWebSocket() { //初始化weosocket
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-          let username = this.$store.getters.userInfo.username
-          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + username;
+          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + this.userInfo.username;
           this.websock = new WebSocket(wsuri);
           this.websock.onmessage = this.websocketonmessage;
           this.websock.onopen = this.websocketonopen;

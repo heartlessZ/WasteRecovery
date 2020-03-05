@@ -53,7 +53,7 @@
         formSearch:{
           distance:null,
           pageNum:1,
-          pageSize:10
+          pageSize:8
         },
         tableData:[],
         total:0,
