@@ -85,10 +85,6 @@ export default {
   },
   mounted() {
     let route = this.$route;
-    //      console.log(route)
-    //      if (route.name) {
-    //        this.shouldExpandMatchItem(route)
-    //      }
   },
   created: function() {
     this.$store.dispatch("GetInfo").then(res => {

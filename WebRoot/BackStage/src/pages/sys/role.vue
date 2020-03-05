@@ -97,6 +97,7 @@ export default {
       dialogAuthorityLoading: false,
       dialogAuthorityVisible: false,
       formLabelWidth: "100px",
+      currentRoleId:null,
       defaultProps: {
         children: "children",
         label: "roleName",
@@ -122,49 +123,10 @@ export default {
   },
   methods: {
     configRoleResources() {
-      // let delparams = {
-      //   menuId: this.checkKeys.join(","),
-      //   roleId: this.form.id
-      // };
-      // if (this.checkKeys.length == 0) {
-      //   let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-      //   if (checkedKeys.length == 0) {
-      //     this.dialogVisible = false;
-      //     return;
-      //   }
-      //   let params = { menuId: checkedKeys.join(","), roleId: this.form.id };
-      //   request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
-      //     if (res.status) {
-      //       this.$message("绑定成功");
-      //       this.dialogVisible = false;
-      //     }
-      //   });
-      // } else {
-      //   request.post(api.SYS_DELETE_ROLE_RESOURCE, delparams).then(res => {
-      //     if (res.status) {
-      //       //绑定菜单
-      //       let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
-      //       if (checkedKeys.length == 0) {
-      //         this.dialogVisible = false;
-      //         return;
-      //       }
-      //       let params = {
-      //         menuId: checkedKeys.join(","),
-      //         roleId: this.form.id
-      //       };
-      //       request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
-      //         if (res.status) {
-      //           this.$message("绑定成功");
-      //           this.dialogVisible = false;
-      //         }
-      //       });
-      //     }
-      //   });
-      // }
       let checkedKeys = this.$refs.resourceTree.getCheckedKeys();
       let params = {
         menuId: checkedKeys.join(","),
-        roleId: this.form.id
+        roleId: this.currentRoleId
       };
       request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
         if (res.status) {
@@ -257,6 +219,7 @@ export default {
       });
     },
     settingResource(event, id) {
+      this.currentRoleId = id
       event.stopPropagation();
       this.dialogVisible = true;
       this.dialogLoading = true;
@@ -274,24 +237,6 @@ export default {
           return;
         }
         this.appendKeys(res.data);
-        // res.data.forEach(element => {
-        //   this.checkKeys.push(element.id);
-        //   if (element.childs.length > 0) {
-        //     element.childs.forEach(item => {
-        //       this.checkKeys.push(item.id);
-        //       if (item.childs.length > 0) {
-        //         item.childs.forEach(i => {
-        //           this.checkKeys.push(i.id);
-        //           if (i.childs.length > 0) {
-        //             i.childs.forEach(j => {
-        //               this.checkKeys.push(j.id);
-        //             });
-        //           }
-        //         });
-        //       }
-        //     });
-        //   }
-        //});
         this.$refs.resourceTree.setCheckedKeys(this.checkKeys);
         this.dialogLoading = false;
       });
