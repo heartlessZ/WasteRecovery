@@ -10,13 +10,17 @@ import Element from "element-ui";
 import './assets/theme/index.css'
 import ImpPanel from "./components/panel.vue";
 
-Vue.prototype.$http = axios
-Vue.axios = axios
+Vue.prototype.$http = axios;
+Vue.axios = axios;
 Vue.http = axios;
 Vue.use(axios);
-
 Vue.use(Element);
 
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/index.css'
+
+Vue.use(VXETable)
 Vue.component(ImpPanel.name, ImpPanel);
 
 Vue.use(VueProgressBar, {
