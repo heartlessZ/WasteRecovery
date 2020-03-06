@@ -9,7 +9,7 @@
       <div class="row category-recycle">
         <el-row :gutter="20">
           <el-col
-            :span="4"
+            :span="3"
             v-for="(o,index) in $store.getters.rootCategories"
             :key="o.id"
             :offset="index>1?2:2"
@@ -61,7 +61,8 @@ export default {
   methods: {
     getDataList() {
       this.$store.dispatch("QueryRootCategory").then(res => {
-        //console.log(this.$store.getters.rootCategories)
+        if(res.status)
+          this.showChildrenCategory(res.records[0].id)
       });
     },
     showChildrenCategory(id) {
@@ -98,6 +99,7 @@ export default {
   align-items: center;
   flex-flow: column;
   display: flex;
+  min-height: 100px;
 }
 .category-price-range {
   font-size: 1.1rem;

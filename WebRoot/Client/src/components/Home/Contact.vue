@@ -10,11 +10,11 @@
                 <!-- <p>Centerville Road, DE 19808, US </p> -->
                 <p class="phone">
                   Phone:
-                  <span>(+94 123 456 789)</span>
+                  <span>12345678901</span>
                 </p>
                 <p class="email">
                   E-mail:
-                  <span>(contact@mate.com)</span>
+                  <span>66897683@qq.com</span>
                 </p>
               </div>
               <div class="social-icons">
