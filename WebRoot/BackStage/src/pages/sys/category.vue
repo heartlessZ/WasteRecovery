@@ -207,7 +207,7 @@ export default {
       request
         .get(api.WASTE_CATEGORY_PARENT_DELETE + "?id=" + this.form.id)
         .then(res => {
-          this.$message("操作成功");
+          this.$message(res.msg);
           this.load();
         })
         .catch(e => {});
@@ -216,7 +216,7 @@ export default {
       request
         .get(api.WASTE_CATEGORY_CHILDREN_DELETE + "?id=" + this.formChildren.id)
         .then(res => {
-          this.$message("操作成功");
+          this.$message(res.msg);
           this.load();
         })
         .catch(e => {});
@@ -257,18 +257,18 @@ export default {
     onSubmit() {
         if(!this.form.imgUrl){
             this.$message("请上传图标")
-            return 
+            return
         }
       if (this.form.id == null) {
         //添加一级分类
         request
           .post(api.WASTE_CATEGORY_PARENT_ADD, this.form)
           .then(res => {
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
           })
           .catch(e => {
-            
+
           });
       } else {
         // let params = {
@@ -284,10 +284,10 @@ export default {
           .post(api.WASTE_CATEGORY_PARENT_UPDATE, this.form)
           .then(res => {
             if (!res.status) {
-              this.$message("操作失败");
+              this.$message(res.msg);
               return;
             }
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
           })
           .catch(e => {
@@ -302,21 +302,21 @@ export default {
         request
           .post(api.WASTE_CATEGORY_CHILDREN_ADD, this.formChildren)
           .then(res => {
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
           })
           .catch(e => {
-            
+
           });
       } else {
         request
           .post(api.WASTE_CATEGORY_CHILDREN_UPDATE, this.formChildren)
           .then(res => {
             if (!res.status) {
-              this.$message("操作失败");
+              this.$message(res.msg);
               return;
             }
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
           })
           .catch(e => {

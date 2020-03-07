@@ -160,7 +160,7 @@ export default {
       this.currentRow = row;
       request.post(api.ORDER_CREATE+"?scInfoReId="+row.id).then(res=>{
         if(res.status){
-          this.$message("接单成功")
+          this.$message(res.msg)
           this.loadData()
         }else{
           this.$message(res.msg)

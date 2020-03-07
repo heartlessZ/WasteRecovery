@@ -12,7 +12,8 @@
           class="el-menu-style"
           theme="light"
           router
-          :collapse="!sidebar.collapsed&&sidebar.collapsed"
+          :collapse="sidebar.collapsed"
+
           @select="handleSelect"
         >
           <template v-for="item in menuList">
@@ -27,7 +28,7 @@
         class="el-menu-style"
         theme="light"
         router
-        :collapse="!sidebar.collapsed&&sidebar.collapsed"
+        :collapse="sidebar.collapsed"
         @select="handleSelect"
       >
         <template v-for="item in menuList">

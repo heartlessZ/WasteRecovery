@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleChange(file, fileList) {
-      
+
     },
     handleRemove(file, fileList) {
       let urls = []
@@ -47,7 +47,7 @@ export default {
       fileList.forEach(item => {
         urls.push(item.response.data.imgurl)
       });
-      console.log(urls)
+      // console.log(urls)
       this.$emit("getimageurl", urls);
     }
   }

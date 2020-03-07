@@ -66,7 +66,7 @@
           label="状态">
           <template slot-scope="scope">
             {{ scope.row.status===1 ? '已激活' : '未激活' }}
-            
+
           </template>
         </el-table-column>-->
         <el-table-column label="操作" width="285">
@@ -198,7 +198,6 @@ export default {
       }
       request.get(api.SYS_USER_ROLE + "?userId=" + row.id).then(res => {
         if (res.status) {
-          console.log(res.data);
           this.ids = [];
           res.data.forEach(item => {
             this.ids.push(item.id);
@@ -279,13 +278,16 @@ export default {
       this.loadData();
     },
     handleEdit(index, row) {
+
       this.$router.push({ path: "userAdd", query: { id: row.id } });
     },
     handleDelete(index, row) {
       request.get(api.SYS_USER_DELETE + "?id=" + row.id).then(res => {
         if (res.status) {
-          this.$message("删除成功");
+          this.$message(res.msg);
           this.loadData();
+        }else {
+          this.$message(res.msg);
         }
       });
     },
@@ -294,8 +296,10 @@ export default {
         .get(api.SYS_USER_UPDATE_STATUS + "?UserId=" + row.id)
         .then(res => {
           if (res.status) {
-            this.$message("修改状态成功");
+            this.$message(res.msg);
             this.loadData();
+          }else {
+            this.$message(res.msg);
           }
         });
     },

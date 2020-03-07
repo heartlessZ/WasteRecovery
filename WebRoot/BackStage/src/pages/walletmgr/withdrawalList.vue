@@ -125,10 +125,11 @@
             this.tableData = res.records
             this.total = res.total
           }else{
-            this.$message.error('查询提现列表失败！')
+            this.$message.error(res.msg)
           }
         }).catch((err) => {
           this.$message.error(err.message)
+
         })
       },
       /**

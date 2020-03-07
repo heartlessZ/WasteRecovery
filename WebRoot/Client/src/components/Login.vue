@@ -28,7 +28,7 @@
                 <div @click="refreshCode">
                   <img :src="imgCode"/>
                 </div>
-                 <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
+                 <el-checkbox v-model="loginForm.rememberMe">7天免登陆</el-checkbox>
               </div>
             </el-form-item>
             <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
@@ -76,7 +76,7 @@ export default {
       if (!value) {
         callback(new Error('用户名不能为空'))
       } else {
-        console.log('user', value)
+        // console.log('user', value)
         callback()
       }
     }
@@ -161,7 +161,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          console.log(this.loginForm)
+          // console.log(this.loginForm)
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.loading = false
             if (res.status) {
@@ -190,6 +190,7 @@ export default {
             code: this.phLoginForm.verifycode
           }
           this.$store.dispatch('PhoneLogin', info).then(res => {
+            // console.log(res)
             if (res.status) {
               this.$router.push({
                 path: '/home'

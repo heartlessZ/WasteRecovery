@@ -161,11 +161,11 @@ export default {
     this.loadRootCategories()
     this.$store.dispatch('GetInfo').then(res => {
       this.loading = false
-      console.log(this.$store.getters.userInfo)
+      // console.log(this.$store.getters.userInfo)
     })
 
     this.$store.dispatch('GetConfig').then(res => {
-      console.log(this.$store.getters.config)
+      // console.log(this.$store.getters.config)
     })
     // 查询新公告数目
     userFindNewNoticeNum().then((res) => {

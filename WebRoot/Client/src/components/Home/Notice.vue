@@ -55,7 +55,7 @@ export default {
         if (res.status) {
           this.tableData = res.records
           this.total = res.total
-          console.log(res.records)
+          // console.log(res.records)
         } else {
           this.$message.error(res.msg)
         }
@@ -124,7 +124,7 @@ export default {
     color: #61D2B4;
   }
 
-  
+
   .limit-h {
     height: 96px;
   }

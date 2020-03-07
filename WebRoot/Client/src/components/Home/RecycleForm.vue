@@ -18,7 +18,7 @@
           </el-form-item>
           <el-form-item label="废品类别" prop="classificationId">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
-              
+
               <el-option
                 v-for="category in $store.getters.childrenCategories"
                 :key="category.id"
@@ -132,7 +132,7 @@ export default {
       this.form.latitude = String(point.lat);
     },
     getImageUrl(urls) {
-      console.log(urls);
+      // console.log(urls);
       this.form.photos = urls[0];
     },
     onSubmit(formName) {
@@ -190,7 +190,7 @@ export default {
       //this.form.regionId = this.$store.getters.regionId;
       this.form.regionId = 1;
       //this.form.userId = this.$store.getters.userId;
-      console.log(this.form);
+      // console.log(this.form);
       releaseOrder(this.form)
         .then(res => {
           this.loading = false;
@@ -208,7 +208,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
           this.loading = false;
         });
       // this.$refs[formName].validate((valid) => {

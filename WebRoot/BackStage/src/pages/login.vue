@@ -1,52 +1,70 @@
-<template lang="html">
-  <el-row>
-    <el-col :span="12" :offset="6">
-      <div class="login">
-        <el-row slot="body" :gutter="0">
-          <el-col :span="24" :xs="24" :sm="16" :md="16" :lg="16">
-            <div class="login-form">
-              <div class="card-block">
-                <h1>平台登录</h1>
-                <div class="input-group m-b-1">
-                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                  <input type="text" class="form-control" placeholder="请输入用户名" v-model="form.username">
-                </div>
-                <div class="input-group m-b-2">
-                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <input type="password" class="form-control" placeholder="请输入密码" v-model="form.password" @keyup.enter="login">
-                </div>
-                <div class="input-group m-b-1">
-                  <span class="input-group-addon"><i class="fa fa-tablet"></i></span>
-                  <input type="text" class="form-control" placeholder="请输入验证码" v-model="form.verifyCode">
-                </div>
-                <div class="row">
-                  <el-row>
-                    <el-col :span="12">
-                      <div @click="refreshCode">
-                        <img :src="imgCode" style="height: 40px;" />
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="row">
-                  <el-row>
-                    <el-col :span="12">
-                      <el-button type="primary" style="width:100%;" class="btn btn-primary p-x-2" @click="login">登录</el-button>
-                    </el-col>
-                    <el-col :span="12" style="line-height: 40px;text-align: center;">
-                      <el-checkbox v-model="form.rememberMe">记住密码</el-checkbox>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
+<template>
+  <div class="login-container">
+    <div class="login-info">
+      <div class="title">环保卫士商家服务</div>
+      <div class="desc">1. 欢迎</div>
+      <div class="desc">2. 阅读条例</div>
+    </div>
+    <el-form ref="loginForm" :model="form" :rules="rules" class="login-form" autocomplete="off" label-position="left">
+      <div class="title-container">
+        <h3 class="title">
+          系统登录
+        </h3>
+        <lang-select class="set-language" />
       </div>
-    </el-col>
-  </el-row>
+      <span>
+        <el-form-item prop="username">
+          <el-input
+            ref="username"
+            v-model="form.username"
+            placeholder="用户名/邮箱/手机"
+            prefix-icon="el-icon-user"
+            name="username"
+            type="text"
+            autocomplete="off"
+            @keyup.enter="login"
+          />
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            ref="password"
+            v-model="form.password"
+            prefix-icon="el-icon-key"
+            type="password"
+            placeholder="密码"
+            name="password"
+            autocomplete="off"
+            :show-password="true"
+            @keyup.enter="login"
+          />
+        </el-form-item>
+        <el-form-item prop="code" class="code-input">
+          <el-input
+            ref="code"
+            v-model="form.verifyCode"
+            prefix-icon="el-icon-lock"
+            placeholder="验证码"
+            name="code"
+            type="text"
+            autocomplete="off"
+            style="width: 70%"
+            @keyup.enter="login"
+          />
+        </el-form-item>
+        <img :src="imgCode" alt="codeImage" class="code-image" @click="refreshCode">
+        <el-checkbox v-model="form.rememberMe">7天免登陆</el-checkbox>
+        <br>
+        <br>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:14px;" @click.native.prevent="login">
+         登录
+        </el-button>
+      </span>
+    </el-form>
+    <span class="login-footer">
+      © 2019 <a target="_blank" href="#">环保卫士商家</a> - HBWS
+    </span>
+  </div>
 </template>
-
 <script>
   import types from "../store/mutation-types";
   import * as api from "../api";
@@ -65,11 +83,15 @@
         loading: false,
         imgCode: 'http://safeclean.tx-q.cn:4399/user/images/captcha',
         form: {
-          username: "admin",
-          password: "123456",
+          username: "",
+          password: "",
           verifyCode: '',
           rememberMe: false
-        }
+        },rules: {
+          username: { required: true, message: '不能为空', trigger: 'blur' },
+          password: { required: true, message: '不能为空', trigger: 'blur' },
+          code: { required: true, message: '不能为空', trigger: 'blur' },
+        },
       };
     },
     components: {},
@@ -83,19 +105,21 @@
       // 切换验证码
       refreshCode() {
         var num = Math.ceil(Math.random() * 10) // 生成一个随机数（防止缓存）
-        this.imgCode = 'http://safeclean.tx-q.cn:4399/user/images/captcha?' + num
+        this.imgCode = 'http://safeclean.tx-q.cn:4399/user/images/captcha?' + new Date()
       },
       login() {
+        let username_c = false
+        let password_c = false
+        let code_c = false
+        this.$refs.loginForm.validateField('username', e => { if (!e) { username_c = true } })
+        this.$refs.loginForm.validateField('password', e => { if (!e) { password_c = true } })
+        this.$refs.loginForm.validateField('code', e => { if (!e) { code_c = true } })
         this.loading = true;
         var redirectUrl = "";
-        if (
-          this.$route.query &&
-          this.$route.query != null &&
-          this.$route.query.redirect &&
-          this.$route.query.redirect != null
+        if (!username_c && !password_c && !code_c
         ) {
           redirectUrl = this.$route.query.redirect;
-        }
+        }else {
         this.$store.dispatch("Login", this.form).then(res => {
           this.loading = false;
           if (res.status) {
@@ -111,156 +135,15 @@
             });
           }
         });
+        }
       }
     }
   };
 </script>
+<style lang="scss">
+  @import "login";
+</style>
 
-<style>
-  .login {
-    margin-top: 160px;
-    width: 100%;
-    border: 1px solid #cfd8dc;
-    margin-right: auto !important;
-    margin-left: auto !important;
-    display: table;
-    table-layout: fixed;
-    background-color: #20a8d8;
-  }
-
-  .login .el-button {
-    border-radius: 0;
-  }
-
-  .login .el-button.forgot,
-  .login .el-button.forgot:hover {
-    border: none;
-  }
-
-  .login .login-form {
-    background-color: #ffffff;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .login .login-form .card-block {
-    padding: 35px;
-  }
-
-  .login .login-form .card-block p {
-    margin: 15px 0;
-  }
-
-  .input-group {
-    width: 100%;
-    display: table;
-    border-collapse: separate;
-    margin-bottom: 20px !important;
-  }
-
-  .input-group,
-  .input-group-btn,
-  .input-group-btn>.btn,
-  .navbar {
-    position: relative;
-  }
-
-  .input-group-addon:not(:last-child) {
-    border-right: 0;
-  }
-
-  .input-group-addon,
-  .input-group-btn {
-    min-width: 40px;
-    white-space: nowrap;
-    vertical-align: middle;
-    width: 1%;
-  }
-
-  .btn-link:focus,
-  .btn-link:hover {
-    color: #167495;
-    text-decoration: underline;
-    background-color: transparent;
-  }
-
-  .btn-link,
-  .btn-link:active,
-  .btn-link:focus,
-  .btn-link:hover {
-    border-color: transparent;
-  }
-
-  .btn.focus,
-  .btn:focus,
-  .btn:hover {
-    text-decoration: none;
-  }
-
-  .input-group-addon {
-    padding: 0.5rem 0.75rem;
-    margin-bottom: 0;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.75rem;
-    color: #607d8b;
-    text-align: center;
-    background-color: #cfd8dc;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-  }
-
-  .input-group .form-control,
-  .input-group-addon,
-  .input-group-btn {
-    display: table-cell;
-  }
-
-  .input-group .form-control {
-    position: relative;
-    z-index: 2;
-    float: left;
-    margin-bottom: 0;
-  }
-
-  .form-control {
-    width: 90%;
-    padding: 0.5rem 0.75rem;
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-    color: #607d8b;
-    background: #fff none;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  }
-
-  .login .login-form .card-block .row {
-    display: block;
-    margin: 15px 0;
-  }
-
-  .login .login-register {
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-color: #20a8d8;
-    color: #fff;
-  }
-
-  .login .login-register .card-block {
-    text-align: center !important;
-    padding: 30px;
-  }
-
-  .login .login-register .card-block p {
-    text-align: left !important;
-    margin: 15px 0;
-    height: 100px;
-  }
-
-  .identifybox {
-    display: flex;
-    justify-content: space-between;
-  }
+<style lang="scss" scoped>
+  @import "login-scoped";
 </style>

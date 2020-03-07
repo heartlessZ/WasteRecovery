@@ -129,7 +129,6 @@ export default {
     onSubmit () {
       // 修改个人信息网络请求
       updateUserInfo(this.editUserInfo).then((res) => {
-        console.log(res)
         if (res.status === true) {
           this.$message({
             message: '修改成功！',
@@ -138,7 +137,6 @@ export default {
           this.userInfo = JSON.parse(JSON.stringify(this.editUserInfo))
         } else {
           this.$message.error('修改失败！')
-          console.log(res)
         }
       })
       this.dialogVisible = false

@@ -99,7 +99,7 @@ export default {
       var that = this;
       var geco = new BMap.Geocoder();
       geco.getLocation(point, function(res) {
-        console.log(res); //内容见下图
+        // console.log(res); //内容见下图
         that.mk.setPosition(point); //重新设置标注的地理坐标
         that.map.panTo(point); //将地图的中心点更改为给定的点
         that.form.address = res.address; //记录该点的详细地址信息
@@ -117,7 +117,7 @@ export default {
             that.getAddrByPoint(res.point); //当成功时，调用逆地址解析函数
           } else {
             //alert("failed" + this.getStatus()); //失败时，弹出失败状态码
-            console.log("failed" + this.getStatus())
+            // console.log("failed" + this.getStatus())
           }
         },
         { enableHighAccuracy: true }

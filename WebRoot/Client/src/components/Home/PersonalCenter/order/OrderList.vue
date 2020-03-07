@@ -122,7 +122,7 @@ export default {
               this.isEmpty = true
             }
           } else {
-            this.$message.error('获取数据失败！')
+            this.$message.error(res.msg)
           }
           this.loading = false
         })
@@ -136,7 +136,7 @@ export default {
               this.isEmpty = true
             }
           } else {
-            this.$message.error('获取数据失败！')
+            this.$message.error(res.msg)
           }
           this.loading = false
         })

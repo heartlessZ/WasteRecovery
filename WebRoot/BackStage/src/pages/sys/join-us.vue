@@ -170,8 +170,10 @@ export default {
     handleDelete(index, row) {
       request.get(api.SYS_USER_DELETE + "?id=" + row.id).then(res => {
         if (res.status) {
-          this.$message("删除成功");
+          this.$message(res.msg);
           this.loadData();
+        }else{
+          this.$message(res.msg);
         }
       });
     },
@@ -180,6 +182,8 @@ export default {
         if (res.status) {
           this.$message("审核成功");
           this.loadData();
+        }else{
+          this.$message(res.msg);
         }
       });
     },

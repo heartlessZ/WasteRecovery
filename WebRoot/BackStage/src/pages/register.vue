@@ -113,7 +113,7 @@
               } else {
                 this.$message({
                   type: 'info',
-                  message: '此账户已存在'
+                  message: data.msg
                 })
               }
             }).catch((err) => {

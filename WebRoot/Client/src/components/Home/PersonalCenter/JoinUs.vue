@@ -93,7 +93,7 @@ export default {
       this.active++;
     },
     previous() {
-      console.log(this.applyForm);
+      // console.log(this.applyForm);
       this.active--;
     },
     submitApply(businessForm) {

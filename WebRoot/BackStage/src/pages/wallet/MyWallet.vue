@@ -200,7 +200,6 @@
             if (res.status) {
               this.withdrawRecords = res.records
               this.total = res.total
-              console.log(res.records)
             } else {
               this.$message.error(res.msg)
             }
