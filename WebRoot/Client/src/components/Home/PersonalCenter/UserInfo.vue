@@ -144,7 +144,7 @@ export default {
   mounted () {
     getInfo().then(res => {
       if (res.status) {
-        var data = res.data[0]
+        var data = res.data
         this.userInfo.avatar = data.avatar
         this.userInfo.nikeName = data.nikeName
         this.userInfo.phone = data.phone

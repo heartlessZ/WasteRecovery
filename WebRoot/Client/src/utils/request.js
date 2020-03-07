@@ -2,7 +2,8 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
-axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
+//意思是携带cookie信息,保持session的一致性
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
 // axios.defaults.baseURL = 'http://localhost:4399';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
