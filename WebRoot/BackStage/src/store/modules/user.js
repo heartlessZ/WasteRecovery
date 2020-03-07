@@ -57,8 +57,9 @@ const user = {
       userInfo.username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          console.log(response)
           if (response.status){
-            const data = response.data[0]
+            const data = response.data
             console.log(response)
             commit('SET_ISLOGIN', true);
             commit('SET_NAME', data.username)
@@ -82,7 +83,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           if (response.status) {
-            const data = response.data[0]
+            const data = response.data
             // commit('SET_ISLOGIN', true)
             // if (data.roleId && data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
             //   commit('SET_ROLES', data.roles)
