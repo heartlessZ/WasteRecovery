@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" :style="{'background': 'url(' + config.background + ')'+' 50% no-repeat'}">
     <div class="login-info">
       <div class="title">环保卫士商家服务</div>
       <div class="desc">1. 欢迎</div>
@@ -61,7 +61,7 @@
       </span>
     </el-form>
     <span class="login-footer">
-      © 2019 <a target="_blank" href="#" >环保卫士商家</a> - HBWS
+     <a target="_blank" href="#" >{{config.footer}}</a>
     </span>
   </div>
 </template>
@@ -85,6 +85,7 @@
           type: ''
         },
         config:{
+          background:'http://49.235.151.230:4869/f0c85abb0c0a9a9399fbac4df1022814',
           footer:''
         },
         form: {
@@ -149,13 +150,23 @@
             this.config.footer=res.data.vvalue;
           }
         })
+      },getbackground(){
+        request.get(api.SYS_CONFIG_GET+"?vkey=background").then(res=>{
+          if(res.status){
+            this.config.background=res.data.vvalue;
+          }
+        })
       }
     },created(){
       this.getSetting();
-      this.getfoot()();
+      this.getfoot();
+      this.getbackground();
     }
   };
 </script>
+<style scoped>
+
+</style>
 <style lang="scss">
   @import "login";
 </style>

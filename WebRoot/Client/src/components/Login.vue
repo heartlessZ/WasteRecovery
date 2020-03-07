@@ -28,9 +28,9 @@
                 <div @click="refreshCode">
                   <img :src="imgCode"/>
                 </div>
-                 <el-checkbox v-model="loginForm.rememberMe">7天免登陆</el-checkbox>
               </div>
             </el-form-item>
+            <el-checkbox v-model="loginForm.rememberMe">7天免登陆</el-checkbox>
             <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
           </el-form>
         </el-tab-pane>
