@@ -10,11 +10,11 @@
                 <!-- <p>Centerville Road, DE 19808, US </p> -->
                 <p class="phone">
                   Phone:
-                  <span>12345678901</span>
+                  <span>{{contact.phone}}</span>
                 </p>
                 <p class="email">
                   E-mail:
-                  <span>66897683@qq.com</span>
+                  <span>{{contact.email}}</span>
                 </p>
               </div>
               <div class="social-icons">
@@ -61,6 +61,7 @@
 
 <script>
 import { addContact } from "../../api/user";
+import request from '../../utils/request'
 export default {
   name: "contact",
   data() {
@@ -69,10 +70,28 @@ export default {
         describe: "",
         email: "",
         phone: ""
-      }
+      },
+      contact: {
+        phone:'',
+        email:''
+      },
     };
   },
   methods: {
+    getPhone () {
+      request.get('/setting/get' + '?vkey=phone').then(res => {
+        if (res.status) {
+          this.contact.phone = res.data.vvalue;
+        }
+      })
+    },
+    getemail () {
+      request.get('/setting/get' + '?vkey=email').then(res => {
+        if (res.status) {
+          this.contact.email = res.data.vvalue;
+        }
+      })
+    },
     sendIdea() {
       if (this.info.describe.trim() == "") {
         this.$message({
@@ -97,6 +116,10 @@ export default {
         }
       });
     }
-  }
+  },
+  mounted () {
+    this.getPhone();
+    this.getemail();
+  },
 };
 </script>

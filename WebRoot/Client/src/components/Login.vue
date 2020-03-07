@@ -19,11 +19,11 @@
                 <i class="el-icon-view el-input__icon" :style="fontstyle" slot="suffix" @click="showPassword"></i>
               </el-input>
             </el-form-item>
-            <el-form-item prop="verifycode">
+            <el-form-item prop="verifycode" v-if="code.type==='true'">
               <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
               <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码"></el-input>
             </el-form-item>
-            <el-form-item style="margin: 0rem;">
+            <el-form-item style="margin: 0rem;" v-if="code.type==='true'">
               <div class="identifybox">
                 <div @click="refreshCode">
                   <img :src="imgCode"/>
@@ -41,7 +41,7 @@
                 <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
               </el-input>
             </el-form-item>
-            <el-form-item prop="verifycode">
+            <el-form-item prop="verifycode" >
               <el-row :gutter="12">
                 <el-col :span="16">
                   <el-input v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
@@ -65,9 +65,9 @@
 </template>
 
 <script>
-import {
-  sendSms
-} from '@/api/user.js'
+import {sendSms} from '@/api/user.js';
+import request from '../utils/request'
+import * as api from "../../../BackStage/src/api";
 export default {
   name: 'login',
   data () {
@@ -98,6 +98,9 @@ export default {
         password: '',
         verifyCode: '',
         rememberMe: false
+      },
+      code: {
+        type: 'false'
       },
       phLoginForm: {
         phone: '',
@@ -143,10 +146,17 @@ export default {
     }
   },
   mounted () {
-
+    this.getSetting();
   },
   props: [],
   methods: {
+    getSetting () {
+      request.get('/setting/get' + '?vkey=verification').then(res => {
+        if (res.status) {
+          this.code.type = res.data.vvalue;
+        }
+      })
+    },
     // 通过改变input的type使密码可见
     showPassword () {
       this.fontstyle === ''
