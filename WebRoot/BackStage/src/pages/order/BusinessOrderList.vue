@@ -143,7 +143,6 @@
       //查看订单详情
       showDetail(orderItem) {
         this.orderItem = orderItem
-        console.log(this.orderItem)
         this.lookdialogVisible = true
       },
       /**
@@ -163,12 +162,11 @@
           this.formSearch.endDate = null
         }
         busiFindOrderList(this.formSearch).then((res) => {
-          console.log(res)
           if (res.status) {
             this.tableData = res.records
             this.total = res.total
           } else {
-            this.$message.error("获取页面数据失败！")
+            this.$message.error(res.msg)
           }
         }).catch((err) => {
           this.$message.error(err.message)
@@ -217,12 +215,12 @@
           if (res.status) {
             this.$message({
               showClose: true,
-              message: '操作成功！',
+              message: res.msg,
               type: 'success'
             })
             this.requestData()
           } else {
-            this.$message.error('操作失败')
+            this.$message.error(res.msg)
           }
         })
       },
@@ -240,12 +238,12 @@
             if (res.status) {
               this.$message({
                 showClose: true,
-                message: '删除成功！',
+                message: res.msg,
                 type: 'success'
               })
               this.requestData()
             } else {
-              this.$message.error('操作失败')
+              this.$message.error(res.msg)
             }
           }).catch((err) => {
             this.$message.error(err.message)
@@ -263,7 +261,7 @@
         if (res.status) {
           this.classificationList = res.records
         } else {
-          this.$message.error("查询废品分类列表失败！")
+          this.$message.error(res.msg)
         }
       })
     }

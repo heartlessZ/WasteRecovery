@@ -52,9 +52,9 @@
     mapActions,
     mapMutations
   } from 'vuex'
+  import request from '../../utils/request'
   import types from "../../store/mutation-types"
   import * as api from "../../api"
-  import auth from '../../common/auth'
   import * as sysApi from '../../services/sys'
   import {
     userFindNewNoticeNum
@@ -67,7 +67,9 @@
         list: [],
         count: null,
         show: true,
-        websock: null
+        websock: {
+          username:''
+        }
       }
     },
     computed: mapGetters({
@@ -121,41 +123,53 @@
           this.showProfileBox = false
         }
       },
-      initWebSocket() { //初始化weosocket
-        //判断当前浏览器是否支持WebSocket
-        if ('WebSocket' in window) {
-          const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + this.userInfo.username;
-          this.websock = new WebSocket(wsuri);
-          this.websock.onmessage = this.websocketonmessage;
-          this.websock.onopen = this.websocketonopen;
-          this.websock.onerror = this.websocketonerror;
-          this.websock.onclose = this.websocketclose;
-          console.log("初始化")
-        } else {
-          alert('当前浏览器 Not support websocket')
-        }
+      initWebSocket() {
+        request.get(api.SYS_USER_THEUSER).then(res=>{
+          if(res.status){
+            this.websock.username=res.data.username;
+            //初始化weosocket
+            //判断当前浏览器是否支持WebSocket
+            if ('WebSocket' in window) {
+              const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + this.websock.username;
+              this.websock = new WebSocket(wsuri);
+              this.websock.onmessage = this.websocketonmessage;
+              this.websock.onopen = this.websocketonopen;
+              this.websock.onerror = this.websocketonerror;
+              this.websock.onclose = this.websocketclose;
+              // console.log("初始化")
+            } else {
+              this.$message({
+                type: "error",
+                offset: 70,
+                center: true,
+                message: '当前浏览器 Not support websocket'
+              });
+            }
+          }
+        })
+
       },
       websocketonopen() { //连接建立之后执行send方法发送数据
-        console.log("连接成功!")
+        // console.log("连接成功!")
       },
       websocketonerror() { //连接建立失败重连
-        console.log("连接失败调用")
+        // console.log("连接失败调用")
         this.initWebSocket();
       },
       websocketonmessage(e) { //数据接收
-        console.log('websocket返回数据')
+        // console.log('websocket返回数据')
         var data = JSON.parse(e.data)
         this.$notify.info({
           title: data.data.title,
           message: data.data.message+data.data.sendTime
         });
-        console.log(data)
+        // console.log(data)
       },
       websocketsend(Data) { //数据发送
         this.websock.send(Data);
       },
       websocketclose(e) { //关闭
-        console.log('断开连接', e);
+        // console.log('断开连接', e);
       }
     },
     created() {
@@ -166,6 +180,9 @@
       //       this.list = res;
       //     }
       //   })
+    },
+    created(){
+
     },
     mounted() {
       //查询新公告数目

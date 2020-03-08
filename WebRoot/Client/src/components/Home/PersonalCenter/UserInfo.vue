@@ -126,15 +126,15 @@ export default {
     onSubmit () {
       // 修改个人信息网络请求
       updateUserInfo(this.editUserInfo).then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.status === true) {
           this.$message({
-            message: '修改成功！',
+            message: res.msg,
             type: 'success'
           })
           this.userInfo = JSON.parse(JSON.stringify(this.editUserInfo))
         } else {
-          this.$message.error('修改失败！')
+          this.$message.error(res.msg)
           console.log(res)
         }
       })
@@ -144,14 +144,14 @@ export default {
   mounted () {
     getInfo().then(res => {
       if (res.status) {
-        var data = res.data[0]
+        var data = res.data
         this.userInfo.avatar = data.avatar
         this.userInfo.nikeName = data.nikeName
         this.userInfo.phone = data.phone
         this.userInfo.email = data.email
         this.userInfo.sex = data.sex
       } else {
-        this.$message.error('获取信息失败！')
+        this.$message.error(res.msg)
       }
     })
   }

@@ -13,37 +13,6 @@
       <el-table :data="tableData.rows" border v-loading="listLoading" style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <!-- <el-table-column prop="wasteInfo.photos" label="废品图片" width="110">
-          <template slot-scope="scope">
-            <el-image style="width: 90px; height: 50px;padding-top: 5px;" :src="scope.row.wasteInfo.photos" fit="cover"
-              :preview-src-list="[scope.row.wasteInfo.photos]"></el-image>
-          </template>
-        </el-table-column>
-        <el-table-column prop="tradeName" label="废品类别" align="center">
-        </el-table-column>
-        <el-table-column prop="wasteInfo.weight" label="废品重量" width="140" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.wasteInfo.weight}}kg</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="user.nikeName" label="卖家昵称" align="center" width="120">
-        </el-table-column>
-        <el-table-column prop="wasteInfo.expectedPrice" label="卖家期望价格" width="140" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.wasteInfo.expectedPrice}}元</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="businessNikeName" label="商家昵称" align="center" width="120">
-        </el-table-column>
-        <el-table-column prop="creatTime" label="下单时间" align="center">
-        </el-table-column>
-        <el-table-column prop="state" label="订单状态" width="120" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.state==1"  style="color: #E6A23C;">进行中</span>
-            <span v-if="scope.row.state==2"  style="color: #69D4B7;">已完成</span>
-            <span v-if="scope.row.state==3"  style="color:#909399 ;">已取消</span>
-          </template>
-        </el-table-column> -->
         <el-table-column label="头像" width="76" align="center">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" style="height: 35px;vertical-align: middle;" alt />
@@ -182,7 +151,6 @@ export default {
       }
       request.get(api.SYS_USER_ROLE + "?userId=" + row.id).then(res => {
         if (res.status) {
-          console.log(res.data);
           this.ids = [];
           res.data.forEach(item => {
             this.ids.push(item.id);
@@ -216,13 +184,16 @@ export default {
       this.loadData();
     },
     handleEdit(index, row) {
+
       this.$router.push({ path: "userAdd", query: { id: row.id } });
     },
     handleDelete(index, row) {
       request.get(api.SYS_USER_DELETE + "?id=" + row.id).then(res => {
         if (res.status) {
-          this.$message("删除成功");
+          this.$message(res.msg);
           this.loadData();
+        }else {
+          this.$message(res.msg);
         }
       });
     },
@@ -231,8 +202,10 @@ export default {
         .get(api.SYS_USER_UPDATE_STATUS + "?UserId=" + row.id)
         .then(res => {
           if (res.status) {
-            this.$message("修改状态成功");
+            this.$message(res.msg);
             this.loadData();
+          }else {
+            this.$message(res.msg);
           }
         });
     },

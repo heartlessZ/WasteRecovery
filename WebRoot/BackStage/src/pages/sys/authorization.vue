@@ -108,12 +108,12 @@
       deleteSelected(){
         request.get(api.SYS_MENU_DELETE + "?id=" + this.form.id)
           .then(res => {
-            this.$message('操作成功');
+            this.$message(res.msg);
             this.load()
           }).catch(e => {
         })
       },
-     
+
       handleNodeClick(data){
         this.form = merge({}, data);
       },
@@ -127,11 +127,11 @@
           request.post(api.SYS_AUTHORIZATION_ADD, params)
             .then(res => {
               if(!res.status){
-                
-              this.$message('操作失败');
+
+              this.$message(res.msg);
               return
               }
-              this.$message('操作成功');
+              this.$message(res.msg);
               //this.updateTreeNode(this.menuTree, res.data);
               this.load()
             }).catch(e => {

@@ -130,7 +130,7 @@ export default {
       };
       request.post(api.SYS_SET_ROLE_RESOURCE, params).then(res => {
         if (res.status) {
-          this.$message("绑定成功");
+          this.$message(res.msg);
         } else {
           this.$message(res.msg);
         }
@@ -158,8 +158,10 @@ export default {
         };
         request.post(api.SYS_ROLE_ADD, params).then(res => {
           if (res.status) {
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
+          }else {
+            this.$message(res.msg);
           }
         });
       } else {
@@ -171,8 +173,10 @@ export default {
         };
         request.post(api.SYS_ROLE_UPDATE, params).then(res => {
           if (res.status) {
-            this.$message("操作成功");
+            this.$message(res.msg);
             this.load();
+          } else {
+            this.$message(res.msg);
           }
         });
       }
@@ -180,14 +184,15 @@ export default {
     deleteSelected(id) {
       request.get(api.SYS_ROLE_DELETE + "?roleIds=" + id).then(res => {
         if (res.status) {
-          this.$message("操作成功");
+          this.$message(res.msg);
           this.load();
+        }else {
+          this.$message(res.msg);
         }
       });
     },
     load() {
       sysApi.roleList().then(res => {
-        console.log(res);
         this.roleTree = [];
         this.roleTree.push(...res.data);
       });
@@ -227,6 +232,8 @@ export default {
         request.get(api.SYS_MENU_LIST2).then(res => {
           if (res.status) {
             this.resourceTree = res.data;
+          }else {
+            this.$message(res.msg);
           }
         });
       }
@@ -234,6 +241,7 @@ export default {
       request.get(api.SYS_ROLE_AUTHORIZATION + "?reloId=" + id).then(res => {
         this.dialogLoading = false;
         if (!res.status) {
+          this.$message(res.msg);
           return;
         }
         this.appendKeys(res.data);

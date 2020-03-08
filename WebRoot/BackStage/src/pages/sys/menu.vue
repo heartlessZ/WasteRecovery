@@ -592,7 +592,7 @@
       deleteSelected(){
         request.get(api.SYS_MENU_DELETE + "?id=" + this.form.id)
           .then(res => {
-            this.$message('操作成功');
+            this.$message(res.msg);
             this.load()
           }).catch(e => {
         })
@@ -612,8 +612,10 @@
             request.get(api.SYS_MENU_DELETE + "?id=" + item)
             .then(res => {
               if(res.status){
-                this.$message('操作成功');
+                this.$message(res.msg);
                 this.load();
+              }else {
+                this.$message(res.msg);
               }
             }).catch(e => {
           })
@@ -630,7 +632,7 @@
           //添加菜单
           request.post(api.SYS_MENU_ADD, this.form)
             .then(res => {
-              this.$message('操作成功');
+              this.$message(res.msg);
               // this.form.id = res.data.id;
               // this.appendTreeNode(this.menuTree, res.data);
               this.load()
@@ -652,10 +654,10 @@
             .then(res => {
               if(!res.status){
 
-              this.$message('操作失败');
+              this.$message(res.msg);
               return
               }
-              this.$message('操作成功');
+              this.$message(res.msg);
               //this.updateTreeNode(this.menuTree, res.data);
               this.load()
             }).catch(e => {

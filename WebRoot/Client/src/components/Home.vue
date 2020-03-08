@@ -93,7 +93,7 @@
       <div class="container">
         <div class="row">
           <div class="copyright footer-text">
-            <p>环保卫士 &copy; 2020 - Designed & Developed by 世界和平</p>
+            <p>{{copyright}}</p>
           </div>
         </div>
       </div>
@@ -126,21 +126,40 @@ import '../assets/css/slicknav.css'
 import '../assets/css/animate.css'
 import '../assets/css/main.css'
 import '../assets/css/responsive.css'
-
 import '../assets/js/jquery-min.js'
 import {
   userFindNewNoticeNum
 } from '@/api/notice.js'
+import request from "../utils/request";
 export default {
   name: 'Home',
   data () {
     return {
       imgUrl: require('../assets/img/logo.png'),
       loading: true,
-      count: 0
+      count: 0,
+      copyright:''
     }
   },
+  mounted () {
+    this.getLogo();
+    this.getcopyright();
+  },
   methods: {
+    getLogo () {
+      request.get('/setting/get' + '?vkey=logo').then(res => {
+        if (res.status) {
+          this.imgUrl = res.data.vvalue;
+        }
+      })
+    },
+    getcopyright () {
+      request.get('/setting/get' + '?vkey=copyright').then(res => {
+        if (res.status) {
+          this.copyright = res.data.vvalue;
+        }
+      })
+    },
     loginView () {
       this.$router.push('/login')
     },
@@ -158,13 +177,14 @@ export default {
     }
   },
   created () {
+
     this.loadRootCategories()
     this.$store.dispatch('GetInfo').then(res => {
       this.loading = false
     })
 
     this.$store.dispatch('GetConfig').then(res => {
-      console.log(this.$store.getters.config)
+      // console.log(this.$store.getters.config)
     })
     // 查询新公告数目
     userFindNewNoticeNum().then((res) => {

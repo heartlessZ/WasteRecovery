@@ -159,9 +159,8 @@
           if (res.status) {
             this.tableData = res.records
             this.total = res.total
-            console.log(res)
           } else {
-            this.$message.error("获取页面数据失败！")
+            this.$message.error(res.msg)
           }
         }).catch((err) => {
           this.$message.error(err.message)
@@ -184,7 +183,7 @@
         if (res.status) {
           this.classificationList = res.records
         } else {
-          this.$message.error("查询废品分类列表失败！")
+          this.$message.error(res.msg)
         }
       })
     }

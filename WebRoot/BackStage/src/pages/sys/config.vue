@@ -29,7 +29,6 @@ import * as api from "../../api";
       data() {
         return {
           tableData: [],
-
         }
       },
       methods: {
@@ -41,20 +40,20 @@ import * as api from "../../api";
           })
         },
         saveEvent (row, field) {
+          row.loading = true;
           let params =  {
             vkey: row.vkey,
             describe:row.vdescribe,
             vvalue:row.vvalue
           }
-          console.log(row)
-          console.log(field)
+          let xTable = this.$refs.xTable;
           request.post(api.SYS_CONFIG_EDIT, params)
             .then(res => {
             if(res.status){
               this.$message(res.msg);
+              row.loading = false
             }else {
               this.$message(res.msg);
-
             }
           })
         },

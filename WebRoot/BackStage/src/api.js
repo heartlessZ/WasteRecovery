@@ -28,11 +28,13 @@ export const SYS_RESOURCE_LIST = CONTEXT + '/menu/getRoleMenus';
 
 export const SYS_SETTLEDIN_LIST = CONTEXT + '/settledIn/list';
 export const SYS_SETTLEDIN_SET_PASS = CONTEXT + '/settledIn/setPass';
+export const SYS_CONFIG_GET = CONTEXT + '/setting/get';
 
 export const SYS_CONFIG_LIST = CONTEXT + '/setting/getSetting';
 export const SYS_CONFIG_EDIT = CONTEXT + '/setting/admin/editSetting';
 
 export const SYS_USER_GET = CONTEXT + '/user/list';
+export const SYS_USER_THEUSER = CONTEXT + '/user/theUser';
 export const SYS_USER_ADD = CONTEXT + '/user/add';
 export const SYS_USER_UPDATE = CONTEXT + '/user/update';
 export const SYS_USER_UPDATE_STATUS = CONTEXT + '/user/editUserState';

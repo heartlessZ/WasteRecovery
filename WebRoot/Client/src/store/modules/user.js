@@ -102,7 +102,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           if (response.status) {
-            const data = response.data[0]
+            const data = response.data
             commit('SET_ISLOGIN', true)
             if (data.roleId && data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
               commit('SET_ROLES', data.roles)
@@ -165,7 +165,7 @@ const user = {
       return new Promise((resolve, reject) => {
         queryRootCategory(classificationName).then((res) => {
           if (res.status) {
-            console.log(res)
+            // console.log(res)
             commit('SET_ROOTCATEGORY', res.records)
           }
           resolve(res)
@@ -183,7 +183,7 @@ const user = {
       return new Promise((resolve, reject) => {
         queryChildrenCategory(classificationId).then((res) => {
           if (res.status) {
-            console.log(res)
+            // console.log(res)
             commit('SET_CHILDRENCATEGORY', res.records)
           }
           resolve(res)

@@ -62,7 +62,7 @@ export default {
           }
           verificationPhone(info).then(res => {
             if (res.status) {
-              console.log(res)
+              // console.log(res)
               this.$notify({
                 title: '操作提示',
                 message: res.msg,

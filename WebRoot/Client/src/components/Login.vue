@@ -19,18 +19,18 @@
                 <i class="el-icon-view el-input__icon" :style="fontstyle" slot="suffix" @click="showPassword"></i>
               </el-input>
             </el-form-item>
-            <el-form-item prop="verifycode">
+            <el-form-item prop="verifycode" v-if="code.type==='true'">
               <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
               <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码"></el-input>
             </el-form-item>
-            <el-form-item style="margin: 0rem;">
+            <el-form-item style="margin: 0rem;" v-if="code.type==='true'">
               <div class="identifybox">
                 <div @click="refreshCode">
                   <img :src="imgCode"/>
                 </div>
-                 <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
               </div>
             </el-form-item>
+            <el-checkbox v-model="loginForm.rememberMe">7天免登陆</el-checkbox>
             <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
           </el-form>
         </el-tab-pane>
@@ -41,7 +41,7 @@
                 <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
               </el-input>
             </el-form-item>
-            <el-form-item prop="verifycode">
+            <el-form-item prop="verifycode" >
               <el-row :gutter="12">
                 <el-col :span="16">
                   <el-input v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
@@ -65,9 +65,9 @@
 </template>
 
 <script>
-import {
-  sendSms
-} from '@/api/user.js'
+import {sendSms} from '@/api/user.js';
+import request from '../utils/request'
+import * as api from "../../../BackStage/src/api";
 export default {
   name: 'login',
   data () {
@@ -76,7 +76,7 @@ export default {
       if (!value) {
         callback(new Error('用户名不能为空'))
       } else {
-        console.log('user', value)
+        // console.log('user', value)
         callback()
       }
     }
@@ -98,6 +98,9 @@ export default {
         password: '',
         verifyCode: '',
         rememberMe: false
+      },
+      code: {
+        type: 'false'
       },
       phLoginForm: {
         phone: '',
@@ -143,10 +146,17 @@ export default {
     }
   },
   mounted () {
-
+    this.getSetting();
   },
   props: [],
   methods: {
+    getSetting () {
+      request.get('/setting/get' + '?vkey=verification').then(res => {
+        if (res.status) {
+          this.code.type = res.data.vvalue;
+        }
+      })
+    },
     // 通过改变input的type使密码可见
     showPassword () {
       this.fontstyle === ''
@@ -161,7 +171,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          console.log(this.loginForm)
+          // console.log(this.loginForm)
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.loading = false
             if (res.status) {
@@ -190,6 +200,7 @@ export default {
             code: this.phLoginForm.verifycode
           }
           this.$store.dispatch('PhoneLogin', info).then(res => {
+            // console.log(res)
             if (res.status) {
               this.$router.push({
                 path: '/home'
