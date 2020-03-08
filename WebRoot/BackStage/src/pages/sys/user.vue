@@ -1,49 +1,17 @@
 <template>
   <imp-panel>
-    <h3 class="box-title" slot="header" style="width: 100%;">
-      <el-row style="width: 100%;">
-        <!-- <el-col :span="12">
-          <router-link :to="{ path: 'userAdd'}">
-            <el-button type="primary" icon="plus">新增</el-button>
-          </router-link>
-        </el-col>-->
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入用户名称"
-              v-model="searchData.nikeName"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入手机号"
-              v-model="searchData.phone"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <!-- <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入手机号"
-              v-model="searchData.phone"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>-->
-      </el-row>
-    </h3>
+    <el-form :inline="true" :model="searchData" class="search-form" size="mini"  slot="header">
+      <el-form-item>
+        <el-input v-model="searchData.nikeName" placeholder="昵称" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
+      </el-form-item>
+      <el-button type="primary" size="mini" @click="search($event)">查询</el-button>
+    </el-form>
     <div slot="body">
-      <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
+      <el-table :data="tableData.rows" v-loading="listLoading" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+        :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
         <!-- @selection-change="handleSelectionChange">
         <el-table-column
           prop="id"
@@ -57,7 +25,7 @@
         </el-table-column>
         <el-table-column prop="username" label="登录用户名"></el-table-column>
         <el-table-column prop="nikeName" label="昵称"></el-table-column>
-        <el-table-column label="性别">
+        <el-table-column label="性别" width="50" align="center">
           <template slot-scope="scope">{{ scope.row.sex==='2' ? '男' : '女' }}</template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号码"></el-table-column>
@@ -69,7 +37,7 @@
 
           </template>
         </el-table-column>-->
-        <el-table-column label="操作" width="285">
+        <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <!-- <el-button
               size="small"
@@ -78,21 +46,21 @@
               @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>-->
             <el-button
-              size="small"
+              size="mini"
               type="info"
               icon="setting"
               @click="handleRoleConfig(scope.$index, scope.row)"
             >配置角色</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button
               v-if="scope.row.status==='1'"
-              size="small"
-              type="success"
+              size="mini"
+              type="primary"
               @click="handleStatus(scope.$index, scope.row)"
             >启用</el-button>
             <el-button
               v-else
-              size="small"
+              size="mini"
               type="danger"
               @click="handleStatus(scope.$index, scope.row)"
             >禁用</el-button>

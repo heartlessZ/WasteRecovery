@@ -1,71 +1,39 @@
 <template>
   <imp-panel>
-    <h3 class="box-title" slot="header" style="width: 100%;">
-      <el-row style="width: 100%;">
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入用户名称"
-              v-model="searchData.username"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入手机号"
-              v-model="searchData.phone"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入地址"
-              v-model="searchData.address"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <el-select v-model="searchData.classificationId" @change="loadData" clearable placeholder="请选择分类">
-              <el-option
-                v-for="(item,index) in categories"
-                :key="index"
-                :label="item.tradeName"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </div>
-        </el-col>
-      </el-row>
-    </h3>
+    <el-form :inline="true" :model="searchData" class="search-form" size="mini"  slot="header">
+      <el-form-item>
+        <el-input v-model="searchData.username" placeholder="用户名称" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="searchData.address" placeholder="详细地址" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-select clearable v-model="searchData.classificationId" placeholder="废品类别" @change="search($event)">
+          <el-option v-for="item in categories" :key="item.id" :label="item.tradeName" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-button type="primary" size="mini" @click="search($event)">查询</el-button>
+    </el-form>
     <div slot="body">
-      <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
-        <el-table-column prop="address" label="详细地址"></el-table-column>
+      <el-table :data="tableData.rows" v-loading="listLoading" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+        :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
+        <el-table-column prop="address" label="详细地址" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="tradeName" label="废品类别"></el-table-column>
         <el-table-column prop="weight" label="重量"></el-table-column>
         <el-table-column prop="expectedPrice" label="期望价格"></el-table-column>
         <el-table-column prop="nikeName" label="发布人"></el-table-column>
         <el-table-column prop="phone" label="手机号码"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button
-              size="small"
+              size="mini"
               type="info"
-              icon="setting"
               @click="handleRoleConfig(scope.$index, scope.row)"
             >查看详情</el-button>
-            <el-button size="small" type="success" @click="createOrder(scope.$index, scope.row)">接单</el-button>
+            <el-button size="mini" type="primary" @click="createOrder(scope.$index, scope.row)">接单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -175,17 +143,6 @@ export default {
       this.tableData.pagination.pageNo = val;
       this.loadData();
     },
-    // handleEdit(index, row) {
-    //   this.$router.push({ path: "userAdd", query: { id: row.id } });
-    // },
-    // handleDelete(index, row) {
-    //   request.get(api.SYS_USER_DELETE + "?id=" + row.id).then(res => {
-    //     if (res.status) {
-    //       this.$message("删除成功");
-    //       this.loadData();
-    //     }
-    //   });
-    // },
     loadData() {
       this.listLoading = true;
       let queryString = {

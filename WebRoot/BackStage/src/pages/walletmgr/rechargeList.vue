@@ -39,9 +39,9 @@
         </el-table-column>
         <el-table-column prop="createTime" label="充值时间" width="160">
         </el-table-column>
-        <el-table-column prop="tradeNo" label="交易编号">
+        <el-table-column prop="tradeNo" label="交易编号" :show-overflow-tooltip="true">
         </el-table-column>
-        <el-table-column prop="outTradeNo" label="支付单号">
+        <el-table-column prop="outTradeNo" label="支付单号" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column prop="status" label="交易状态" width="90" align="center">
           <template slot-scope="scope">
