@@ -1,46 +1,37 @@
 <template>
-  <imp-panel>
-    <el-form :inline="true" :model="searchData" class="search-form" size="mini"  slot="header">
-      <el-form-item>
-        <el-input v-model="searchData.idCard" placeholder="身份证号" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="searchData.cardName" placeholder="真实姓名" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="searchData.address" placeholder="详细地址" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-select clearable v-model="searchData.state" @change="search($event)" placeholder="请选择状态">
-          <el-option label="待审核" value="0"></el-option>
-          <el-option label="审核通过" value="1"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-button type="primary" size="mini" @click="search($event)">查询</el-button>
-    </el-form>
-    <div slot="body">
-      <el-table :data="tableData.rows" v-loading="listLoading" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+<div id="orderList">
+    <el-card class="contain">
+      <el-form :inline="true"  :model="searchData" class="search-form" size="mini">
+        <el-form-item>
+          <el-input v-model="searchData.idCard" placeholder="身份证号码" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchData.cardName" placeholder="真实姓名" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select clearable v-model="searchData.state" placeholder="审核状态">
+              <el-option label="待审核" value="0"></el-option>
+              <el-option label="审核通过" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-button type="primary" @click="loadData" size="mini">查询</el-button>
+      </el-form>
+      <el-table v-loading="listLoading" :data="tableData.rows" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
-        <el-table-column prop="user.username" label="登录用户名"></el-table-column>
-        <el-table-column prop="cardName" label="真实姓名"></el-table-column>
-        <el-table-column prop="idCard" label="身份证号码"></el-table-column>
-        <el-table-column prop="address" label="地址" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="creditCode" label="信用代码" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="businessName" label="营业执照名"></el-table-column>
-        <el-table-column label="操作" width="190">
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="user.username" label="登录用户名" align="center"></el-table-column>
+        <el-table-column prop="cardName" label="真实姓名" align="center"></el-table-column>
+        <el-table-column prop="idCard" label="身份证号码" align="center"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="creditCode" label="信用代码" align="center" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="businessName" label="营业执照名" align="center"></el-table-column>
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button size="mini" type="info" icon="setting" @click="showDetail(scope.row)">查看详情</el-button>
-            <el-button size="mini" type="primary" v-show="scope.row.state=='0'" @click="handleStatus(scope.$index, scope.row)">通过</el-button>
-            <!-- <el-button
-              v-else
-              size="small"
-              type="danger"
-              @click="handleStatus(scope.$index, scope.row)"
-            >拒绝</el-button>-->
+            <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
+            <el-button size="small" type="success" v-show="scope.row.state=='0'" @click="handleStatus(scope.$index, scope.row)">通过</el-button>
           </template>
         </el-table-column>
       </el-table>
-
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -50,7 +41,6 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="tableData.pagination.total"
       ></el-pagination>
-
       <el-dialog title="详情" :visible.sync="dialogVisible" size="tiny">
         <div class="demo-image">
           <div class="block" style="text-align:center;">
@@ -81,8 +71,9 @@
           <!-- <el-button type="primary" @click="configUserRoles">确 定</el-button> -->
         </span>
       </el-dialog>
-    </div>
-  </imp-panel>
+    </el-card>
+  </div>
+
 </template>
 
 <script>
@@ -195,8 +186,50 @@ export default {
 };
 </script>
 <style scoped>
-.el-pagination {
-  float: right;
-  margin-top: 15px;
-}
+p {
+    font-size: 16px;
+    line-height: 26px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  #orderList {
+    width: 100%;
+  }
+
+  .contain {
+    width: 100%;
+    height: 100%;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-card__body {
+    padding: 8px;
+  }
+
+  .el-pagination {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .contain .el-form-item {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .contain .date-select {
+    width: 425px;
+  }
+
+  .search-form {
+    padding: 10px;
+  }
 </style>

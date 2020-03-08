@@ -1,53 +1,58 @@
 <template>
-  <imp-panel>
-    <el-form :inline="true" :model="searchData" class="search-form" size="mini"  slot="header">
-      <el-form-item>
-        <el-input v-model="searchData.username" placeholder="用户名称" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="searchData.address" placeholder="详细地址" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-select clearable v-model="searchData.classificationId" placeholder="废品类别" @change="search($event)">
-          <el-option v-for="item in categories" :key="item.id" :label="item.tradeName" :value="item.id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-button type="primary" size="mini" @click="search($event)">查询</el-button>
-    </el-form>
-    <div slot="body">
-      <el-table :data="tableData.rows" v-loading="listLoading" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+<div id="orderList">
+    <el-card class="contain">
+      <el-form :inline="true"  :model="searchData" class="search-form" size="mini">
+        <el-form-item>
+          <el-input v-model="searchData.username" placeholder="用户名称" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchData.address" placeholder="手机号" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select clearable v-model="searchData.classificationId" placeholder="废品类别">
+            <el-option v-for="item in categories" :key="item.id" :label="item.tradeName" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-button type="primary" @click="loadData" size="mini">查询</el-button>
+      </el-form>
+      <el-table v-loading="listLoading" :data="tableData.rows" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
-        <el-table-column prop="address" label="详细地址" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="tradeName" label="废品类别"></el-table-column>
-        <el-table-column prop="weight" label="重量"></el-table-column>
-        <el-table-column prop="expectedPrice" label="期望价格"></el-table-column>
-        <el-table-column prop="nikeName" label="发布人"></el-table-column>
-        <el-table-column prop="phone" label="手机号码"></el-table-column>
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="address" label="详细地址" align="center" :show-overflow-tooltip="true">
+        </el-table-column>
+        <el-table-column prop="tradeName" label="废品类别" align="center">
+        </el-table-column>
+        <el-table-column prop="weight" label="废品重量" width="80" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.weight}}kg</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号码" align="center">
+        </el-table-column>
+        <el-table-column prop="nikeName" label="卖家昵称" align="center" width="120">
+        </el-table-column>
+        <el-table-column prop="expectedPrice" label="卖家期望价格" width="140" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.expectedPrice}}元</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="creatTime" label="发布时间" align="center">
+        </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="info"
-              @click="handleRoleConfig(scope.$index, scope.row)"
-            >查看详情</el-button>
-            <el-button size="mini" type="primary" @click="createOrder(scope.$index, scope.row)">接单</el-button>
+            <el-button type="primary" size="mini" @click="handleRoleConfig(scope.$index, scope.row)">查看详情</el-button>
+            <el-button size="mini" type="success" @click="createOrder(scope.$index, scope.row)">接单</el-button>
           </template>
         </el-table-column>
       </el-table>
-
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="tableData.pagination.pageNo"
-        :page-sizes="[5, 10, 20]"
-        :page-size="tableData.pagination.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.pagination.total"
-      ></el-pagination>
-
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="tableData.pagination.pageNo"
+        :page-sizes="[10,20,30,40]" :page-size="tableData.pagination.pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="tableData.pagination.total">
+      </el-pagination>
+      <!-- 查看公告内容对话框 -->
       <el-dialog title="废品详情" :visible.sync="dialogVisible" size="tiny">
         <div class="demo-image">
           <div class="block" style="text-align:center;">
@@ -60,11 +65,10 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <!-- <el-button type="primary" @click="configUserRoles">确 定</el-button> -->
         </span>
       </el-dialog>
-    </div>
-  </imp-panel>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -175,8 +179,50 @@ export default {
 };
 </script>
 <style scoped>
-.el-pagination {
-  float: right;
-  margin-top: 15px;
-}
+p {
+    font-size: 16px;
+    line-height: 26px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  #orderList {
+    width: 100%;
+  }
+
+  .contain {
+    width: 100%;
+    height: 100%;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-card__body {
+    padding: 8px;
+  }
+
+  .el-pagination {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .contain .el-form-item {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .contain .date-select {
+    width: 425px;
+  }
+
+  .search-form {
+    padding: 10px;
+  }
 </style>

@@ -18,7 +18,6 @@
           </el-form-item>
           <el-form-item label="废品类别" prop="classificationId">
             <el-select v-model="form.classificationId" placeholder="请选择废品类别">
-
               <el-option
                 v-for="category in $store.getters.childrenCategories"
                 :key="category.id"
@@ -98,9 +97,7 @@ export default {
         latitude: "",
         longitude: "",
         photos: "",
-        regionId: 2,
-        weight: "",
-        status: 0
+        weight: ""
       },
       rules: {
         address: [
@@ -144,7 +141,7 @@ export default {
         //   console.log('error submit!!');
         //   return false;
         // }
-      this.loading = false;
+        this.loading = false;
         if (!valid) {
           return false;
         }
@@ -201,10 +198,17 @@ export default {
               type: "success",
               offset: 70
             });
-            this.form.weight = ''
-            this.form.describe = ''
-            this.form.expectedPrice = ''
-            this.form.classificationId = undefined
+            this.form.weight = "";
+            this.form.describe = "";
+            this.form.expectedPrice = "";
+            this.form.classificationId = undefined;
+          } else {
+            this.$message({
+              type: "warning",
+              offset: 70,
+              center: true,
+              message: "发布信息失败，请稍后重试"
+            });
           }
         })
         .catch(error => {
