@@ -173,13 +173,13 @@
       }
     },
     created() {
-      sysApi.msgList()
-        .then(res => {
-          if (res && res.length > 0) {
-            this.count = res.length;
-            this.list = res;
-          }
-        })
+      // sysApi.msgList()
+      //   .then(res => {
+      //     if (res && res.length > 0) {
+      //       this.count = res.length;
+      //       this.list = res;
+      //     }
+      //   })
     },
     created(){
 

@@ -1,62 +1,37 @@
 <template>
-  <imp-panel>
-    <h3 class="box-title" slot="header" style="width: 100%;">
-      <el-row style="width: 100%;">
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="身份证号码"
-              v-model="searchData.idCard"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="真实姓名"
-              v-model="searchData.cardName"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <el-select v-model="searchData.state" @change="search($event)" clearable placeholder="请选择状态">
+<div id="orderList">
+    <el-card class="contain">
+      <el-form :inline="true"  :model="searchData" class="search-form" size="mini">
+        <el-form-item>
+          <el-input v-model="searchData.idCard" placeholder="身份证号码" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchData.cardName" placeholder="真实姓名" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select clearable v-model="searchData.state" placeholder="审核状态">
               <el-option label="待审核" value="0"></el-option>
               <el-option label="审核通过" value="1"></el-option>
-            </el-select>
-          </div>
-        </el-col>
-      </el-row>
-    </h3>
-    <div slot="body">
-      <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
-        <el-table-column prop="user.username" label="登录用户名"></el-table-column>
-        <el-table-column prop="cardName" label="真实姓名"></el-table-column>
-        <el-table-column prop="idCard" label="身份证号码"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="creditCode" label="信用代码"></el-table-column>
-        <el-table-column prop="businessName" label="营业执照名"></el-table-column>
-        <el-table-column label="操作" width="285">
+          </el-select>
+        </el-form-item>
+        <el-button type="primary" @click="loadData" size="mini">查询</el-button>
+      </el-form>
+      <el-table v-loading="listLoading" :data="tableData.rows" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+        :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="user.username" label="登录用户名" align="center"></el-table-column>
+        <el-table-column prop="cardName" label="真实姓名" align="center"></el-table-column>
+        <el-table-column prop="idCard" label="身份证号码" align="center"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center"></el-table-column>
+        <el-table-column prop="creditCode" label="信用代码" align="center"></el-table-column>
+        <el-table-column prop="businessName" label="营业执照名" align="center"></el-table-column>
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button size="small" type="info" icon="setting" @click="showDetail(scope.row)">查看详情</el-button>
-            <!-- <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+            <el-button type="primary" size="mini" @click='showDetail(scope.row)'>详情</el-button>
             <el-button size="small" type="success" v-show="scope.row.state=='0'" @click="handleStatus(scope.$index, scope.row)">通过</el-button>
-            <!-- <el-button
-              v-else
-              size="small"
-              type="danger"
-              @click="handleStatus(scope.$index, scope.row)"
-            >拒绝</el-button>-->
           </template>
         </el-table-column>
       </el-table>
-
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -97,8 +72,9 @@
           <!-- <el-button type="primary" @click="configUserRoles">确 定</el-button> -->
         </span>
       </el-dialog>
-    </div>
-  </imp-panel>
+    </el-card>
+  </div>
+  
 </template>
 
 <script>
@@ -211,8 +187,50 @@ export default {
 };
 </script>
 <style scoped>
-.el-pagination {
-  float: right;
-  margin-top: 15px;
-}
+p {
+    font-size: 16px;
+    line-height: 26px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  #orderList {
+    width: 100%;
+  }
+
+  .contain {
+    width: 100%;
+    height: 100%;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-card__body {
+    padding: 8px;
+  }
+
+  .el-pagination {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .contain .el-form-item {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .contain .date-select {
+    width: 425px;
+  }
+
+  .search-form {
+    padding: 10px;
+  }
 </style>
