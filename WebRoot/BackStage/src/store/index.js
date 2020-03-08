@@ -80,7 +80,7 @@ const store = new Vuex.Store({
         toggleLoading: ({ commit }) => commit(types.TOGGLE_LOADING),
         loadMenuList: ({ commit }) => {
             getMenuListByUserId(store.getters.userInfo.id).then(res => {
-                //console.log(res)
+                console.log(res)
                 commit(types.LOAD_MENU, res.data);
             }).catch();
         },

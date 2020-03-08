@@ -161,7 +161,6 @@ export default {
     this.loadRootCategories()
     this.$store.dispatch('GetInfo').then(res => {
       this.loading = false
-      console.log(this.$store.getters.userInfo)
     })
 
     this.$store.dispatch('GetConfig').then(res => {
@@ -176,10 +175,10 @@ export default {
           this.count = res.num
         }
       } else {
-        this.$message.error(res.msg)
+        //this.$message.error(res.msg)
       }
     }).catch((err) => {
-      this.$message.error(err.message)
+      //this.$message.error(err.message)
     })
   }
 }

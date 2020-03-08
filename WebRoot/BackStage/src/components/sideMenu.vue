@@ -8,7 +8,7 @@
         <el-menu
           :default-active="onRoutes"
           :default-openeds="onRouteKeys"
-          :unique-opened=true
+          :unique-opened="true"
           class="el-menu-style"
           theme="light"
           router
@@ -25,6 +25,7 @@
       <el-menu
         :default-active="onRoutes"
         class="el-menu-style"
+        :unique-opened="true"
         theme="light"
         router
         :collapse="!sidebar.collapsed&&sidebar.collapsed"

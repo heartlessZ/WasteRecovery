@@ -14,16 +14,18 @@
             :key="o.id"
             :offset="index>1?2:2"
           >
-            <div class="grid-content" @click="showChildrenCategory(o.id)">
+            <div class="grid-content" @click="showChildrenCategory(o.id)" :style="'background-image: url('+o.imgUrl+')'">
               <span class="category-title">{{o.classificationName}}</span>
               <br />
               <br />
+              <br />
+              <br />
               <span class="category-price-range">{{o.minprice}}-{{o.maxprice}}元/kg</span>
-              <div>
+              <!-- <div>
                 <span class="category-icon">
                   <img :src="o.imgUrl" alt width="45" height="45" />
                 </span>
-              </div>
+              </div> -->
             </div>
           </el-col>
         </el-row>
@@ -61,8 +63,9 @@ export default {
   methods: {
     getDataList() {
       this.$store.dispatch("QueryRootCategory").then(res => {
-        if(res.status)
+        if(res.status){
           this.showChildrenCategory(res.records[0].id)
+        }
       });
     },
     showChildrenCategory(id) {
@@ -88,7 +91,7 @@ export default {
   opacity: 0.8;
   box-shadow: 0px 0px 10px 4px #91e54f;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.8rem;background-image: url();
 }
 
 .category-icon {

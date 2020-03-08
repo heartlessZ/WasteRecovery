@@ -1,82 +1,67 @@
 <template>
-  <imp-panel>
-    <h3 class="box-title" slot="header" style="width: 100%;">
-      <el-row style="width: 100%;">
-        <!-- <el-col :span="12">
-          <router-link :to="{ path: 'userAdd'}">
-            <el-button type="primary" icon="plus">新增</el-button>
-          </router-link>
-        </el-col>-->
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入用户名称"
-              v-model="searchData.nikeName"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入手机号"
-              v-model="searchData.phone"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>
-        <!-- <el-col :span="6">
-          <div class="el-input" style="width: 200px; ">
-            <input
-              type="text"
-              placeholder="输入手机号"
-              v-model="searchData.phone"
-              @keyup.enter="search($event)"
-              class="el-input__inner"
-            />
-          </div>
-        </el-col>-->
-      </el-row>
-    </h3>
-    <div slot="body">
-      <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
-        <!-- @selection-change="handleSelectionChange">
-        <el-table-column
-          prop="id"
-          type="selection"
-          width="50">
-        </el-table-column>-->
-        <el-table-column label="头像" width="76">
+<div id="orderList">
+    <el-card class="contain">
+      <el-form :inline="true"  :model="searchData" class="search-form" size="mini">
+        <el-form-item>
+          <el-input v-model="searchData.nikeName" placeholder="昵称" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="loadData" size="mini">查询</el-button>
+      </el-form>
+      <el-table :data="tableData.rows" border v-loading="listLoading" style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
+        :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <!-- <el-table-column prop="wasteInfo.photos" label="废品图片" width="110">
+          <template slot-scope="scope">
+            <el-image style="width: 90px; height: 50px;padding-top: 5px;" :src="scope.row.wasteInfo.photos" fit="cover"
+              :preview-src-list="[scope.row.wasteInfo.photos]"></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column prop="tradeName" label="废品类别" align="center">
+        </el-table-column>
+        <el-table-column prop="wasteInfo.weight" label="废品重量" width="140" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.wasteInfo.weight}}kg</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="user.nikeName" label="卖家昵称" align="center" width="120">
+        </el-table-column>
+        <el-table-column prop="wasteInfo.expectedPrice" label="卖家期望价格" width="140" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.wasteInfo.expectedPrice}}元</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="businessNikeName" label="商家昵称" align="center" width="120">
+        </el-table-column>
+        <el-table-column prop="creatTime" label="下单时间" align="center">
+        </el-table-column>
+        <el-table-column prop="state" label="订单状态" width="120" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state==1"  style="color: #E6A23C;">进行中</span>
+            <span v-if="scope.row.state==2"  style="color: #69D4B7;">已完成</span>
+            <span v-if="scope.row.state==3"  style="color:#909399 ;">已取消</span>
+          </template>
+        </el-table-column> -->
+        <el-table-column label="头像" width="76" align="center">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" style="height: 35px;vertical-align: middle;" alt />
           </template>
         </el-table-column>
-        <el-table-column prop="username" label="登录用户名"></el-table-column>
-        <el-table-column prop="nikeName" label="昵称"></el-table-column>
-        <el-table-column label="性别">
-          <template slot-scope="scope">{{ scope.row.sex==='2' ? '男' : '女' }}</template>
-        </el-table-column>
-        <el-table-column prop="phone" label="手机号码"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <!-- <el-table-column
-          label="状态">
+        <el-table-column prop="username" label="登录用户名" align="center"></el-table-column>
+        <el-table-column prop="nikeName" label="昵称" align="center"></el-table-column>
+        <el-table-column label="性别" align="center">
           <template slot-scope="scope">
-            {{ scope.row.status===1 ? '已激活' : '未激活' }}
-            
+            <span v-if="scope.row.sex==='0'">男</span>
+            <span v-if="scope.row.sex==='1'">女</span>
+            <span v-if="scope.row.sex==='2'">保密</span>
           </template>
-        </el-table-column>-->
-        <el-table-column label="操作" width="285">
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号码" align="center"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+        <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
-            <!-- <el-button
-              size="small"
-              type="default"
-              icon="edit"
-              @click="handleEdit(scope.$index, scope.row)">编辑
-            </el-button>-->
             <el-button
               size="small"
               type="info"
@@ -99,17 +84,15 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <el-pagination
-        @size-change="handleSizeChange"
+      <el-pagination background @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="tableData.pagination.pageNo"
         :page-sizes="[5, 10, 20]"
         :page-size="tableData.pagination.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.pagination.total"
-      ></el-pagination>
-
+        :total="tableData.pagination.total">
+      </el-pagination>
+      <!-- 配置用户角色 -->
       <el-dialog title="配置用户角色" :visible.sync="dialogVisible" size="tiny">
         <div class="select-tree">
           <el-scrollbar
@@ -134,8 +117,9 @@
           <el-button type="primary" @click="configUserRoles">确 定</el-button>
         </span>
       </el-dialog>
-    </div>
-  </imp-panel>
+    </el-card>
+  </div>
+  
 </template>
 
 <script>
@@ -207,55 +191,8 @@ export default {
           this.dialogLoading = false
         }
       });
-      // this.$http.get(api.SYS_USER_ROLE + "?id=" + row.id)
-      //   .then(res => {
-      //     this.$refs.roleTree.setCheckedKeys(res.data);
-      //   }).catch(err=>{
-
-      // })
     },
     configUserRoles() {
-      // if (this.ids.length != 0) {
-      //   let delparams = {
-      //     roleIds: this.ids.join(","),
-      //     userId: this.currentRow.id
-      //   };
-      //   request.post(api.SYS_DELETE_USER_ROLE, delparams).then(res => {
-      //     if (res.status) {
-      //       let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-      //       if (checkedKeys.length == 0) {
-      //         this.dialogVisible = false;
-      //         return;
-      //       }
-      //       let params = {
-      //         roleIds: checkedKeys.join(","),
-      //         userId: this.currentRow.id
-      //       };
-      //       request.post(api.SYS_SET_USER_ROLE, params).then(res => {
-      //         if (res.status) {
-      //           this.$message("操作成功");
-      //           this.dialogVisible = false;
-      //         }
-      //       });
-      //     }
-      //   });
-      // } else {
-      //   let checkedKeys = this.$refs.roleTree.getCheckedKeys();
-      //   if (checkedKeys.length == 0) {
-      //     this.dialogVisible = false;
-      //     return;
-      //   }
-      //   let params = {
-      //     roleIds: checkedKeys.join(","),
-      //     userId: this.currentRow.id
-      //   };
-      //   request.post(api.SYS_SET_USER_ROLE, params).then(res => {
-      //     if (res.status) {
-      //       this.$message("操作成功");
-      //       this.dialogVisible = false;
-      //     }
-      //   });
-      // }
       let checkedKeys = this.$refs.roleTree.getCheckedKeys();
         let params = {
           roleIds: checkedKeys.join(","),
@@ -323,8 +260,51 @@ export default {
 };
 </script>
 <style scoped>
-.el-pagination {
-  float: right;
-  margin-top: 15px;
-}
+
+  p {
+    font-size: 16px;
+    line-height: 26px;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  #orderList {
+    width: 100%;
+  }
+
+  .contain {
+    width: 100%;
+    height: 100%;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-card__body {
+    padding: 8px;
+  }
+
+  .el-pagination {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .contain .el-form-item {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .contain .date-select {
+    width: 425px;
+  }
+
+  .search-form {
+    padding: 10px;
+  }
 </style>
