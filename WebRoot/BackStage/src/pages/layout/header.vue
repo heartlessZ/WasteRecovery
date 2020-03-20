@@ -130,7 +130,7 @@
             //初始化weosocket
             //判断当前浏览器是否支持WebSocket
             if ('WebSocket' in window) {
-              const wsuri = "ws://safeclean.tx-q.cn:4399/webSocket/" + this.websock.username;
+              const wsuri = "wss://hbws.jiuyect.com:4399/webSocket/" + this.websock.username;
               this.websock = new WebSocket(wsuri);
               this.websock.onmessage = this.websocketonmessage;
               this.websock.onopen = this.websocketonopen;
