@@ -156,3 +156,22 @@ export function editPhone (phone) {
     data: phone
   })
 }
+
+// 查询上门分类类型
+export function visitClassfication (phone) {
+  let url = '/visit/Classification'
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
+
+// 创建上门分类订单
+export function visitCreate (data) {
+  let url = '/visit/creat'
+  return request({
+    url: url,
+    method: 'post',
+    data: data
+  })
+}

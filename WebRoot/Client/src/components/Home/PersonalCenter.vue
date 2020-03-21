@@ -18,30 +18,30 @@
             <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
               <router-link class="menu-text" to="/home/personal-center/join-us">
                 <el-menu-item index="1">
-                  <i class="el-icon-location"></i>
+                  <i class="el-icon-office-building"></i>
                   商家入驻
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/order-mng">
                 <el-menu-item index="2">
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-shopping-cart-2"></i>
                   订单管理
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/user-info">
                 <el-menu-item index="4">
-                  <i class="el-icon-setting"></i>
+                  <i class="el-icon-s-custom"></i>
                   个人信息
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/bind-account">
                 <el-menu-item index="5">
-                  <i class="el-icon-setting"></i>
+                  <i class="el-icon-connection"></i>
                   账号绑定
                 </el-menu-item>
               </router-link>
               <el-menu-item class="menu-text" index="6" @click="logout">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-switch-button"></i>
                 退出登录
               </el-menu-item>
             </el-menu>

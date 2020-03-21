@@ -168,7 +168,6 @@ export default {
     },
     loadRootCategories () {
       this.$store.dispatch('QueryRootCategory').then(res => {
-        // console.log(this.$store.getters.rootCategories)
       })
     },
     // 点击公告图标事件
@@ -180,7 +179,8 @@ export default {
 
     this.loadRootCategories()
     this.$store.dispatch('GetInfo').then(res => {
-      this.loading = false
+      //if(res.status)
+        this.loading = false
     })
 
     this.$store.dispatch('GetConfig').then(res => {
