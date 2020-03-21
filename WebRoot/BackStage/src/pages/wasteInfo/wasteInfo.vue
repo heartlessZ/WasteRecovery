@@ -21,7 +21,7 @@
       <el-table v-loading="listLoading" :data="tableData.rows" border style="width: 100%" :row-style="{'height':'40px'}" :cell-style="{'padding':'0'}"
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="address" label="详细地址" align="center">
+        <el-table-column prop="address" label="详细地址" align="center" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column prop="tradeName" label="废品类别" align="center">
         </el-table-column>
@@ -69,54 +69,6 @@
       </el-dialog>
     </el-card>
   </div>
-  <!-- <imp-panel>
-    <div slot="body">
-      <el-table :data="tableData.rows" border style="width: 100%" v-loading="listLoading">
-        <el-table-column prop="address" label="详细地址"></el-table-column>
-        <el-table-column prop="tradeName" label="废品类别"></el-table-column>
-        <el-table-column prop="weight" label="重量"></el-table-column>
-        <el-table-column prop="expectedPrice" label="期望价格"></el-table-column>
-        <el-table-column prop="nikeName" label="发布人"></el-table-column>
-        <el-table-column prop="phone" label="手机号码"></el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button
-              size="small"
-              type="info"
-              icon="setting"
-              @click="handleRoleConfig(scope.$index, scope.row)"
-            >查看详情</el-button>
-            <el-button size="small" type="success" @click="createOrder(scope.$index, scope.row)">接单</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="tableData.pagination.pageNo"
-        :page-sizes="[5, 10, 20]"
-        :page-size="tableData.pagination.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.pagination.total"
-      ></el-pagination>
-
-      <el-dialog title="废品详情" :visible.sync="dialogVisible" size="tiny">
-        <div class="demo-image">
-          <div class="block" style="text-align:center;">
-            <span class="demonstration">现场图片</span>
-            <br />
-            <el-image style="width: 300px; height: 300px" :src="currentRow.photos" fit="fill"></el-image>
-          </div>
-          <br />
-          废品描述：{{currentRow.describe}}
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-        </span>
-      </el-dialog>
-    </div>
-  </imp-panel> -->
 </template>
 
 <script>

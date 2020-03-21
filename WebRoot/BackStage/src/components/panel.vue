@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="box-header" v-if="title || $slots.header" :class="{'with-border':widthBorder}">
-      <slot name="header"><h3 class="box-title" v-text="title" v-if="title"></h3></slot>
+      <slot name="header"></slot>
     </div>
     <div class="box-body">
       <slot name="body" v-if="$slots.body">
@@ -68,7 +68,7 @@
   .box-header {
     color: #444;
     display: block;
-    padding: 15px;
+    padding: 15px 15px 0 15px;
     position: relative;
   }
   .box-header.with-border {
@@ -112,7 +112,7 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    padding: 10px;
+    padding: 0 10px 10px 10px;
   }
 
   .box-footer {

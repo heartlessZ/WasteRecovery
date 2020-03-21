@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column prop="username" label="登录用户名" align="center"></el-table-column>
         <el-table-column prop="nikeName" label="昵称" align="center"></el-table-column>
-        <el-table-column label="性别" align="center">
+        <el-table-column label="性别" align="center" width="60">
           <template slot-scope="scope">
             <span v-if="scope.row.sex==='0'">男</span>
             <span v-if="scope.row.sex==='1'">女</span>
@@ -32,21 +32,21 @@
         <el-table-column label="操作" width="250" align="center">
           <template slot-scope="scope">
             <el-button
-              size="small"
+              size="mini"
               type="info"
               icon="setting"
               @click="handleRoleConfig(scope.$index, scope.row)"
             >配置角色</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             <el-button
               v-if="scope.row.status==='1'"
-              size="small"
-              type="success"
+              size="mini"
+              type="primary"
               @click="handleStatus(scope.$index, scope.row)"
             >启用</el-button>
             <el-button
               v-else
-              size="small"
+              size="mini"
               type="danger"
               @click="handleStatus(scope.$index, scope.row)"
             >禁用</el-button>
@@ -88,7 +88,7 @@
       </el-dialog>
     </el-card>
   </div>
-  
+
 </template>
 
 <script>

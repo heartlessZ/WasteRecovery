@@ -5,9 +5,6 @@ import { getBaseUrl } from "../common/utils";
 import { MessageBox } from "element-ui";
 
 
-axios.defaults.withCredentials = true; //意思是携带cookie信息,保持session的一致性
-axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // axios 配置
 axios.defaults.timeout = 5000;
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';

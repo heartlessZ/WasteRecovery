@@ -113,15 +113,16 @@
         this.imgCode = 'http://safeclean.tx-q.cn:4399/user/images/captcha?' + new Date()
       },
       login() {
+
         let username_c = false
         let password_c = false
         this.$refs.form.validateField('username', e => { if (!e) { username_c = true } })
         this.$refs.form.validateField('password', e => { if (!e) { password_c = true } })
-        this.loading = true;
         var redirectUrl = "";
-        if (!username_c && !password_c) {
+        if (!username_c ||!password_c) {
           redirectUrl = this.$route.query.redirect;
         }else {
+          this.loading = true;
         this.$store.dispatch("Login", this.form).then(res => {
           this.loading = false;
           if (res.status) {
@@ -129,6 +130,7 @@
               path: "/"
             });
           } else {
+            this.loading = false;
             this.$message({
               type: "error",
               offset: 70,

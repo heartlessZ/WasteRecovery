@@ -22,8 +22,8 @@
         <el-table-column prop="user.username" label="登录用户名" align="center"></el-table-column>
         <el-table-column prop="cardName" label="真实姓名" align="center"></el-table-column>
         <el-table-column prop="idCard" label="身份证号码" align="center"></el-table-column>
-        <el-table-column prop="address" label="地址" align="center"></el-table-column>
-        <el-table-column prop="creditCode" label="信用代码" align="center"></el-table-column>
+        <el-table-column prop="address" label="地址" align="center" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="creditCode" label="信用代码" align="center" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="businessName" label="营业执照名" align="center"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
@@ -41,7 +41,6 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="tableData.pagination.total"
       ></el-pagination>
-
       <el-dialog title="详情" :visible.sync="dialogVisible" size="tiny">
         <div class="demo-image">
           <div class="block" style="text-align:center;">
@@ -74,7 +73,7 @@
       </el-dialog>
     </el-card>
   </div>
-  
+
 </template>
 
 <script>
