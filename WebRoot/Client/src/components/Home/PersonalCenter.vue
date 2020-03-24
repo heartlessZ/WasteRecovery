@@ -6,10 +6,10 @@
           <el-avatar :size="80" :src="$store.getters.avatar"></el-avatar>
         </div>
         <div class="personal-info">
-          <span>{{$t('PersonalCenter.username')}}：{{$store.getters.userInfo.username}}</span>
+          <span>用户名：{{$store.getters.userInfo.username}}</span>
           <br />
           <br />
-          <span>{{$t('PersonalCenter.nikename')}}：{{$store.getters.userInfo.nikeName}}</span>
+          <span>昵称：{{$store.getters.userInfo.nikeName}}</span>
         </div>
       </div>
       <div class="left-bar-menu">
@@ -19,30 +19,30 @@
               <router-link class="menu-text" to="/home/personal-center/join-us">
                 <el-menu-item index="1">
                   <i class="el-icon-location"></i>
-                  {{$t('PersonalCenter.Merchantentry')}}
+                  商家入驻
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/order-mng">
                 <el-menu-item index="2">
                   <i class="el-icon-menu"></i>
-                  {{$t('PersonalCenter.Ordermanagement')}}
+                  订单管理
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/user-info">
                 <el-menu-item index="4">
                   <i class="el-icon-setting"></i>
-                  {{$t('PersonalCenter.Personalinformation')}}
+                  个人信息
                 </el-menu-item>
               </router-link>
               <router-link class="menu-text" to="/home/personal-center/bind-account">
                 <el-menu-item index="5">
                   <i class="el-icon-setting"></i>
-                  {{$t('PersonalCenter.Accountinding')}}
+                  账号绑定
                 </el-menu-item>
               </router-link>
               <el-menu-item class="menu-text" index="6" @click="logout">
                 <i class="el-icon-setting"></i>
-                {{$t('PersonalCenter.Logout')}}
+                退出登录
               </el-menu-item>
             </el-menu>
           </el-col>
@@ -79,8 +79,8 @@
     created() {
       this.$store.dispatch('GetInfo').then(res => {
         if (!res.status) {
-          this.$alert(res.msg, this.$t('PersonalCenter.sessiontimeout'), {
-            confirmButtonText: this.$t('PersonalCenter.ok'),
+          this.$alert('会话已经过期，请重新登录', '会话超时', {
+            confirmButtonText: '确定',
             callback: action => {
               this.$router.push('/home/overview')
             }

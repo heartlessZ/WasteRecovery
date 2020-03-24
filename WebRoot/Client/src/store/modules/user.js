@@ -201,6 +201,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getConfig().then((res) => {
           if (res.status) {
+            console.log(res.data)
             commit('SET_CONFIG', res.data)
           }
           resolve(res)
