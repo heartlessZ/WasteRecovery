@@ -82,7 +82,7 @@
          if (res.status) {
            this.$message({
              showClose: true,
-             message: '操作成功',
+             message: res.msg,
              type: 'success'
            })
            this.requestData()
