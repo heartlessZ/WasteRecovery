@@ -45,6 +45,9 @@ export const SYS_SET_USER_ROLE = CONTEXT + '/authorization/addToUser';
 export const SYS_DELETE_USER_ROLE = CONTEXT + '/authorization/delToUser';
 
 export const WASTE_PAGE = CONTEXT + '/classification/list';
+export const CLASSES_SERVICE = CONTEXT + '/visit/noVisitorders';
+export const CLASSES_SERVICE_ORDER = CONTEXT + '/visit/business/enterpris';
+export const CLASSES_SERVICE_BUSINESS_ORDER = CONTEXT + '/visit/business/order';
 
 export const ORDER_CREATE = CONTEXT + '/order/create';
 

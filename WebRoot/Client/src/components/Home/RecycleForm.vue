@@ -72,7 +72,7 @@
               label-width="80px"
             >
               <el-form-item label="家庭住址" required>
-                <el-input v-model="form2.address" placeholder="请选择家庭住址"></el-input>
+                <el-input :disabled="isVIP" v-model="form2.address" placeholder="请选择家庭住址"></el-input>
               </el-form-item>
               <el-form-item label="服务类别" prop="visitclassificationId" required>
                 <el-select v-model="form2.visitclassificationId" placeholder="请选择废品类别">
@@ -81,18 +81,31 @@
                     :key="category.id"
                     :label="category.classificationName"
                     :value="category.id"
-                  >{{category.classificationName}}<div style="width:50px;float:right;">{{category.money}}</div></el-option>
+                  >
+                    {{category.classificationName}}
+                    <div style="width:50px;float:right;">{{category.money}}</div>
+                  </el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="到期时间" v-if="isVIP" required>{{currentOrder.endTime}}</el-form-item>
               <el-form-item>
                 <div class="recycle-form-btn">
                   <el-button
                     type="primary"
                     @click="onSubmit2('form2')"
+                    :disabled="isVIP"
                     round
                     v-loading="loading2"
                     style="justify-content: center;"
                   >确认订购</el-button>
+                  <el-button
+                    type="primary"
+                    @click="renew('form2')"
+                    v-if="isVIP"
+                    round
+                    v-loading="loading2"
+                    style="justify-content: center;"
+                  >续费</el-button>
                 </div>
               </el-form-item>
             </el-form>
@@ -100,15 +113,15 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    
   </section>
 </template>
 
 <script>
 import Amap from "./RecycleForm/Amap";
 import UploadImg from "./RecycleForm/UploadImg";
-import {visitClassfication, visitCreate} from '../../api/user'
+import { visitClassfication, visitCreate } from "../../api/user";
 import { releaseOrder } from "../../api/user";
+import request from "../../utils/request";
 export default {
   name: "recycle-form",
   components: {
@@ -131,8 +144,12 @@ export default {
     return {
       limit: 1,
       loading: false,
-      loading2:false,
-      visitCategories:[],
+      loading2: false,
+      isVIP: false,
+      currentOrder: {
+        endTime: undefined
+      },
+      visitCategories: [],
       form: {
         address: "",
         classificationId: undefined,
@@ -253,6 +270,7 @@ export default {
             this.form.describe = "";
             this.form.expectedPrice = "";
             this.form.classificationId = undefined;
+            this.loadData()
           } else {
             this.$message({
               type: "warning",
@@ -286,10 +304,10 @@ export default {
         // }
         this.loading2 = false;
         if (!valid) {
-          return
+          return;
         }
       });
-      
+
       if (this.form2.address.trim() == "") {
         this.$message({
           type: "warning",
@@ -309,7 +327,7 @@ export default {
         });
         return;
       }
-      
+
       visitCreate(this.form2)
         .then(res => {
           this.loading2 = false;
@@ -322,9 +340,10 @@ export default {
             });
             // this.form2.address = "";
             // this.form2.visitclassificationId = undefined;
+            this.loadData()
           } else {
             this.$message({
-              type: "warning",
+              type: "error",
               offset: 70,
               center: true,
               message: res.msg
@@ -335,17 +354,54 @@ export default {
           this.loading2 = false;
         });
     },
+    renew(formName) {
+      this.loading2 = true;
+      this.$refs[formName].validate(valid => {
+        this.loading2 = false;
+        if (!valid) {
+          return;
+        }
+      });
+      let params = {
+        orderId: this.currentOrder.orderId,
+        visitclassificationId: this.form2.visitclassificationId
+      };
+      request.post("visit/order/renew", params).then(res => {
+        if (res.status) {
+          this.$message({
+            type: "success",
+            offset: 70,
+            center: true,
+            message: "续费成功"
+          });
+          this.loadData();
+        } else {
+          this.$message({
+            type: "error",
+            offset: 70,
+            center: true,
+            message: res.msg
+          });
+        }
+      });
+    },
     reset() {},
-    loadCategory() {
-      this.$store.dispatch("QueryChildrenCategory").then(res => {});
-      visitClassfication().then(res=>{
-        if(res.status)
-          this.visitCategories = res.data
-      })
+    loadData() {
+      request.get("visit/myorder").then(res => {
+        if (res.status && res.total > 0) {
+          this.isVIP = true;
+          this.currentOrder = res.records[0];
+          this.form2.address = res.records[0].address;
+        }
+      });
     }
   },
   mounted() {
-    this.loadCategory();
+    this.$store.dispatch("QueryChildrenCategory").then(res => {});
+    visitClassfication().then(res => {
+      if (res.status) this.visitCategories = res.data;
+    });
+    this.loadData();
   }
 };
 </script>

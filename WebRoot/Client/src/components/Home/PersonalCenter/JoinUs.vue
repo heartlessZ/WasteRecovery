@@ -45,6 +45,7 @@ import IdentityCertificate from "./JoinUs/IdentityCertificate";
 import BusinessInfo from "./JoinUs/BusinessInfo";
 import { settledInApply, settledInInfo } from "../../../api/user";
 import Amap from "../RecycleForm/Amap";
+import request from '../../../utils/request'
 export default {
   name: "join-us",
   data() {
@@ -73,6 +74,13 @@ export default {
     Amap
   },
   methods: {
+    getUrl () {
+      request.get('/setting/get' + '?vkey=backStorageUrl').then(res => {
+        if (res.status) {
+          this.backStorageUrl = res.data.vvalue;
+        }
+      })
+    },
     addressValidate() {
       if (!this.applyForm.address) {
         this.$message({
@@ -119,11 +127,7 @@ export default {
         this.active = 3;
         if (res.data.state == 1) {
           this.active = 4;
-          this.$store.getters.config.forEach(item => {
-            if (item.vkey == "backStorageUrl") {
-              this.backStorageUrl = item.vvalue;
-            }
-          });
+          this.getUrl()
         }
       }
       this.loading = false;

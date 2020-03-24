@@ -16,6 +16,9 @@ const category = resolve => require(['../pages/sys/category'], resolve)
 const personalCenter = resolve => require(['../pages/sys/percenal-center'], resolve)
 const config = resolve => require(['../pages/sys/config'], resolve)
 const authorization = resolve => require(['../pages/sys/authorization'], resolve)
+const document = resolve => require(['../pages/sys/document.vue'], resolve)
+const classesService = resolve => require(['../pages/wasteInfo/classesService.vue'], resolve)
+const classesOrder = resolve => require(['../pages/order/classesOrder.vue'], resolve)
 const JoinUs = resolve => require(['../pages/sys/join-us'], resolve)
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
 const UserNoticeList = resolve => require(['../pages/notice/UserNoticeList.vue'], resolve)
@@ -24,6 +27,7 @@ const BusinessConsole = resolve => require(['../pages/console/BusinessConsole.vu
 const LoginLog = resolve => require(['../pages/log/LoginLog.vue'], resolve)
 const SystemLog = resolve => require(['../pages/log/SystemLog.vue'], resolve)
 const OnlineUserList = resolve => require(['../pages/log/OnlineUserList.vue'], resolve)
+
 const routes = [
     { path: '/login', component: login },
     {
@@ -52,6 +56,9 @@ const routes = [
             { path: '/system/notice', component: NoticeManager},
             { path: '/system/user-notice', component: UserNoticeList},
             { path: '/system/join-us', component: JoinUs},
+            { path: '/system/document', component: document},
+            { path: '/classes-service', component: classesService},
+            { path: '/classes-order', component: classesOrder},
             //{ path: '/system/authorization', component: authorization},
         ]
     },

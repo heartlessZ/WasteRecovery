@@ -9,7 +9,7 @@
           <el-input v-model="searchData.phone" placeholder="手机号" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="searchData.address" placeholder="手机号" clearable></el-input>
+          <el-input v-model="searchData.address" placeholder="地址" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-select clearable v-model="searchData.classificationId" placeholder="废品类别">
