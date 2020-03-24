@@ -7,18 +7,18 @@
       label-width="120px"
       class="demo-ruleForm"
     >
-      <el-form-item label="营业执照名" prop="businessName">
+      <el-form-item :label="$t('BusinessInfo.businessName')" prop="businessName">
         <el-input v-model="ruleForm.businessName"></el-input>
       </el-form-item>
-      <el-form-item label="信用代码" prop="creditCode">
+      <el-form-item :label="$t('BusinessInfo.creditCode')" prop="creditCode">
         <el-input v-model="ruleForm.creditCode"></el-input>
       </el-form-item>
-      <el-form-item label="营业执照图片" required>
+      <el-form-item :label="$t('BusinessInfo.pic')" required>
         <upload-img :limit="limit" @getimageurl="getImageUrl"></upload-img>
       </el-form-item>
       <el-form-item>
         <!-- <el-button type="default" @click="previous">返回上一步</el-button> -->
-        <el-button type="primary" @click="submitForm('ruleForm')">下一步</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">{{$t('BusinessInfo.next')}}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -38,11 +38,11 @@ export default {
       },
       rules: {
         businessName: [
-          { required: true, message: "请输入营业执照名", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
+          { required: true, message: this.$t('BusinessInfo.inputbusinessName'), trigger: "blur" },
+          { min: 2, max: 5, message: this.$t('BusinessInfo.lenth'), trigger: "blur" }
         ],
         creditCode: [
-          { required: true, message: "请输入信用代码", trigger: "blur" }
+          { required: true, message: this.$t('BusinessInfo.inputcreditCode'), trigger: "blur" }
         ]
       }
     };
@@ -56,7 +56,7 @@ export default {
               type: "error",
               offset: 70,
               center: true,
-              message: "请上传营业执照照片"
+              message: this.$t('BusinessInfo.inputpic')
             });
             return false;
           }

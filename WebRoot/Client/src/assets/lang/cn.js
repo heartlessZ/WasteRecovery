@@ -1,4 +1,8 @@
 module.exports = {
+  base : {
+    loginerroe:"你的会话已过期，请重新登录",
+    next:"下一步"
+  },
   home : {
     home:"首页",
     synopsis:"简介",
@@ -49,6 +53,7 @@ module.exports = {
   },
   RecycleForm:{
     title:"废品回收",
+    neworder:"发布新订单",
     Wastepic:"废品图片",
     category:"废品类别",
     inputcategory:"请选择废品类别",
@@ -66,6 +71,11 @@ module.exports = {
     inputadress:"请填写详细地址，精确到门牌号",
     inputpic:"请上传一张废品的现场图片",
     msg:"操作提示",
+    visit:"上门分类",
+    endtime:"到期时间",
+    okpay:"确认订购",
+    renew:"续费",
+    servicetype:"请选择服务类型",
   },
   PersonalCenter:{
     username:"用户名",
@@ -114,6 +124,13 @@ module.exports = {
     secrecy:"保密",
     phone:"电话",
     email:"邮箱",
+    balance:"钱包余额",
+    balancepay:"钱包充值",
+    pay:"充值",
+    paymong:"充值",
+    paymsg:"其他金额,请输入1-50000的整数",
+    payway:"支付方式",
+    topay:"立即充值",
     editInfo:"编辑个人信息",
     cancel:"取 消",
     Confirm :"确 定",
@@ -182,5 +199,23 @@ module.exports = {
     Confirm :"确定",
     deleteerror :"删除失败！",
     cancelerror :"取消失败！",
+  },
+  BusinessInfo:{
+    businessName:"营业执照名",
+    creditCode:"信用代码",
+    pic:"营业执照图片",
+    inputbusinessName:"请输入营业执照名",
+    lenth:"长度在 2 到 5 个字符",
+    inputcreditCode:"请输入信用代码",
+    inputpic:"请上传营业执照照片",
+    next:"下一步"
+  },
+  IdentityCertificate:{
+    realName:"真实姓名",
+    idCard:"身份证号",
+    frontandback:"身份证正反面照片",
+    inputrealName:"请输入真实姓名",
+    inputidCard:"请输入身份证号码",
+    inputidfrontandback:"请上传身份证正反面照片",
   }
 }

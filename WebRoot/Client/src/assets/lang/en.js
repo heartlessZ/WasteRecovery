@@ -1,4 +1,8 @@
 module.exports = {
+  base : {
+    loginerroe:"Your session has expired, please login again!",
+    next:"Next step"
+  },
   home : {
     home:"home",
     synopsis:"synopsis",
@@ -49,6 +53,7 @@ module.exports = {
   },
   RecycleForm:{
     title:"waste recycling",
+    neworder:"Issue new order",
     Wastepic:"waste picture",
     category:"scrap category",
     inputcategory:"please select scrap category",
@@ -66,6 +71,11 @@ module.exports = {
     inputadress:"please fill in the detailed address, accurate to the house number",
     inputpic:"please upload a live picture of the waste products",
     msg:"Tips",
+    visit:"Door-to-door classification",
+    endtime:"Due time",
+    okpay:"Confirm order",
+    renew:"renew",
+    servicetype:"Please select service type",
   },
   PersonalCenter:{
     username: "username",
@@ -102,7 +112,8 @@ module.exports = {
   },
   Amap:{
     inputadress:"please fill in the detailed address, accurate to the house number",
-  },UserInfo:{
+  },
+  UserInfo:{
     title:"personal informatio",
     edit:"edit",
     Headportrait:"head sculpture",
@@ -113,6 +124,13 @@ module.exports = {
     secrecy:"secrecy",
     phone:"phone",
     email:"email",
+    balance:"Wallet balance",
+    balancepay:"Wallet recharge",
+    pay:"paycheck",
+    paymong:"amount",
+    paymsg:"Other amount, please enter an integer of 1-50000",
+    payway:"mode of payment",
+    topay:"Recharge",
     editInfo:"Editing information",
     cancel:"cancel",
     Confirm :"Confirm",
@@ -180,6 +198,24 @@ module.exports = {
     cancel:"cancel",
     Confirm :"confirm",
     deleteerror :"Delete failed!",
-    cancelerror :"取消失败！",
+    cancelerror :"Cancel failed!",
+  },
+  BusinessInfo:{
+    businessName:"corporation name",
+    creditCode:"Credit Code",
+    pic:"business license",
+    inputbusinessName:"Please enter the name of business license",
+    lenth:"2 to 5 characters in length",
+    inputcreditCode:"Please enter credit code",
+    inputpic:"Please upload the photo of business license",
+    next:"Next step"
+  },
+  IdentityCertificate:{
+    realName:"realname",
+    idCard:"IDCard",
+    frontandback:"positive and negative",
+    inputrealName:"Please enter your real name",
+    inputidCard:"Please enter ID number",
+    inputidfrontandback:"Please upload the front and back photos of ID card",
   }
 }

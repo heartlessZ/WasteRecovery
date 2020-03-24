@@ -2,11 +2,11 @@
   <section id="portfolios" class="section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">废品回收</h2>
+        <h2 class="section-title">{{$t('RecycleForm.title')}}</h2>
         <hr class="lines" />
       </div>
       <el-tabs tab-position="top">
-        <el-tab-pane label="发布新订单">
+        <el-tab-pane :label="$t('RecycleForm.neworder')">
           <div class="row recycle-form">
             <el-form
               ref="form"
@@ -15,11 +15,11 @@
               :rules="rules"
               label-width="80px"
             >
-              <el-form-item label="废品图片" required>
+              <el-form-item :label="$t('RecycleForm.Wastepic')" required>
                 <upload-img :limit="limit" @getimageurl="getImageUrl"></upload-img>
               </el-form-item>
-              <el-form-item label="废品类别" prop="classificationId">
-                <el-select v-model="form.classificationId" placeholder="请选择废品类别">
+              <el-form-item :label="$t('RecycleForm.category')" prop="classificationId">
+                <el-select v-model="form.classificationId" :placeholder="$t('RecycleForm.inputcategory')">
                   <el-option
                     v-for="category in $store.getters.childrenCategories"
                     :key="category.id"
@@ -28,20 +28,20 @@
                   >{{category.tradeName}}</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="家庭住址" required>
+              <el-form-item :label="$t('RecycleForm.home')" required>
                 <amap @getposition="getPosition"></amap>
               </el-form-item>
-              <el-form-item label="期望价格" prop="expectedPrice">
-                <el-input v-model="form.expectedPrice" placeholder="请选择期望价格"></el-input>
+              <el-form-item :label="$t('RecycleForm.price')" prop="expectedPrice">
+                <el-input v-model="form.expectedPrice" :placeholder="$t('RecycleForm.inputprice')"></el-input>
               </el-form-item>
-              <el-form-item label="重量" prop="weight">
-                <el-input v-model="form.weight" placeholder="请输入重量"></el-input>
+              <el-form-item :label="$t('RecycleForm.weight')" prop="weight">
+                <el-input v-model="form.weight" :placeholder="$t('RecycleForm.inputweight')"></el-input>
               </el-form-item>
-              <el-form-item label="废品描述" prop="describe">
+              <el-form-item :label="$t('RecycleForm.describe')" prop="describe">
                 <el-input
                   type="textarea"
                   v-model="form.describe"
-                  placeholder="请输入废品描述"
+                  :placeholder="$t('RecycleForm.inputdescribe')"
                   :rows="3"
                   maxlength="100"
                   show-word-limit
@@ -55,14 +55,14 @@
                     round
                     v-loading="loading"
                     style="justify-content: center;"
-                  >发布订单</el-button>
+                  >{{$t('RecycleForm.Release')}}</el-button>
                   <!-- <el-button type="default" @click="reset" round>重置</el-button> -->
                 </div>
               </el-form-item>
             </el-form>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="上门分类">
+        <el-tab-pane :label="$t('RecycleForm.visit')">
           <div class="row recycle-form">
             <el-form
               ref="form2"
@@ -71,11 +71,11 @@
               :rules="rules2"
               label-width="80px"
             >
-              <el-form-item label="家庭住址" required>
-                <el-input :disabled="isVIP" v-model="form2.address" placeholder="请选择家庭住址"></el-input>
+              <el-form-item :label="$t('RecycleForm.home')" required>
+                <el-input :disabled="isVIP" v-model="form2.address" :placeholder="$t('RecycleForm.inputadress')"></el-input>
               </el-form-item>
-              <el-form-item label="服务类别" prop="visitclassificationId" required>
-                <el-select v-model="form2.visitclassificationId" placeholder="请选择废品类别">
+              <el-form-item :label="$t('RecycleForm.category')" prop="visitclassificationId" required>
+                <el-select v-model="form2.visitclassificationId" :placeholder="$t('RecycleForm.inputcategory')">
                   <el-option
                     v-for="category in visitCategories"
                     :key="category.id"
@@ -87,7 +87,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="到期时间" v-if="isVIP" required>{{currentOrder.endTime}}</el-form-item>
+              <el-form-item :label="$t('RecycleForm.endtime')" v-if="isVIP" required>{{currentOrder.endTime}}</el-form-item>
               <el-form-item>
                 <div class="recycle-form-btn">
                   <el-button
@@ -97,7 +97,7 @@
                     round
                     v-loading="loading2"
                     style="justify-content: center;"
-                  >确认订购</el-button>
+                  >{{$t('RecycleForm.okpay')}}</el-button>
                   <el-button
                     type="primary"
                     @click="renew('form2')"
@@ -105,7 +105,7 @@
                     round
                     v-loading="loading2"
                     style="justify-content: center;"
-                  >续费</el-button>
+                  >{{$t('RecycleForm.renew')}}</el-button>
                 </div>
               </el-form-item>
             </el-form>
@@ -138,7 +138,7 @@ export default {
       if (regPos.test(value) || regNeg.test(value)) {
         callback();
       } else {
-        callback(new Error("请输入数字值"));
+        callback(new Error(this.$t('RecycleForm.inputweight')));
       }
     };
     return {
@@ -166,29 +166,29 @@ export default {
       },
       rules: {
         address: [
-          { required: true, message: "请输入详细地址", trigger: "blur" }
+          { required: true, message: this.$t('RecycleForm.inputaddress'), trigger: "blur" }
         ],
         weight: [
-          { required: true, message: "请输入重量", trigger: "blur" },
+          { required: true, message: this.$t('RecycleForm.inputweight'), trigger: "blur" },
           { validator: checkNum, trigger: "blur" }
         ],
         expectedPrice: [
-          { required: true, message: "请输入期望价格", trigger: "blur" },
+          { required: true, message: this.$t('RecycleForm.inputprice'), trigger: "blur" },
           { validator: checkNum, trigger: "blur" }
         ],
         classificationId: [
-          { required: true, message: "请选择分类", trigger: "blur" }
+          { required: true, message: this.$t('RecycleForm.seletecategory'), trigger: "blur" }
         ],
         describe: [
-          { required: true, message: "请输入废品描述", trigger: "blur" }
+          { required: true, message: this.$t('RecycleForm.inputdescribe'), trigger: "blur" }
         ]
       },
       rules2: {
         address: [
-          { required: true, message: "请输入详细地址", trigger: "blur" }
+          { required: true, message: this.$t('RecycleForm.inputaddress'), trigger: "blur" }
         ],
         visitclassificationId: [
-          { required: true, message: "请选择服务类型", trigger: "blur" }
+          { required: true, message: this.$t('RecycleForm.servicetype'), trigger: "blur" }
         ]
       },
       queryClassificationId: undefined,
@@ -225,7 +225,7 @@ export default {
           type: "error",
           offset: 70,
           center: true,
-          message: "请先登录！"
+          message: this.$t("base.loginerroe")
         });
         return;
       }
@@ -234,7 +234,7 @@ export default {
           type: "warning",
           offset: 70,
           center: true,
-          message: "请填写详细地址，精确到门牌号。"
+          message: this.$t("RecycleForm.inputadress")
         });
         return;
       }
@@ -243,7 +243,7 @@ export default {
           type: "warning",
           offset: 70,
           center: true,
-          message: "请上传一张废品的现场图片。"
+          message: this.$t("RecycleForm.inputpic")
         });
         return;
       }
@@ -252,7 +252,7 @@ export default {
           type: "warning",
           offset: 70,
           center: true,
-          message: "请选择分类"
+          message: this.$t("RecycleForm.seletecategory")
         });
         return;
       }
@@ -261,8 +261,8 @@ export default {
           this.loading = false;
           if (res.status) {
             this.$notify({
-              title: "操作提示",
-              message: "发布订单成功",
+              title: this.$t("RecycleForm.msg"),
+              message: res.msg,
               type: "success",
               offset: 70
             });
@@ -276,7 +276,7 @@ export default {
               type: "warning",
               offset: 70,
               center: true,
-              message: "发布信息失败，请稍后重试"
+              message: res.msg,
             });
           }
         })
@@ -313,7 +313,7 @@ export default {
           type: "warning",
           offset: 70,
           center: true,
-          message: "请填写详细地址，精确到门牌号。"
+          message: this.$t("RecycleForm.inputadress"),
         });
         return;
       }
@@ -323,7 +323,7 @@ export default {
           type: "error",
           offset: 70,
           center: true,
-          message: "请先登录！"
+          message:  this.$t("base.loginerroe"),
         });
         return;
       }
@@ -333,8 +333,8 @@ export default {
           this.loading2 = false;
           if (res.status) {
             this.$notify({
-              title: "操作提示",
-              message: "订购服务成功",
+              title: this.$t("RecycleForm.msg"),
+              message: res.msg,
               type: "success",
               offset: 70
             });
@@ -372,7 +372,7 @@ export default {
             type: "success",
             offset: 70,
             center: true,
-            message: "续费成功"
+            message: res.msg
           });
           this.loadData();
         } else {
