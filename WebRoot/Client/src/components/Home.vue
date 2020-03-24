@@ -15,22 +15,22 @@
           <div class="collapse navbar-collapse" id="main-navbar">
             <ul class="navbar-nav mr-auto w-100 justify-content-end">
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#hero-area">首页</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#hero-area">{{$t('home.home')}}</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#services">简介</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#services">{{$t('home.synopsis')}}</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#features">咨询</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#features">{{$t('home.information')}}</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#portfolios">回收</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#contact">联系我们</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>
               </li>
               <li v-if="$store.getters.isLogin" class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/personal-center">个人中心</router-link>
+                <router-link class="nav-link page-scroll" to="/home/personal-center">{{$t('home.personal')}}</router-link>
               </li>
               <li v-if="$store.getters.isLogin" class="nav-item" @click="onClickNotice">
                 <router-link class="nav-link page-scroll" to="/home/notice">
@@ -44,22 +44,22 @@
         </div>
         <ul class="mobile-menu">
           <li>
-            <router-link class="page-scroll" to="/home/overview#portfolios">首页</router-link>
+            <router-link class="page-scroll" to="/home/overview#portfolios">{{$t('home.home')}}</router-link>
           </li>
           <li>
-            <router-link class="page-scroll" to="/home/overview#services">简介</router-link>
+            <router-link class="page-scroll" to="/home/overview#services">{{$t('home.synopsis')}}</router-link>
           </li>
           <li>
-            <router-link class="page-scroll" to="/home/overview#features">咨询</router-link>
+            <router-link class="page-scroll" to="/home/overview#features">{{$t('home.information')}}</router-link>
           </li>
           <li>
-            <router-link class="page-scroll" to="/home/overview#portfolios">回收</router-link>
+            <router-link class="page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
           </li>
           <li>
-            <router-link class="page-scroll" to="/home/overview#contact">联系我们</router-link>
+            <router-link class="page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>
           </li>
           <li v-if="$store.getters.isLogin">
-            <router-link class="page-scroll" to="/home/personal-center">个人中心</router-link>
+            <router-link class="page-scroll" to="/home/personal-center">{{$t('home.personal')}}</router-link>
           </li>
           <li v-if="$store.getters.isLogin" class="nav-item" @click="onClickNotice">
             <router-link class="nav-link page-scroll" to="/home/notice">
@@ -70,15 +70,15 @@
           </li>
         </ul>
         <div v-if="!$store.getters.isLogin" style="margin-right:20px;color:#333;">
-          <el-link :underline="false" @click="loginView()" style="color:#333 !important;">登录</el-link>&nbsp;&nbsp;|&nbsp;&nbsp;
-          <el-link :underline="false" @click="registerVew()" style="color:#333 !important;">注册</el-link>
+          <el-link :underline="false" @click="loginView()" style="color:#333 !important;">{{$t('home.login')}}</el-link>&nbsp;&nbsp;|&nbsp;&nbsp;
+          <el-link :underline="false" @click="registerVew()" style="color:#333 !important;">{{$t('home.regist')}}</el-link>
         </div>
       </nav>
       <div class="container">
         <div id="head-container" class="row justify-content-md-center">
           <div class="col-md-10">
             <div class="contents text-center">
-              <h1 class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="0.3s" style="font-family: FangSong;">无废城市，你我同行</h1>
+              <h1 class="wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="0.3s" style="font-family: FangSong;">{{$t('home.center')}}</h1>
             </div>
           </div>
         </div>

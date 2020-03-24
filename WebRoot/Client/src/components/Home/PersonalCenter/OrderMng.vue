@@ -1,7 +1,7 @@
 <template>
   <div id="orderMng">
     <div class="the-title">
-      <h2>我的订单</h2>
+      <h2>{{$t('OrderMng.title')}}</h2>
       <span class="line">|</span>
       <ul>
         <li v-for="(item,index) in titles" @click="setSate(item.state,index)"  :class="{action:index==current}" :key="item.state">
@@ -26,19 +26,19 @@ export default {
     return {
       titles: [{
         state: 0,
-        title: '未接单'
+        title: this.$t('OrderMng.title0')
       },
       {
         state: 1,
-        title: '进行中'
+        title: this.$t('OrderMng.title1')
       },
       {
         state: 2,
-        title: '已完成'
+        title: this.$t('OrderMng.title2')
       },
       {
         state: 3,
-        title: '已取消'
+        title: this.$t('OrderMng.title3')
       }
       ],
       curClick: 0,

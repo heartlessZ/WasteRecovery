@@ -1,6 +1,6 @@
 <template>
   <div id="userInfo">
-    <div class="title">更换手机号</div>
+    <div class="title">{{$t('BindAccount.title')}}</div>
     <el-divider class="line-style"></el-divider>
     <div class="contain">
       <div class="form-card">
@@ -11,20 +11,20 @@
           label-width="120px"
           class="demo-ruleForm"
         >
-          <el-form-item label="验证码" prop="code">
+          <el-form-item :label="$t('BindAccount.Code')" prop="code">
             <el-col :span="11">
               <el-input v-model="applyForm.code"></el-input>
             </el-col>
             <el-col :span="11">
-              <span v-if="!active">{{count}}秒后重试</span>
-              <el-button type="primary" @click="sendCode" :disabled="!active">向本机发生验证码</el-button>
+              <span v-if="!active">{{count}}{{$t('BindAccount.CodeTips')}}</span>
+              <el-button type="primary" @click="sendCode" :disabled="!active">{{$t('BindAccount.sendCode')}}</el-button>
             </el-col>
           </el-form-item>
-          <el-form-item label="新手机号码" prop="newTelNum">
+          <el-form-item :label="$t('BindAccount.newPhone')" prop="newTelNum">
             <el-input v-model="applyForm.newTelNum"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('applyForm')">确认更改</el-button>
+            <el-button type="primary" @click="submitForm('applyForm')">{{$t('BindAccount.confirm')}}</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -45,9 +45,9 @@ export default {
         newTelNum: ''
       },
       rules: {
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+        code: [{ required: true, message: this.$t('BindAccount.inputCode'), trigger: 'blur' }],
         newTelNum: [
-          { required: true, message: '请输入新绑定的手机号码', trigger: 'blur' }
+          { required: true, message: this.$t('BindAccount.inputNewPhone'), trigger: 'blur' }
         ]
       }
     }
@@ -64,14 +64,14 @@ export default {
             if (res.status) {
               // console.log(res)
               this.$notify({
-                title: '操作提示',
+                title: this.$t('BindAccount.Tips'),
                 message: res.msg,
                 type: 'success',
                 offset: 70
               })
             } else {
               this.$notify({
-                title: '操作提示',
+                title: this.$t('BindAccount.Tips'),
                 message: res.msg,
                 type: 'error',
                 offset: 70

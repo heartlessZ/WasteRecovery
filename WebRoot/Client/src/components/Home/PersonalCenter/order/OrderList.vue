@@ -1,16 +1,16 @@
 <template>
-  <div id="order-list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
+  <div id="order-list" v-loading="loading" :element-loading-text="$t('OrderList.title')" element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0)">
     <div v-if="isEmpty" class="data-empty">
-      <span v-if="state==0" style="font-size: 16px;color: #93999f;">暂无任何未被接的订单</span>
-      <span v-if="state==1" style="font-size: 16px;color: #93999f;">暂无任何进行中的订单</span>
-      <span v-if="state==2" style="font-size: 16px;color: #93999f;">暂无任何已完成的订单</span>
-      <span v-if="state==3" style="font-size: 16px;color: #93999f;">暂无任何已取消的订单</span>
+      <span v-if="state==0" style="font-size: 16px;color: #93999f;">{{$t('OrderList.ordertips0')}}</span>
+      <span v-if="state==1" style="font-size: 16px;color: #93999f;">{{$t('OrderList.ordertips1')}}</span>
+      <span v-if="state==2" style="font-size: 16px;color: #93999f;">{{$t('OrderList.ordertips2')}}</span>
+      <span v-if="state==3" style="font-size: 16px;color: #93999f;">{{$t('OrderList.ordertips3')}}</span>
     </div>
     <el-card class="order-item" v-for="(order,index) in orderList" :key="order.id">
-      <p class="myorder-number" v-if="state!=0"><i class="el-icon-tickets" style="color:#61D2B4;margin-right: 10px;font-size: 14px;"></i><span>订单编号：{{order.orderId}}</span><span
-          class="date">下单日期：{{order.creatTime}}</span></p>
-      <p class="myorder-number" v-else><span>分类：{{order.classification.classificationName}}</span><span class="date">发布日期：{{order.creatTime}}</span></p>
+      <p class="myorder-number" v-if="state!=0"><i class="el-icon-tickets" style="color:#61D2B4;margin-right: 10px;font-size: 14px;"></i><span>{{$t('OrderList.orderid')}}：{{order.orderId}}</span><span
+          class="date">{{$t('OrderList.placeTime')}}：{{order.creatTime}}</span></p>
+      <p class="myorder-number" v-else><span>{{$t('OrderList.classification')}}：{{order.classification.classificationName}}</span><span class="date">{{$t('OrderList.createTime')}}：{{order.creatTime}}</span></p>
       <el-row :gutter="10" class="contain">
         <el-col :span="6" v-if="state!=0">
           <!-- 状态不同，数据结构不同，数据接口封装有问题 -->
@@ -33,41 +33,41 @@
         <!-- 状态不同，数据结构不同，数据接口封装有问题 -->
         <el-col :span="6" v-if="state!=0">
           <div class="grid-content">
-            <p><span>重量：</span><span class="span-color">{{order.wasteInfo.weight}}kg</span></p>
-            <p><span>期望价格：</span><span class="span-color">￥{{order.wasteInfo.expectedPrice}}</span></p>
-            <p><span>实付金额：</span><span class="span-color">￥0.00</span></p>
-            <p>卖家地址：{{order.wasteInfo.address}}</p>
+            <p><span>{{$t('OrderList.weight')}}：</span><span class="span-color">{{order.wasteInfo.weight}}kg</span></p>
+            <p><span>{{$t('OrderList.price')}}：</span><span class="span-color">￥{{order.wasteInfo.expectedPrice}}</span></p>
+            <p><span>{{$t('OrderList.money')}}：</span><span class="span-color">￥0.00</span></p>
+            <p>{{$t('OrderList.SellerAddress')}}：{{order.wasteInfo.address}}</p>
           </div>
         </el-col>
         <el-col :span="6" v-else>
           <div class="grid-content">
-            <p><span>重量：</span><span class="span-color">{{order.weight}}kg</span></p>
-            <p><span>期望价格：</span><span class="span-color">￥{{order.expectedPrice}}</span></p>
-            <p><span>实付金额：</span><span class="span-color">￥0.00</span></p>
-            <p>卖家地址：{{order.address}}</p>
+            <p><span>{{$t('OrderList.weight')}}：</span><span class="span-color">{{order.weight}}kg</span></p>
+            <p><span>{{$t('OrderList.price')}}：</span><span class="span-color">￥{{order.expectedPrice}}</span></p>
+            <p><span>{{$t('OrderList.money')}}：</span><span class="span-color">￥0.00</span></p>
+            <p>{{$t('OrderList.SellerAddress')}}：{{order.address}}</p>
           </div>
         </el-col>
         <el-col :span="8" v-if="state!=0">
           <div class="grid-content">
-            <p style="line-height: 18px;"><b>描述：</b>{{order.wasteInfo.describe}}</p>
+            <p style="line-height: 18px;"><b>{{$t('OrderList.describe')}}：</b>{{order.wasteInfo.describe}}</p>
           </div>
         </el-col>
         <el-col :span="8" v-else>
           <div class="grid-content">
-            <p style="line-height: 18px;"><b>描述：</b>{{order.describe}}</p>
+            <p style="line-height: 18px;"><b>{{$t('OrderList.describe')}}：</b>{{order.describe}}</p>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="grid-content col-right">
             <p style="font-size: 14px;">{{statusTxt}}</p>
-            <el-link :underline="false" class="cancel-order" v-if="state==0" style="color: #93999f;" @click="onDeleteWasteInfo(order.id,index)">删除</el-link>
-            <el-link :underline="false" class="cancel-order" v-if="state==1" style="color: #93999f;" @click="onCancelOrder(order.id,index)">取消订单</el-link>
-            <el-link :underline="false" class="cancel-order" v-if="state==2|state==3" style="color: #93999f;" @click="onDeleteOrder(order.id,index)">删除订单</el-link>
+            <el-link :underline="false" class="cancel-order" v-if="state==0" style="color: #93999f;" @click="onDeleteWasteInfo(order.id,index)">{{$t('OrderList.delete')}}</el-link>
+            <el-link :underline="false" class="cancel-order" v-if="state==1" style="color: #93999f;" @click="onCancelOrder(order.id,index)">{{$t('OrderList.CancelOrder')}}</el-link>
+            <el-link :underline="false" class="cancel-order" v-if="state==2|state==3" style="color: #93999f;" @click="onDeleteOrder(order.id,index)">{{$t('OrderList.deleteOrder')}}</el-link>
           </div>
         </el-col>
       </el-row>
-      <p class="order-info" style="display: inline-block;" v-if="state!=0"><span>买家信息</span><span style="margin: 0px 10px;">|</span><span>昵称：{{order.user.nikeName}}</span><span
-          class="phone">电话：{{order.user.phone}}</span></p>
+      <p class="order-info" style="display: inline-block;" v-if="state!=0"><span>{{$t('OrderList.buyingleads')}}</span><span style="margin: 0px 10px;">|</span><span>{{$t('OrderList.nickName')}}：{{order.user.nikeName}}</span><span
+          class="phone">{{$t('OrderList.phone')}}：{{order.user.phone}}</span></p>
     </el-card>
     <el-pagination v-if="orderList.length!=0" background layout="prev, pager, next" :total="total" :page-size="pageSize"
       style="width: 95%;text-align: center;" @current-change="pageCurrentChange">
@@ -145,16 +145,16 @@ export default {
     resetStatusTxt (state) {
       switch (state) {
         case 0:
-          this.statusTxt = '未接单'
+          this.statusTxt = this.$t('OrderMng.title0')
           break
         case 1:
-          this.statusTxt = '进行中'
+          this.statusTxt = this.$t('OrderMng.title1')
           break
         case 2:
-          this.statusTxt = '已完成'
+          this.statusTxt = this.$t('OrderMng.title2')
           break
         case 3:
-          this.statusTxt = '已取消'
+          this.statusTxt = this.$t('OrderMng.title3')
           break
       }
     },
@@ -168,9 +168,9 @@ export default {
        * @param {Object} id 订单的id
        */
     onDeleteOrder (id, index) {
-      this.$confirm('永久删除后，将无法再查看该订单，请谨慎操作！', '确定要删除该订单吗?', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('OrderList.deleteMsg'), this.$t('OrderList.deletemsgs'), {
+        confirmButtonText: this.$t('OrderList.Confirm'),
+        cancelButtonText: this.$t('OrderList.cancel'),
         type: 'warning'
       }).then(() => {
         deleteOrder(id).then((res) => {
@@ -191,9 +191,9 @@ export default {
        * @param {Object} id 订单的id
        */
     onCancelOrder (id, index) {
-      this.$confirm('取消后将重新等待商家购买，请谨慎操作！！', '确定要取消该订单吗?', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('OrderList.cancelMsg'), this.$t('OrderList.cancelMsgs'), {
+        confirmButtonText: this.$t('OrderList.Confirm'),
+        cancelButtonText: this.$t('OrderList.cancel'),
         type: 'warning'
       }).then(() => {
         cancelOrder(id).then((res) => {
@@ -204,7 +204,7 @@ export default {
             }
             this.requestData(this.state)
           } else {
-            this.$message.error('取消失败！')
+            this.$message.error(this.$t('OrderList.cancelerror'))
           }
         })
       })
@@ -214,9 +214,9 @@ export default {
        * @param {Object} id 废品信息的id
        */
     onDeleteWasteInfo (id, index) {
-      this.$confirm('删除后将无法出售，请谨慎操作！', '确定要删除该废品吗?', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('OrderList.deleteMsg2'), this.$t('OrderList.deletemsgs2'), {
+        confirmButtonText: this.$t('OrderList.Confirm'),
+        cancelButtonText: this.$t('OrderList.cancel'),
         type: 'warning'
       }).then(() => {
         deleteWasteInfo(id).then((res) => {
@@ -227,7 +227,7 @@ export default {
             }
             this.requestData(this.state)
           } else {
-            this.$message.error('删除失败！')
+            this.$message.error(this.$t('OrderList.deleteerror'))
           }
         })
       })
