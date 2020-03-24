@@ -6,7 +6,7 @@
       v-model="form.address"
       :fetch-suggestions="querySearchAsync"
       :trigger-on-focus="false"
-      :placeholder="$t('Amap.inputadress')"
+      placeholder="请输入详细地址，精确到门牌号"
       @select="handleSelect"
       clearable
       @focus="showMap"

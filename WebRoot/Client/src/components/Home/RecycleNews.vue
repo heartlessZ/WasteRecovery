@@ -2,7 +2,7 @@
   <section id="features" class="section" data-stellar-background-ratio="0.2">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">{{$t('RecycleNews.scrapprice')}}</h2>
+        <h2 class="section-title">今日废品价格</h2>
         <hr class="lines" />
         <!-- <p class="section-subtitle">小标题</p> -->
       </div>
@@ -20,7 +20,7 @@
               <br />
               <br />
               <br />
-              <span class="category-price-range">{{o.minprice}}-{{o.maxprice}}{{$t('RecycleNews.unit')}}</span>
+              <span class="category-price-range">{{o.minprice}}-{{o.maxprice}}元/kg</span>
               <!-- <div>
                 <span class="category-icon">
                   <img :src="o.imgUrl" alt width="45" height="45" />
@@ -42,7 +42,7 @@
               <span>{{o.tradeName}}</span>
               <br />
               <br />
-              <span>{{o.price}}{{$t('RecycleNews.unit')}}</span>
+              <span>{{o.price}}元/kg</span>
             </div>
           </el-col>
         </el-row>
@@ -136,7 +136,7 @@ export default {
   opacity: 0.8;
   box-shadow: 0px 0px 10px 4px #91e54f;
   cursor: pointer;
-
+  
 }
 .row-bg {
   padding: 10px 0;

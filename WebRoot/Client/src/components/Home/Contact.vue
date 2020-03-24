@@ -5,15 +5,15 @@
         <div class="row">
           <div class="col-lg-6 col-sm-6 col-xs-12">
             <div class="contact-us">
-              <h3>{{$t('Contact.title')}}</h3>
+              <h3>联系我们</h3>
               <div class="contact-address">
                 <!-- <p>Centerville Road, DE 19808, US </p> -->
                 <p class="phone">
-                  {{$t('Contact.phone')}}:
+                  Phone:
                   <span>{{contact.phone}}</span>
                 </p>
                 <p class="email">
-                  {{$t('Contact.email')}}:
+                  E-mail:
                   <span>{{contact.email}}</span>
                 </p>
               </div>
@@ -36,7 +36,7 @@
                     <textarea
                       class="form-control"
                       id="message"
-                      :placeholder="$t('Contact.Tips')"
+                      placeholder="请填写您的宝贵意见"
                       rows="8"
                       v-model="info.describe"
                       data-error="Write your message"
@@ -45,7 +45,7 @@
                     <div class="help-block with-errors"></div>
                   </div>
                   <div class="submit-button text-center">
-                    <button class="btn btn-common" type="default" @click="sendIdea">{{$t('Contact.Submission')}}</button>
+                    <button class="btn btn-common" type="default" @click="sendIdea">发送</button>
                     <div id="msgSubmit" class="h3 text-center hidden"></div>
                     <div class="clearfix"></div>
                   </div>
@@ -98,7 +98,7 @@ export default {
           type: "error",
           offset: 70,
           center: true,
-          message: this.$t('Contact.Tips')
+          message: "请填写您的宝贵意见"
         });
         return false;
       }
@@ -110,7 +110,7 @@ export default {
             type: "success",
             offset: 70,
             center: true,
-            message: res.msg
+            message: "提交成功"
           });
           this.info.describe = ''
         }

@@ -2,26 +2,26 @@
   <div id="login" v-loading="loading" element-loading-text="登录中" element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-card class="login-form">
-      <div class="login-title">{{$t('login.UserLogin')}}</div>
+      <div class="login-title">用户登录</div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane :label="$t('login.Accountpasswordlogin')" name="first">
+        <el-tab-pane label="账号密码登录" name="first">
           <el-form status-icon :rules="loginRules" ref="loginForm" :model="loginForm" size="small">
             <el-form-item prop="username">
-              <el-input @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" :placeholder="$t('login.inputusername')"
+              <el-input @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"
                 autofocus="true">
                 <i slot="prefix" class="el-input__icon el-icon-user"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password"
-                auto-complete="off" :placeholder="$t('login.inputpassword')">
+                auto-complete="off" placeholder="请输入密码">
                 <i slot="prefix" class="el-input__icon el-icon-lock"></i>
                 <i class="el-icon-view el-input__icon" :style="fontstyle" slot="suffix" @click="showPassword"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="verifycode" v-if="code.type==='true'">
               <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
-              <el-input v-model="loginForm.verifyCode" :placeholder="$t('login.inputVerification')"></el-input>
+              <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码"></el-input>
             </el-form-item>
             <el-form-item style="margin: 0rem;" v-if="code.type==='true'">
               <div class="identifybox">
@@ -30,21 +30,21 @@
                 </div>
               </div>
             </el-form-item>
-            <el-checkbox v-model="loginForm.rememberMe">{{$t('login.rememberMe')}}</el-checkbox>
-            <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">{{$t('login.login')}}</el-button>
+            <el-checkbox v-model="loginForm.rememberMe">7天免登陆</el-checkbox>
+            <el-button type="primary" round @click.native.prevent="handleLogin" size="small" class="login-submit">登录</el-button>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane :label="$t('login.smslogin')" name="second">
+        <el-tab-pane label="短信认证登录" name="second">
           <el-form :model="phLoginForm" status-icon :rules="phLoginRules" ref="phLoginForm" size="small">
             <el-form-item prop="phone">
-              <el-input v-model="phLoginForm.phone" auto-complete="off" :placeholder="$t('login.inputphone')" autofocus="true">
+              <el-input v-model="phLoginForm.phone" auto-complete="off" placeholder="请输入手机号" autofocus="true">
                 <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="verifycode" >
               <el-row :gutter="12">
                 <el-col :span="16">
-                  <el-input v-model="phLoginForm.verifycode" autocomplete="off" :placeholder="$t('login.inputVerification')"></el-input>
+                  <el-input v-model="phLoginForm.verifycode" autocomplete="off" placeholder="请输入验证码"></el-input>
                 </el-col>
                 <el-col :span="8">
                   <el-button style="width: 100px;" type="primary" :disabled="sendCodeBtn.disabled" @click="sendCode">{{sendCodeBtn.btntxt}}</el-button>
@@ -52,13 +52,13 @@
               </el-row>
             </el-form-item>
             <el-button type="primary" size="small" :disabled="loginBtnShow" round @click.native.prevent="phoneLogin"
-              class="login-submit">{{$t('login.login')}}</el-button>
+              class="login-submit">登录</el-button>
           </el-form>
         </el-tab-pane>
       </el-tabs>
       <div style="width: 100%;line-height: 40px;text-align: center;color: #CCC4CC;">
-        {{$t('login.nouser')}}
-        <a style="color: #61D2B4;" @click="goRegister()">{{$t('login.regist')}}</a>
+        还没有账号？点此&nbsp;
+        <a style="color: #61D2B4;" @click="goRegister()">立即注册</a>
       </div>
     </el-card>
   </div>
@@ -74,7 +74,7 @@ export default {
     // 用户名自定义验证规则
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(this.$t('login.nullusername')))
+        callback(new Error('用户名不能为空'))
       } else {
         // console.log('user', value)
         callback()
@@ -82,7 +82,7 @@ export default {
     }
     const validatePhone = (rule, value, callback) => {
       if (!(/^1[3456789]\d{9}$/.test(value))) {
-        callback(new Error(this.$t('login.phoneerror')))
+        callback(new Error('手机号格式不对'))
         this.sendCodeBtn.disabled = true
         this.loginBtnShow = true
       } else {
@@ -110,7 +110,7 @@ export default {
       activeName: 'first',
       imgCode: 'http://safeclean.tx-q.cn:4399/user/images/captcha',
       sendCodeBtn: {
-        btntxt: this.$t('login.getcode'),
+        btntxt: '获取验证码',
         disabled: true,
         count: 0
       },
@@ -125,12 +125,12 @@ export default {
         }],
         password: [{
           required: true,
-          message: this.$t('login.inputpassword'),
+          message: '请输入密码',
           trigger: 'blur'
         },
         {
           min: 6,
-          message: this.$t('login.passlimit'),
+          message: '密码长度最少为6位',
           trigger: 'blur'
         }
         ]
@@ -225,14 +225,14 @@ export default {
     sendCode () {
       this.sendCodeBtn.disabled = true
       this.sendCodeBtn.count = 60
-      this.sendCodeBtn.btntxt = this.$t('login.resend') + this.sendCodeBtn.count + 's)'
+      this.sendCodeBtn.btntxt = '重新发送(' + this.sendCodeBtn.count + 's)'
       // 发送验证码
       sendSms(this.phLoginForm.phone)
       this.begin = setInterval(() => {
         this.sendCodeBtn.count--
-        this.sendCodeBtn.btntxt = this.$t('login.resend') + this.sendCodeBtn.count + 's)'
+        this.sendCodeBtn.btntxt = '重新发送(' + this.sendCodeBtn.count + 's)'
         if (this.sendCodeBtn.count < 1) {
-          this.sendCodeBtn.btntxt = this.$t('login.getcode')
+          this.sendCodeBtn.btntxt = '获取验证码'
           this.sendCodeBtn.disabled = false
           clearInterval(this.begin)
         }
@@ -242,7 +242,7 @@ export default {
       if (formName === 'phLoginForm') {
         this.sendCodeBtn.disabled = true
         this.loginBtnShow = true
-        this.sendCodeBtn.btntxt = this.$t('login.getcode')
+        this.sendCodeBtn.btntxt = '获取验证码'
         clearInterval(this.begin)
       }
       this.$refs[formName].resetFields()
