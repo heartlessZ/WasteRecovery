@@ -18,6 +18,7 @@ const config = resolve => require(['../pages/sys/config'], resolve)
 const authorization = resolve => require(['../pages/sys/authorization'], resolve)
 const document = resolve => require(['../pages/sys/document.vue'], resolve)
 const classesService = resolve => require(['../pages/wasteInfo/classesService.vue'], resolve)
+const classesServiceManagement = resolve => require(['../pages/wasteInfo/classesServiceManagement.vue'], resolve)
 const classesOrder = resolve => require(['../pages/order/classesOrder.vue'], resolve)
 const JoinUs = resolve => require(['../pages/sys/join-us'], resolve)
 const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], resolve)
@@ -58,6 +59,7 @@ const routes = [
             { path: '/system/join-us', component: JoinUs},
             { path: '/system/document', component: document},
             { path: '/classes-service', component: classesService},
+            { path: '/classes-service-manage', component: classesServiceManagement},
             { path: '/classes-order', component: classesOrder},
             //{ path: '/system/authorization', component: authorization},
         ]
