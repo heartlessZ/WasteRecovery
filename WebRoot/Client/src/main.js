@@ -1,17 +1,16 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
 import './assets/theme/index.css'
-import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
+import locale from 'element-ui/lib/locale/lang/zh-CN'
+// lang i18n
+import i18n from "./i18n/i18n";
 
-//全局请求
 import axios from 'axios'
-axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399'; // 关键步骤–填写后台请求统一的地址
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'; //设置全局数据发送格式
+axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.config.productionTip = false;
 Vue.prototype.$addr = axios;
 //vue-amap   --高德地图
@@ -32,6 +31,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   components: { App },
   template: '<App/>'
 })

@@ -1,12 +1,12 @@
 <template>
   <div id="notice">
     <div class="content">
-      <p>未读公告：{{count}}</p>
+      <p>{{$t('Notice.Unread')}}：{{count}}</p>
       <div style="height: 360px;margin-left: 16px;">
         <div class="item" v-for="item in tableData">
           <div style="float: left;">
             <el-badge :is-dot="!item.ifRead" class="item-badge">
-              <el-button size="small">公告</el-button>
+              <el-button size="small">{{$t('Notice.title')}}</el-button>
             </el-badge>
             <a style="padding: 6px 0;display: inline-block;color: #000000;" @click="lookNotice(item)">{{item.title}}</a>
           </div>
@@ -18,7 +18,7 @@
       </el-pagination>
     </div>
     <!-- 查看公告内容对话框 -->
-    <el-dialog title="公告内容" :visible.sync="lookdialogVisible" width="40%">
+    <el-dialog :title="$t('Notice.Noticecontent')" :visible.sync="lookdialogVisible" width="40%">
       <p v-text="dialogContent"></p>
     </el-dialog>
   </div>
