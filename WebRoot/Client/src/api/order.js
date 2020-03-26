@@ -5,11 +5,11 @@ import request from '@/utils/request'
  * @param {Object} pageSize 每页数据条数
  * @param {Object} state 订单状态(1已接单，2已完成，3取消)
  */
-export function getOrderByPage(pageNum,pageSize,state){
+export function getOrderByPage (pageNum, pageSize, state) {
   return request({
-    url:'/clien/order/list',
-    method:'get',
-    params:{
+    url: '/clien/order/list',
+    method: 'get',
+    params: {
       pageNum,
       pageSize,
       state
@@ -22,11 +22,11 @@ export function getOrderByPage(pageNum,pageSize,state){
  * @param {Object} pageNum
  * @param {Object} pageSize
  */
-export function getWasteInfoByPage(pageNum,pageSize,status){
+export function getWasteInfoByPage (pageNum, pageSize, status) {
   return request({
-    url:'/clien/wasteInformation/list',
-    method:'get',
-    params:{
+    url: '/clien/wasteInformation/list',
+    method: 'get',
+    params: {
       pageNum,
       pageSize,
       status// 表示废品信息
@@ -38,7 +38,7 @@ export function getWasteInfoByPage(pageNum,pageSize,status){
  * 根据订单id删除订单
  * @param {Object} id 订单id
  */
-export function deleteOrder(id){
+export function deleteOrder (id) {
   return request({
     url: '/clien/order/delete',
     method: 'get',
@@ -50,7 +50,7 @@ export function deleteOrder(id){
  * 根据订单id取消除订单
  * @param {Object} id 订单id
  */
-export function cancelOrder(id){
+export function cancelOrder (id) {
   return request({
     url: '/clien/order/cancel',
     method: 'get',
@@ -61,10 +61,46 @@ export function cancelOrder(id){
  * 删除废品信息的api
  * @param {Object} id 废品信息id
  */
-export function deleteWasteInfo(id) {
+export function deleteWasteInfo (id) {
   return request({
-    url:'/clien/wasteInformation/delete',
-    method:'get',
-    params:{id}
+    url: '/clien/wasteInformation/delete',
+    method: 'get',
+    params: {id}
+  })
+}
+/**
+ * 分页查询上门服务订单列表
+ * @param {Object} pageNum
+ * @param {Object} pageSize
+ */
+export function findVisitOrderByPage (pageNum, pageSize) {
+  return request({
+    url: '/visit/myorder',
+    method: 'get',
+    params: {
+      pageNum,
+      pageSize
+    }
+  })
+}
+/**
+ * @param {Object} orderId 订单号
+ * @param {Object} visitclassificationId 上门服务类型号
+ */
+export function visitRenew (orderId, visitclassificationId) {
+  return request({
+    url: '/visit/order/renew',
+    method: 'post',
+    data: {
+      orderId,
+      visitclassificationId
+    }
+  })
+}
+// 查询上门分类类型
+export function visitClassfication () {
+  return request({
+    url: '/visit/Classification',
+    method: 'get'
   })
 }

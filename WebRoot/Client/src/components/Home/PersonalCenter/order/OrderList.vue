@@ -10,7 +10,7 @@
     <el-card class="order-item" v-for="(order,index) in orderList" :key="order.id">
       <p class="myorder-number" v-if="state!=0"><i class="el-icon-tickets" style="color:#61D2B4;margin-right: 10px;font-size: 14px;"></i><span>{{$t('OrderList.orderid')}}：{{order.orderId}}</span><span
           class="date">{{$t('OrderList.placeTime')}}：{{order.creatTime}}</span></p>
-      <p class="myorder-number" v-else><span>{{$t('OrderList.classification')}}：{{order.classification.classificationName}}</span><span class="date">{{$t('OrderList.createTime')}}：{{order.creatTime}}</span></p>
+      <p class="myorder-number" v-else><span>{{$t('OrderList.classification')}}：{{order.classification==null? '空': order.classification.classificationName}}</span><span class="date">{{$t('OrderList.createTime')}}：{{order.creatTime}}</span></p>
       <el-row :gutter="10" class="contain">
         <el-col :span="6" v-if="state!=0">
           <!-- 状态不同，数据结构不同，数据接口封装有问题 -->

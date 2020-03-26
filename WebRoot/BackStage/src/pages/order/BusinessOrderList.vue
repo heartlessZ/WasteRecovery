@@ -56,7 +56,7 @@
           <template slot-scope="scope">
             <span v-if="scope.row.state==1"  style="color: #E6A23C;">进行中</span>
             <span v-if="scope.row.state==2"  style="color: #69D4B7;">已完成</span>
-            <span v-if="scope.row.state==3"  style="color:#909399 ;">已取消</span>
+            <span v-if="scope.row.state==3"  style="color: #909399 ;">已取消</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="290">
