@@ -6,7 +6,7 @@
           <el-input v-model="searchData.order" placeholder="订单编号" clearable></el-input>
         </el-form-item>
         <el-form-item prop="visitclassificationId">
-          <el-select v-model="searchData.visitclassificationId" placeholder="请选择废品类别">
+          <el-select v-model="searchData.visitclassificationId" placeholder="请选择服务类别" clearable="">
             <el-option
               v-for="category in visitCategories"
               :key="category.id"
@@ -30,16 +30,12 @@
         :header-cell-style="{'color': '#fafafa','background-color':'#69D4B7','border-color': '#69D4B7','font-size':'14px','text-align':'center'}"
       >
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
         <el-table-column prop="address" label="详细地址" align="center" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="orderId" label="订单编号" align="center"></el-table-column>
-        <el-table-column prop="days" label="服务时间" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.days}}天</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="phone" label="手机号码" align="center"></el-table-column>
+        <el-table-column prop="phone" label="用户电话" align="center" width="120"></el-table-column>
         <el-table-column prop="nikeName" label="用户昵称" align="center" width="120"></el-table-column>
-        <el-table-column prop="createTime" label="发布时间" align="center"></el-table-column>
+        <el-table-column prop="startTime" label="开通时间" align="center" width="180"></el-table-column>
+         <el-table-column prop="endTime" label="到期时间" align="center" width="180"></el-table-column>
       </el-table>
       <el-pagination
         background
@@ -88,7 +84,7 @@ export default {
       searchData: {
         order: "",
         visitclassificationId: undefined,
-        field: ""
+        field: null,
       },
       tableData: {
         pagination: {
@@ -137,7 +133,7 @@ export default {
         pageNum: this.tableData.pagination.pageNo,
         order: this.searchData.order,
         visitclassificationId: this.searchData.visitclassificationId,
-        field: this.searchData.field
+        field: this.searchData.field,
       };
       request.get(api.CLASSES_SERVICE_BUSINESS_ORDER, { params: queryString }).then(res => {
         if (res.status) {

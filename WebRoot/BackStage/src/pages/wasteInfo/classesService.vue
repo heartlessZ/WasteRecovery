@@ -32,11 +32,6 @@
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="address" label="详细地址" align="center" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="orderId" label="订单编号" align="center"></el-table-column>
-        <!-- <el-table-column prop="days" label="服务时间" width="80" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.row.days}}天</span>
-          </template>
-        </el-table-column> -->
         <el-table-column prop="phone" label="手机号码" align="center"></el-table-column>
         <el-table-column prop="nikeName" label="用户昵称" align="center" width="120"></el-table-column>
         <!-- <el-table-column prop="createTime" label="发布时间" align="center"></el-table-column> -->

@@ -71,7 +71,7 @@
         :page-sizes="[10,20,30,40]" :page-size="formSearch.pageSzie" layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-      <!-- 查看公告内容对话框 -->
+      <!-- 查看订单详情对话框 -->
       <el-dialog title="订单详情" :visible.sync="lookdialogVisible" width="40%">
         <div v-if="orderItem!=null">
           <p>订单号：{{orderItem.orderId}}</p>
