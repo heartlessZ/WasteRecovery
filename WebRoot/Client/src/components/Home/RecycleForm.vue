@@ -19,7 +19,10 @@
                 <upload-img :limit="limit" @getimageurl="getImageUrl"></upload-img>
               </el-form-item>
               <el-form-item :label="$t('RecycleForm.category')" prop="classificationId">
-                <el-select v-model="form.classificationId" :placeholder="$t('RecycleForm.inputcategory')">
+                <el-select
+                  v-model="form.classificationId"
+                  :placeholder="$t('RecycleForm.inputcategory')"
+                >
                   <el-option
                     v-for="category in $store.getters.childrenCategories"
                     :key="category.id"
@@ -72,10 +75,21 @@
               label-width="80px"
             >
               <el-form-item :label="$t('RecycleForm.home')" required>
-                <el-input :disabled="isVIP" v-model="form2.address" :placeholder="$t('RecycleForm.inputadress')"></el-input>
+                <el-input
+                  :disabled="isVIP"
+                  v-model="form2.address"
+                  :placeholder="$t('RecycleForm.inputadress')"
+                ></el-input>
               </el-form-item>
-              <el-form-item :label="$t('RecycleForm.category')" prop="visitclassificationId" required>
-                <el-select v-model="form2.visitclassificationId" :placeholder="$t('RecycleForm.inputcategory')">
+              <el-form-item
+                :label="$t('RecycleForm.category')"
+                prop="visitclassificationId"
+                required
+              >
+                <el-select
+                  v-model="form2.visitclassificationId"
+                  :placeholder="$t('RecycleForm.inputcategory')"
+                >
                   <el-option
                     v-for="category in visitCategories"
                     :key="category.id"
@@ -87,7 +101,11 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('RecycleForm.endtime')" v-if="isVIP" required>{{currentOrder.endTime}}</el-form-item>
+              <el-form-item
+                :label="$t('RecycleForm.endtime')"
+                v-if="isVIP"
+                required
+              >{{currentOrder.endTime}}</el-form-item>
               <el-form-item>
                 <div class="recycle-form-btn">
                   <el-button
@@ -138,7 +156,7 @@ export default {
       if (regPos.test(value) || regNeg.test(value)) {
         callback();
       } else {
-        callback(new Error(this.$t('RecycleForm.inputweight')));
+        callback(new Error(this.$t("RecycleForm.inputweight")));
       }
     };
     return {
@@ -166,29 +184,57 @@ export default {
       },
       rules: {
         address: [
-          { required: true, message: this.$t('RecycleForm.inputaddress'), trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("RecycleForm.inputaddress"),
+            trigger: "blur"
+          }
         ],
         weight: [
-          { required: true, message: this.$t('RecycleForm.inputweight'), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("RecycleForm.inputweight"),
+            trigger: "blur"
+          },
           { validator: checkNum, trigger: "blur" }
         ],
         expectedPrice: [
-          { required: true, message: this.$t('RecycleForm.inputprice'), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("RecycleForm.inputprice"),
+            trigger: "blur"
+          },
           { validator: checkNum, trigger: "blur" }
         ],
         classificationId: [
-          { required: true, message: this.$t('RecycleForm.seletecategory'), trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("RecycleForm.seletecategory"),
+            trigger: "blur"
+          }
         ],
         describe: [
-          { required: true, message: this.$t('RecycleForm.inputdescribe'), trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("RecycleForm.inputdescribe"),
+            trigger: "blur"
+          }
         ]
       },
       rules2: {
         address: [
-          { required: true, message: this.$t('RecycleForm.inputaddress'), trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("RecycleForm.inputaddress"),
+            trigger: "blur"
+          }
         ],
         visitclassificationId: [
-          { required: true, message: this.$t('RecycleForm.servicetype'), trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("RecycleForm.servicetype"),
+            trigger: "blur"
+          }
         ]
       },
       queryClassificationId: undefined,
@@ -270,13 +316,13 @@ export default {
             this.form.describe = "";
             this.form.expectedPrice = "";
             this.form.classificationId = undefined;
-            this.loadData()
+            this.loadData();
           } else {
             this.$message({
               type: "warning",
               offset: 70,
               center: true,
-              message: res.msg,
+              message: res.msg
             });
           }
         })
@@ -313,7 +359,7 @@ export default {
           type: "warning",
           offset: 70,
           center: true,
-          message: this.$t("RecycleForm.inputadress"),
+          message: this.$t("RecycleForm.inputadress")
         });
         return;
       }
@@ -323,7 +369,7 @@ export default {
           type: "error",
           offset: 70,
           center: true,
-          message:  this.$t("base.loginerroe"),
+          message: this.$t("base.loginerroe")
         });
         return;
       }
@@ -340,7 +386,7 @@ export default {
             });
             // this.form2.address = "";
             // this.form2.visitclassificationId = undefined;
-            this.loadData()
+            this.loadData();
           } else {
             this.$message({
               type: "error",
@@ -389,9 +435,12 @@ export default {
     loadData() {
       request.get("visit/myorder").then(res => {
         if (res.status && res.total > 0) {
-          this.isVIP = true;
-          this.currentOrder = res.records[0];
-          this.form2.address = res.records[0].address;
+          let list = res.records.filter(dst => dst.status == 1);
+          if (list.length > 0) {
+            this.isVIP = true;
+            this.currentOrder = list[0];
+            this.form2.address = list[0].address;
+          }
         }
       });
     }
