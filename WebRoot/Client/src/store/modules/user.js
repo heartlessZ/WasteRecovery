@@ -75,6 +75,7 @@ const user = {
       userInfo.username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          console.log("login")
           if (response.status) { commit('SET_ISLOGIN', true) }
           resolve(response)
         }).catch(error => {

@@ -2,7 +2,7 @@
   <div>
     <!-- https://jsonplaceholder.typicode.com/posts/ -->
     <el-upload
-      action="http://49.235.151.230:8091/file/imgUpdate"
+      :action="baseURL"
       list-type="picture-card"
       :limit="limit"
       :on-change="handleChange"
@@ -10,6 +10,7 @@
       :on-remove="handleRemove"
       :on-success="uploadSuccess"
       :file-list="fileList"
+      :with-credentials="true"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -19,6 +20,7 @@
   </div>
 </template>
 <script>
+import request from '../utils/request'
 export default {
   name: "upload-img",
   props: ['limit'],
@@ -26,7 +28,8 @@ export default {
     return {
       dialogImageUrl: "",
       dialogVisible: false,
-      fileList:[]
+      fileList:[],
+      baseURL:request.defaults.baseURL + '/img/update'
     };
   },
   methods: {

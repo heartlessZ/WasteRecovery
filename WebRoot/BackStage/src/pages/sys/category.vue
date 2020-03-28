@@ -33,7 +33,7 @@
                         clearable
                         placeholder="请选择父级"
                       ></el-select-tree>
-                    </el-form-item> -->
+                    </el-form-item>-->
                     <el-form-item label="名称" :label-width="formLabelWidth">
                       <el-input v-model="form.classificationName" auto-complete="off"></el-input>
                     </el-form-item>
@@ -126,14 +126,14 @@ import merge from "element-ui/src/utils/merge";
 import * as api from "../../api";
 import * as sysApi from "../../services/sys";
 import request from "../../utils/request";
-import UploadImg from '../../components/UploadImg'
+import UploadImg from "../../components/UploadImg";
 
 export default {
   mixins: [treeter],
   components: {
     "imp-panel": panel,
     "el-select-tree": selectTree,
-    "upload-img" : UploadImg
+    "upload-img": UploadImg
   },
   data() {
     return {
@@ -148,32 +148,30 @@ export default {
         label: "tradeName",
         id: "id"
       },
-      parentId:0,
+      parentId: 0,
       maxId: 7000000,
       menuTree: [],
-      isUpdate:false,
+      isUpdate: false,
       categoriesParent: [],
       categoriesChildren: [],
-      limit:1,
+      limit: 1,
       form: {
         id: null,
         classificationName: "",
         imgUrl: "",
-        describe: ''
+        describe: ""
       },
       formChildren: {
         classificationId: null,
         price: 0,
-        tradeName: ''
+        tradeName: ""
       }
     };
   },
   methods: {
-    getImageUrl(urls){
-        if(urls.length>0)
-            this.form.imgUrl = urls[0]
-        else
-            this.form.imgUrl = ""
+    getImageUrl(urls) {
+      if (urls.length > 0) this.form.imgUrl = urls[0];
+      else this.form.imgUrl = "";
     },
     renderContent(h, { node, data, store }) {
       return (
@@ -191,17 +189,17 @@ export default {
         id: null,
         classificationName: "",
         imgUrl: "",
-        describe: ''
+        describe: ""
       };
-      this.$refs.UploadImg.setFileList([])
+      this.$refs.UploadImg.setFileList([]);
     },
     newAddSon() {
       this.formChildren = {
         classificationId: null,
         price: 0,
-        tradeName: ''
+        tradeName: ""
       };
-      this.isUpdate = false
+      this.isUpdate = false;
     },
     deleteSelected() {
       request
@@ -247,18 +245,18 @@ export default {
     // },
     handleNodeClick(data) {
       this.form = merge({}, data);
-      this.$refs.UploadImg.setFileList([{name:'',url: this.form.imgUrl}])
+      this.$refs.UploadImg.setFileList([{ name: "", url: this.form.imgUrl }]);
     },
     handleChildNodeClick(data) {
       this.formChildren = merge({}, data);
-        this.isUpdate = true
-        this.parentId = data.classificationId
+      this.isUpdate = true;
+      this.parentId = data.classificationId;
     },
     onSubmit() {
-        if(!this.form.imgUrl){
-            this.$message("请上传图标")
-            return
-        }
+      if (!this.form.imgUrl) {
+        this.$message("请上传图标");
+        return;
+      }
       if (this.form.id == null) {
         //添加一级分类
         request
@@ -267,9 +265,7 @@ export default {
             this.$message(res.msg);
             this.load();
           })
-          .catch(e => {
-
-          });
+          .catch(e => {});
       } else {
         // let params = {
         //   icon: this.form.icon,
@@ -290,27 +286,32 @@ export default {
             this.$message(res.msg);
             this.load();
           })
-          .catch(e => {
-          });
+          .catch(e => {});
       }
     },
     onChildSubmit() {
-      this.formChildren.price = Number(this.formChildren.price)
+      this.formChildren.price = Number(this.formChildren.price);
       if (!this.isUpdate) {
-        this.formChildren.classificationId = this.parentId
+        this.formChildren.classificationId = this.parentId;
         //添加一级分类
         request
-          .post(api.WASTE_CATEGORY_CHILDREN_ADD, this.formChildren)
+          .post(api.WASTE_CATEGORY_CHILDREN_ADD, {
+            classificationId: this.formChildren.classificationId,
+            price: this.formChildren.price,
+            tradeName: this.formChildren.tradeName
+          })
           .then(res => {
             this.$message(res.msg);
             this.load();
           })
-          .catch(e => {
-
-          });
+          .catch(e => {});
       } else {
         request
-          .post(api.WASTE_CATEGORY_CHILDREN_UPDATE, this.formChildren)
+          .post(api.WASTE_CATEGORY_CHILDREN_UPDATE, {
+            classificationId: this.formChildren.classificationId,
+            price: this.formChildren.price,
+            tradeName: this.formChildren.tradeName
+          })
           .then(res => {
             if (!res.status) {
               this.$message(res.msg);
@@ -319,21 +320,20 @@ export default {
             this.$message(res.msg);
             this.load();
           })
-          .catch(e => {
-          });
+          .catch(e => {});
       }
     },
     load() {
-      request.get(api.WASTE_CATEGORY_PARENT).then(res=>{
-          if(res.status){
-              this.categoriesParent = res.records
-          }
-      })
-      request.get(api.WASTE_CATEGORY_CHILDREN).then(res=>{
-          if(res.status){
-              this.categoriesChildren = res.records
-          }
-      })
+      request.get(api.WASTE_CATEGORY_PARENT).then(res => {
+        if (res.status) {
+          this.categoriesParent = res.records;
+        }
+      });
+      request.get(api.WASTE_CATEGORY_CHILDREN).then(res => {
+        if (res.status) {
+          this.categoriesChildren = res.records;
+        }
+      });
     }
   },
   mounted() {

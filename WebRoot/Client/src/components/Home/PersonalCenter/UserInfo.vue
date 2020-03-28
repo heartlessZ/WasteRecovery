@@ -72,10 +72,11 @@
         <el-form-item :label="$t('UserInfo.Headportrait')">
           <el-upload
             class="avatar-uploader"
-            action="http://49.235.151.230:8091/file/imgUpdate"
+            :action="baseURL"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
+            :with-credentials="true"
           >
             <img v-if="editUserInfo.avatar" :src="editUserInfo.avatar" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -138,6 +139,7 @@
 <script>
 import UploadImg from "../RecycleForm/UploadImg";
 import { getInfo, updateUserInfo } from "@/api/user";
+import request from '../../../utils/request'
 export default {
   name: "userInfo",
   components: {
@@ -146,6 +148,7 @@ export default {
   data() {
     return {
       rechargeDialogVisible: false,
+      baseURL:request.defaults.baseURL + '/img/update',
       rechargeForm: {
         money: "300",
         imoney: null,
@@ -184,7 +187,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       if (res.status) {
-        this.editUserInfo.avatar = res.data.imgurl;
+        this.editUserInfo.avatar = res.imgurl;
       } else {
         this.$message.error(this.$t('UserInfo.Headportraiterror'));
       }

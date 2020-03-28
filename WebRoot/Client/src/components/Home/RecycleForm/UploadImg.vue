@@ -2,13 +2,14 @@
   <div>
     <!-- https://jsonplaceholder.typicode.com/posts/ -->
     <el-upload
-      action="http://49.235.151.230:8091/file/imgUpdate"
+      :action="baseURL"
       list-type="picture-card"
       :limit="limit"
       :on-change="handleChange"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :on-success="uploadSuccess"
+      :with-credentials="true"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -18,13 +19,15 @@
   </div>
 </template>
 <script>
+import request from '../../../utils/request'
 export default {
   name: "upload-img",
   props: ['limit'],
   data() {
     return {
       dialogImageUrl: "",
-      dialogVisible: false
+      dialogVisible: false,
+      baseURL:request.defaults.baseURL + '/img/update'
     };
   },
   methods: {
@@ -43,13 +46,17 @@ export default {
       this.dialogVisible = true;
     },
     uploadSuccess(response, file, fileList) {
+      
+      console.log(response)
       let urls = []
       fileList.forEach(item => {
-        urls.push(item.response.data.imgurl)
+        urls.push(item.response.imgurl)
       });
       // console.log(urls)
       this.$emit("getimageurl", urls);
     }
+  },
+  mounted(){
   }
 };
 </script>

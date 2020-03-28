@@ -4,6 +4,7 @@ import request from '@/utils/request'
  * 用户名登录
  */
 export function login (userInfo) {
+  console.log("login")
   return request({
     url: '/user/login',
     method: 'post',

@@ -176,7 +176,7 @@ export default {
         latitude: "",
         longitude: "",
         photos: "",
-        weight: ""
+        weight: 0
       },
       form2: {
         address: "",
@@ -206,13 +206,7 @@ export default {
           },
           { validator: checkNum, trigger: "blur" }
         ],
-        classificationId: [
-          {
-            required: true,
-            message: this.$t("RecycleForm.seletecategory"),
-            trigger: "blur"
-          }
-        ],
+        
         describe: [
           {
             required: true,
@@ -254,12 +248,6 @@ export default {
     onSubmit(formName) {
       this.loading = true;
       this.$refs[formName].validate(valid => {
-        // if (valid) {
-        //   alert('submit!');
-        // } else {
-        //   console.log('error submit!!');
-        //   return false;
-        // }
         this.loading = false;
         if (!valid) {
           return false;
@@ -302,6 +290,7 @@ export default {
         });
         return;
       }
+          this.form.weight = Number(this.form.weight)
       releaseOrder(this.form)
         .then(res => {
           this.loading = false;
@@ -312,7 +301,7 @@ export default {
               type: "success",
               offset: 70
             });
-            this.form.weight = "";
+            this.form.weight = 0;
             this.form.describe = "";
             this.form.expectedPrice = "";
             this.form.classificationId = undefined;
