@@ -64,4 +64,13 @@ export const WASTE_CATEGORY_CHILDREN_ADD = CONTEXT + '/classification/addSon';
 
 
 export const MSG_TOP_TEN = CONTEXT + '/messageList';
+
+export const BUSINESS_CENSUS_ECTARTS = CONTEXT + '/census/orderEcarts';
+export const ADMIN_CENSUS_ECTARTS = CONTEXT + '/census/visualization';
+export const LOGIN_COUNT = CONTEXT + '/census/countCensus';
+
+
 export const TEST_DATA = CONTEXT + '/static/data/data.json';
+
+
+

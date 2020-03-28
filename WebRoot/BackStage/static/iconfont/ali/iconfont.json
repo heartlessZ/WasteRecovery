@@ -1,0 +1,79 @@
+{
+  "id": "1718344",
+  "name": "hbws",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "338378",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "1517312",
+      "name": "订单",
+      "font_class": "dingdan1",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "3808695",
+      "name": "订单",
+      "font_class": "-",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "4408953",
+      "name": "订单",
+      "font_class": "ziyuan",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "4662758",
+      "name": "订单",
+      "font_class": "dingdan2",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "5342983",
+      "name": "订单",
+      "font_class": "xingzhuanggongnengtubiao-",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "5383805",
+      "name": "订单",
+      "font_class": "huabanfuben",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "5672445",
+      "name": "订单",
+      "font_class": "dingdan3",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "6972037",
+      "name": "订单",
+      "font_class": "dingdan4",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "7712194",
+      "name": "订单",
+      "font_class": "dingdan5",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    }
+  ]
+}

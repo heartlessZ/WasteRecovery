@@ -10,16 +10,18 @@ import Element from "element-ui";
 import './assets/theme/index.css'
 import ImpPanel from "./components/panel.vue";
 import i18n from "./i18n/i18n";
+import echarts from 'echarts'
 Vue.prototype.$http = axios;
 Vue.axios = axios;
 Vue.http = axios;
 Vue.use(axios);
 Vue.use(Element);
+Vue.use(echarts)
 
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/index.css'
-
+Vue.prototype.$echarts = echarts
 Vue.use(VXETable)
 Vue.component(ImpPanel.name, ImpPanel);
 

@@ -24,7 +24,7 @@
 
   <script>
   import request from '../../utils/request'
-import * as api from "../../api";
+  import * as api from "../../api";
     export default {
       data() {
         return {

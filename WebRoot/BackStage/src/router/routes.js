@@ -25,6 +25,8 @@ const NoticeManager = resolve => require(['../pages/notice/NoticeManager.vue'], 
 const UserNoticeList = resolve => require(['../pages/notice/UserNoticeList.vue'], resolve)
 const MyWallet = resolve => require(['../pages/wallet/MyWallet.vue'], resolve)
 const BusinessConsole = resolve => require(['../pages/console/BusinessConsole.vue'], resolve)
+const AdminConsole = resolve => require(['../pages/console/AdminConsole.vue'], resolve)
+const Home = resolve => require(['../pages/console/Home.vue'], resolve)
 const LoginLog = resolve => require(['../pages/log/LoginLog.vue'], resolve)
 const SystemLog = resolve => require(['../pages/log/SystemLog.vue'], resolve)
 const OnlineUserList = resolve => require(['../pages/log/OnlineUserList.vue'], resolve)
@@ -35,11 +37,13 @@ const routes = [
         path: '',
         component: app,
         children: [
-            { path: '', redirect:'/busi-console' },
+            { path: '', redirect:'/home' },
             { path: '/waste', component: wasteInfo },
             { path: '/admin-order', component: AdminOrderList},
             { path: '/business-order', component: BusinessOrderList},
+            { path: '/home', component: Home},
             { path: '/busi-console',component:BusinessConsole},
+            { path: '/console',component:AdminConsole},
             { path: '/personal-center', component: personalCenter },
             { path: '/system/config', component: config },
             { path: '/wallet-manage/withdraw',component: WithdrawalList},

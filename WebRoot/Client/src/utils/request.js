@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 //意思是携带cookie信息,保持session的一致性
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'https://hbws.jiuyect.com:4399';
-// axios.defaults.baseURL = 'https://localhost:4399';
+// axios.defaults.baseURL = 'http://localhost:4299';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // 创建axios实例
 const service = axios.create({
