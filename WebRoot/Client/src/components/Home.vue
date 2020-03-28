@@ -4,9 +4,9 @@
       <nav id="nav" class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
         <div class="container">
           <div class="navbar-header">
-            <a href="index.html" class="navbar-brand">
+            <router-link to="/home/overview#hero-area" class="nav-link page-scroll">
               <img class="img-fulid" :src="imgUrl" alt />
-            </a>
+            </router-link >
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
               aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
               <i class="lnr lnr-menu"></i>
