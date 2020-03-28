@@ -7,11 +7,7 @@ import './assets/theme/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 // lang i18n
 import i18n from "./i18n/i18n";
-
 import axios from 'axios'
-axios.defaults.baseURL = 'http://safeclean.tx-q.cn:4399';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-Vue.config.productionTip = false;
 Vue.prototype.$addr = axios;
 //vue-amap   --高德地图
 import VueAMap from 'vue-amap'

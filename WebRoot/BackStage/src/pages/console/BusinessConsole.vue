@@ -1,189 +1,238 @@
 <template>
-  <div id="console">
-    <div class="title">
-      <el-form :inline="true" :model="formSearch" class="demo-form-inline" size="mini" style="padding-top: 20px;">
-        <el-form-item prop="number">
-          <el-input type="number" v-model.number="formSearch.distance" placeholder="输入距离(默认5km,单位m)" clearable></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSearch">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="content">
-      <div class="order-item" v-for="(item) in tableData" :key="item.id">
-        <el-image style="width: 100%; height: 150px;background: #F5F7FA;border-radius: 8px;" :src="item.photos"
-          :preview-src-list="[item.photos]" fit="cover">
-          <div slot="error" style="height: 100%;text-align: center;display: flex;justify-content: center;align-items: center;">
-            <i class="el-icon-picture-outline"></i>
-          </div>
-        </el-image>
-        <p><b>重量：</b><span class="span-color">{{item.weight}}kg</span><b style="margin-left: 20px;">期望价格：</b><span class="span-color">￥{{item.expectedPrice}}元</span></p>
-        <p><b>分类：</b><span>{{item.classificationName}}</span></p>
-        <p class="myorder-number"><b>发布日期：</b><span>{{item.creatTime}}</span></p>
-        <p style="padding-bottom: 5px;"><b class='describe' @click="lookDescribe(item.describe)">查看描述 >></b></p>
-        <p style="border-top: 1px solid #b7bbbf;padding-top:5px "><b>卖家信息：</b></p>
-        <p class="order-info" style="display: inline-block;">昵称：<span>{{item.nikeName}}</span><span class="phone">电话：{{item.phone}}</span></p>
-        <p style="height: 36px;">卖家地址：{{item.address}}</p>
-        <div style="overflow: hidden;">
-           <span style="float: left;font-size: 12px;line-height: 28px;"><b>距离:</b>约{{item.distance}}m</span>
-           <el-button size="mini" type="info" style="float: right;" @click="onBuy(item.id)">购买</el-button>
-        </div>
-      </div>
-    </div>
-    <el-pagination @current-change="handleCurrentChange" :current-page.sync="formSearch.pageNum" :page-size="formSearch.pageSize" :total="total" layout="total, prev, pager, next" style="text-align: center;padding-bottom: 20px;">
-    </el-pagination>
-    <!-- 查看详细信息对话框 -->
-    <el-dialog title="废品描述" :visible.sync="lookdialogVisible" width="40%">
-      <p v-text="dialogContent" style="height: 120px;"></p>
-    </el-dialog>
+  <div>
+        <el-row>
+          <el-col :span="5">
+            <el-row class="panel-group">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-people">
+                  <i class="el-icon-s-order card-panel-icon"  />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">回收总订单</div>
+                  <count-to
+                    :start-val="startval"
+                    :end-val="recoveryOrderCount"
+                    :duration="3000"
+                    class="card-panel-num"
+                  />
+                </div>
+              </div>
+            </el-row>
+            <el-row class="panel-group">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-message">
+                  <i class="el-icon-s-order card-panel-icon"  />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">分类总订单</div>
+                  <count-to
+                    :start-val="startval"
+                    :end-val="vistiorderCount"
+                    :duration="3000"
+                    class="card-panel-num"
+                  />
+                </div>
+              </div>
+            </el-row>
+          </el-col>
+          <el-col :span="16">
+            <div id="orderChart" class="chart" style="height: 350px; padding: 20px; padding-left: 80px"/>
+          </el-col>
+        </el-row>
+
   </div>
 </template>
 
 <script>
-  import {
-   needPush,
-   buy
-  } from '@/api/console.js'
+  import CountTo from 'vue-count-to';
+  import request from '../../utils/request'
+  import * as api from "../../api";
   export default {
-    data() {
+    components: {
+      CountTo
+    },
+    name: 'hello',
+    data () {
       return {
-        lookdialogVisible: false,
-        dialogContent: '',
-        formSearch:{
-          distance:null,
-          pageNum:1,
-          pageSize:8
-        },
-        tableData:[],
-        total:0,
-        list:[1,2,3]
+        msg: 'Welcome to Your Vue.js App',
+        startval:0,
+        recoveryOrderCount:0,
+        vistiorderCount:0,
       }
+    },
+    mounted(){
+      this.getDtata();
     },
     methods: {
-      lookDescribe(describe) {
-        this.dialogContent = describe
-        this.lookdialogVisible = true
-      },
-      requestData(){
-        needPush(this.formSearch).then((res)=>{
+      getDtata(){
+        request.get(api.BUSINESS_CENSUS_ECTARTS).then(res=>{
           if(res.status){
-            this.tableData = res.records
-            this.total = res.total
-          }else{
-            this.$message.error(res.msg)
-          }
-        }).catch((err)=>{
-          this.$message.error(err.message)
+            this.recoveryOrderCount=res.data.recoveryOrderCount;
+              this.vistiorderCount=res.data.vistiorderCount;
+              // 基于准备好的dom，初始化echarts实例
+              let orderChart = this.$echarts.init(document.getElementById('orderChart'))
+              // 订单
+              orderChart.setOption({
+                title: { text: '7日订单' },
+                tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                  }
+                },
+                legend: {
+                  data: ['回收订单', '分类订单']
+                },
+                grid: {
+                  left: '0%',
+                  right: '0%',
+                  bottom: '20%',
+                  containLabel: true
+                },
+
+                xAxis: {
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    color: '#666',
+                    fontSize: 12,
+                    margin: 12
+                  },
+                  data: res.data.recoveryorder[0]
+                },
+                yAxis: {
+                  name: '订单数',
+                  type: 'value',
+                  axisLine: {
+                    show: false
+                  },
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    color: '#666',
+                    fontSize: 12
+                  }
+                },
+                series: [
+                  {
+                    yAxisIndex: 0,
+                    color: '#20B2AA',
+                    name: '回收订单',
+                    type: 'bar',
+                    stack: '回收订单',
+                    data: res.data.recoveryorder[1]
+                  },
+                  {
+                    yAxisIndex: 0,
+                    name: '分类订单',
+                    type: 'bar',
+                    stack: '分类订单',
+                    color: '#00B5FF',
+                    data: res.data.vistiorder[1]
+                  }
+                ]
+              });
+            }
         })
       },
-      handleCurrentChange () {
-        this.requestData()
-      },
-      onSearch(){
-        if(this.formSearch.distance<1){
-          this.$message.error("距离必须是大于等于1的数")
-          this.formSearch.distance=null
-          return
-        }
-        if(this.formSearch.distance==null){
-          this.formSearch.distance=5000
-        }
-        this.requestData()
-      },
-      //购买废品按钮事件
-      onBuy(id){
-        buy(id).then((res)=>{
-          console.log(res)
-          if(res.status){
-            this.$message({
-              message:'购买成功!',
-              type:'success'
-            })
-            this.requestData()
-          }else{
-            this.$message.error(res.msg)
-          }
-        }).catch((err)=>{
-          this.$message.error("购买失败!")
-        })
-      }
-    },
-    mounted() {
-     this.requestData()
+
     }
   }
 </script>
 
-<style scoped>
-  p {
-    margin: 0;
-    font-size: 12px;
-  }
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .dashboard-editor-container {
+    padding: 10px;
+    background-color: rgb(240, 242, 245);
+    .chart-wrapper {
+      background: #fff;
 
-  #console {
-    width: 100%;
-    background: #FFFFFF;
-    display: flex;
-    flex-direction: column;
+    }
   }
-  .title{
-   width: 100%;
-   display: flex;
-   justify-content: center;
-  }
-  .content {
-    overflow: hidden;
-    width: 100%;
-    padding: 0px 20px 20px 20px;
-    min-height: 400px;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  .order-item {
-    width: 300px;
-    padding: 18px;
-    border-radius: 5px;
-  }
-
-  .order-item:hover {
-    background: #F4F4F4;
-  }
-
-  .img_icon_error {
-    height: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .myorder-number {
-    font-size: 12px;
-  }
-
-  .order-info {
-    margin: 0;
-    font-size: 12px;
-  }
-
-  .img-block {
+  .currentNum{
     width: 100%;
     height: 100px;
-    background: #F5F7FA;
+    line-height: 100px;
+    background-color: #FFFFFF;
+    border: 1px solid #e1f3d8;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    color: #909399;
   }
+  .panel-group {
+    margin-top: 18px;
+    padding-left: 30px;
 
-  .order-item .date,
-  .order-item .phone {
-    margin-left: 20px;
-  }
-
-  .span-color {
-    color: #f01414;
-  }
-
-  .describe:hover {
-    color: #61D2B4;
+    .card-panel-col {
+      margin-bottom: 32px;
+    }
+    .card-panel {
+      height: 108px;
+      cursor: pointer;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+      color: #666;
+      background: #fff;
+      box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.05);
+      &:hover {
+        .card-panel-icon-wrapper {
+          color: #fff;
+        }
+        .icon-people {
+          background: #40c9c6;
+        }
+        .icon-message {
+          background: #36a3f7;
+        }
+        .icon-money {
+          background: #f4516c;
+        }
+        .icon-shoppingCard {
+          background: #34bfa3;
+        }
+      }
+      .icon-people {
+        color: #40c9c6;
+      }
+      .icon-message {
+        color: #36a3f7;
+      }
+      .icon-money {
+        color: #f4516c;
+      }
+      .icon-shoppingCard {
+        color: #34bfa3;
+      }
+      .card-panel-icon-wrapper {
+        float: left;
+        margin: 14px 0 0 14px;
+        padding: 16px;
+        transition: all 0.38s ease-out;
+        border-radius: 6px;
+      }
+      .card-panel-icon {
+        float: left;
+        font-size: 45px;
+      }
+      .card-panel-description {
+        float: right;
+        font-weight: bold;
+        margin: 26px;
+        margin-left: 0px;
+        .card-panel-text {
+          line-height: 18px;
+          color: rgba(0, 0, 0, 0.45);
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+        .card-panel-num {
+          font-size: 20px;
+        }
+      }
+    }
   }
 </style>

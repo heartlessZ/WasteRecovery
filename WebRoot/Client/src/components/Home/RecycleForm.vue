@@ -76,7 +76,6 @@
             >
               <el-form-item :label="$t('RecycleForm.home')" required>
                 <el-input
-                  :disabled="isVIP"
                   v-model="form2.address"
                   :placeholder="$t('RecycleForm.inputadress')"
                 ></el-input>
@@ -101,29 +100,16 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item
-                :label="$t('RecycleForm.endtime')"
-                v-if="isVIP"
-                required
-              >{{currentOrder.endTime}}</el-form-item>
               <el-form-item>
                 <div class="recycle-form-btn">
                   <el-button
                     type="primary"
                     @click="onSubmit2('form2')"
-                    :disabled="isVIP"
                     round
                     v-loading="loading2"
                     style="justify-content: center;"
                   >{{$t('RecycleForm.okpay')}}</el-button>
-                  <el-button
-                    type="primary"
-                    @click="renew('form2')"
-                    v-if="isVIP"
-                    round
-                    v-loading="loading2"
-                    style="justify-content: center;"
-                  >{{$t('RecycleForm.renew')}}</el-button>
+
                 </div>
               </el-form-item>
             </el-form>
@@ -163,10 +149,6 @@ export default {
       limit: 1,
       loading: false,
       loading2: false,
-      isVIP: false,
-      currentOrder: {
-        endTime: undefined
-      },
       visitCategories: [],
       form: {
         address: "",
@@ -362,7 +344,6 @@ export default {
         });
         return;
       }
-
       visitCreate(this.form2)
         .then(res => {
           this.loading2 = false;
@@ -375,7 +356,6 @@ export default {
             });
             // this.form2.address = "";
             // this.form2.visitclassificationId = undefined;
-            this.loadData();
           } else {
             this.$message({
               type: "error",
@@ -389,50 +369,7 @@ export default {
           this.loading2 = false;
         });
     },
-    renew(formName) {
-      this.loading2 = true;
-      this.$refs[formName].validate(valid => {
-        this.loading2 = false;
-        if (!valid) {
-          return;
-        }
-      });
-      let params = {
-        orderId: this.currentOrder.orderId,
-        visitclassificationId: this.form2.visitclassificationId
-      };
-      request.post("visit/order/renew", params).then(res => {
-        if (res.status) {
-          this.$message({
-            type: "success",
-            offset: 70,
-            center: true,
-            message: res.msg
-          });
-          this.loadData();
-        } else {
-          this.$message({
-            type: "error",
-            offset: 70,
-            center: true,
-            message: res.msg
-          });
-        }
-      });
-    },
-    reset() {},
-    loadData() {
-      request.get("visit/myorder").then(res => {
-        if (res.status && res.total > 0) {
-          let list = res.records.filter(dst => dst.status == 1);
-          if (list.length > 0) {
-            this.isVIP = true;
-            this.currentOrder = list[0];
-            this.form2.address = list[0].address;
-          }
-        }
-      });
-    }
+
   },
   mounted() {
     this.$store.dispatch("QueryChildrenCategory").then(res => {});
