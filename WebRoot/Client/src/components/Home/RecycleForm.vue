@@ -384,8 +384,8 @@ export default {
 .recycle-form,
 .recycle-form-btn {
   justify-content: center;
-  width: 100%;
-  margin: 20px;
+width: 100%;
+margin: 20px;
 }
 .recycle-form-child {
   width: 80%;

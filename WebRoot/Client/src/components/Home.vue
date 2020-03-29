@@ -27,6 +27,9 @@
                 <router-link class="nav-link page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
               </li>
               <li class="nav-item">
+                <router-link class="nav-link page-scroll" to="/home/overview#classification">基本分类</router-link>
+              </li>
+              <li class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>
               </li>
               <li v-if="$store.getters.isLogin" class="nav-item">
@@ -54,6 +57,9 @@
           </li>
           <li>
             <router-link class="page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
+          </li>
+          <li>
+            <router-link class="page-scroll" to="/home/overview#classification">基本分类</router-link>
           </li>
           <li>
             <router-link class="page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>
