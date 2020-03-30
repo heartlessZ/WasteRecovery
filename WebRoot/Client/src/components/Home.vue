@@ -27,7 +27,7 @@
                 <router-link class="nav-link page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link page-scroll" to="/home/overview#classification">基本分类</router-link>
+                <router-link class="nav-link page-scroll" to="/home/overview#classification">分类小助手</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>
@@ -59,7 +59,7 @@
             <router-link class="page-scroll" to="/home/overview#portfolios">{{$t('home.recovery')}}</router-link>
           </li>
           <li>
-            <router-link class="page-scroll" to="/home/overview#classification">基本分类</router-link>
+            <router-link class="page-scroll" to="/home/overview#classification">分类小助手</router-link>
           </li>
           <li>
             <router-link class="page-scroll" to="/home/overview#contact">{{$t('home.about')}}</router-link>

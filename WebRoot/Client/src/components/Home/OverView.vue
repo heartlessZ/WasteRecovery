@@ -2,7 +2,8 @@
   <div>
       <!-- 简介 -->
     <intro></intro>
-
+    <!--生活垃圾分类-->
+    <classification></classification>
     <!-- 今日废品价格 -->
     <recycle-news></recycle-news>
 
@@ -14,8 +15,7 @@
 
     <router-view/>
 
-    <!--生活垃圾分类-->
-    <classification></classification>
+
     <!-- 联系我们 -->
     <contact></contact>
   </div>
