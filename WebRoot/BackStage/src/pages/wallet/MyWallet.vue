@@ -215,7 +215,7 @@
         } else {
           money = this.rechargeForm.money
         }
-        window.open('http://safeclean.tx-q.cn:4399/alipay/goAlipay?money=' + money, 'about:blank')
+        window.open('https://hbws.jiuyect.com:4399/alipay/goAlipay?money=' + money, 'about:blank')
         this.rechargeForm.money = '300'
         this.rechargeForm.imoney = null
       },

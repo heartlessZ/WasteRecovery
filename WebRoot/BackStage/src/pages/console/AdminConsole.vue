@@ -39,13 +39,12 @@
         <div id="orderChart" class="chart" style="height: 350px; padding: 20px; padding-left: 80px"/>
       </el-col>
     </el-row>
-
     <el-row>
       <el-col :span="5">
         <el-row class="panel-group">
           <div class="card-panel">
             <div class="card-panel-icon-wrapper icon-people">
-              <i class="el-icon-s-order card-panel-icon"/>
+              <i class="el-icon-bank-card card-panel-icon"/>
             </div>
             <div class="card-panel-description">
               <div class="card-panel-text">总成交金额</div>
@@ -59,11 +58,9 @@
           </div>
         </el-row>
       </el-col>
-      <el-row>
-        <el-col :span="16">
-          <div id="sumChart" class="chart" style="height: 400px; padding: 30px"/>
-        </el-col>
-      </el-row>
+      <el-col :span="16">
+        <div id="sumChart" class="chart" style="height: 350px; padding: 20px; padding-left: 80px"/>
+      </el-col>
     </el-row>
 
     <el-row>
@@ -71,7 +68,7 @@
         <el-row class="panel-group">
           <div class="card-panel">
             <div class="card-panel-icon-wrapper icon-people">
-              <i class="el-icon-s-order card-panel-icon"/>
+              <i class="el-icon-user-solid card-panel-icon"/>
             </div>
             <div class="card-panel-description">
               <div class="card-panel-text">商户</div>
@@ -85,12 +82,11 @@
           </div>
         </el-row>
       </el-col>
-      <el-row>
-        <el-col :span="16">
-          <div id="bunessinChart" class="chart" style="height: 400px; padding: 30px"/>
-        </el-col>
-      </el-row>
+      <el-col :span="16">
+        <div id="bunessinChart" class="chart" style="height: 350px; padding: 20px; padding-left: 80px"/>
+      </el-col>
     </el-row>
+
   </div>
 </template>
 
@@ -98,7 +94,6 @@
   import CountTo from 'vue-count-to';
   import request from '../../utils/request'
   import * as api from "../../api";
-
   export default {
     components: {
       CountTo

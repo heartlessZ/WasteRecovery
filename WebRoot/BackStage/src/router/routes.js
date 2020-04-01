@@ -31,6 +31,7 @@ const LoginLog = resolve => require(['../pages/log/LoginLog.vue'], resolve)
 const SystemLog = resolve => require(['../pages/log/SystemLog.vue'], resolve)
 const OnlineUserList = resolve => require(['../pages/log/OnlineUserList.vue'], resolve)
 
+
 const routes = [
     { path: '/login', component: login },
     {

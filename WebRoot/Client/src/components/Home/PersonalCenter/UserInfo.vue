@@ -179,7 +179,7 @@ export default {
         money = this.rechargeForm.money;
       }
       window.open(
-        "https://hbws.tx-q.cn:4399/alipay/goAlipay?money=" + money,
+        "https://hbws.jiuyect.com:4399/alipay/goAlipay?money=" + money,
         "about:blank"
       );
       this.rechargeForm.money = "300";
